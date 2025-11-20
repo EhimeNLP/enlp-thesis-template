@@ -1,0 +1,90 @@
+\input regression-test.tex
+
+\documentclass[japanese]{enlp}
+\usepackage{enlpbbl}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{appendix}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{adjustbox}
+\usepackage{booktabs}
+\usepackage{calc}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{here}
+\usepackage{multirow}
+\usepackage{subfigure}
+\usepackage{url}
+\usepackage{varwidth}
+\allowdisplaybreaks
+
+\Month{February}
+\Year{2021}
+\Issuetitle{「\qquad 」特集号}
+\jsubject{論文種別（査読有）}
+\thesis{学位論文}
+\jtitle{ここに論文タイトルここに論文タイトルここに論文タイトルここに論文タイトル}
+\author{9999999X\quad 土竜 戦士}
+\teacher{
+    〇〇 〇〇 准教授 \\
+}
+\institute{
+    愛媛大学 大学院理工学研究科 \\
+    理工学専攻 数理情報プログラム
+}
+\date{2099 年 2 月 吉日 提出}
+\jabstract{
+ここに概要
+}
+
+\begin{document}
+\START
+
+\TEST{Title Page and Abstract}{
+    \maketitle
+}
+
+\TEST{Table of Contents}{
+    \tableofcontents
+}
+
+\TEST{Main Body Structure}{
+    \section{はじめに}
+    これはセクションです。
+
+    日本語文献の引用\cite{araki-1995}。
+    英語文献の引用\cite{tackstrom-etal-2013-token}。
+
+    ニューラルネットワークの進展により、Transformer\cite{vaswani-2017}や
+    BERT\cite{devlin-2019}といったモデルが提案されました。
+    また、国内の研究\cite{sato-2020}も盛んです。
+
+    \subsection{サブセクション}
+    これはサブセクションです。
+
+    \subsubsection{サブサブセクション}
+    これはサブサブセクションです。
+}
+
+\TEST{Back Matter (Ack, Bib, Pubs)}{
+    \section{関連研究}
+    これはセクションです。
+
+    \acknowledgment
+    謝辞はこちらに記述して下さい。
+
+    % テスト環境用に標準スタイルを使用
+    \bibliographystyle{plain}
+    \bibliography{test}
+
+    \begin{publication}
+    \noindent
+    \begin{itemize}
+    \item ここに対外発表
+    \end{itemize}
+    \end{publication}
+}
+
+\END
+\end{document}

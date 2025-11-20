@@ -1,0 +1,2 @@
+# graduation_thesis_tex_template
+修論と卒論用のlatexテンプレート管理用

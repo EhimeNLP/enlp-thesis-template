@@ -40,8 +40,8 @@
 \@tempcnta\hour \multiply\@tempcnta 60\relax
 \minute\time \advance\minute-\@tempcnta
 
-\setlength\paperheight {731pt}
-\setlength\paperwidth  {518pt}
+\setlength\paperheight{731pt}
+\setlength\paperwidth{518pt}
 
 \DeclareOption{landscape}{%
   \@landscapetrue
@@ -568,11 +568,9 @@
 }
 
 \newenvironment{publication}{%
-  \newpage
-  \begin{center}%
-    {\section*{\publicationtitle} \vskip 0.5\baselineskip}%
-    \addcontentsline{toc}{section}{\publicationtitle}
-  \end{center}%
+  \clearpage
+  {\csection*{\publicationtitle} \vskip 0.5\baselineskip}%
+  \addcontentsline{toc}{section}{\publicationtitle}
 }{}
 
 \def\mkt@makejauthor{%
@@ -698,6 +696,42 @@
     {\fontsize{15pt}{18pt}\selectfont \bfseries 第 \thesection\hspace{1pt} 章 \hspace{7pt}\ignorespaces}
   \fi
   \fontsize{15pt}{18pt}\selectfont\bfseries#2\par
+  \endgroup
+  \vskip 14pt
+  \nobreak\vskip0.7\Cvs\@afterheading
+}
+\newcommand{\csection}{%
+  \par\addvspace{1.3\Cvs}%
+  \@afterindenttrue
+  \secdef\@csection\@scsection
+}
+\def\@csection[#1]#2{%
+  \newpage
+  \ifnum \c@secnumdepth >\z@
+    \refstepcounter{section}%
+    \addcontentsline{toc}{section}{\protect\numberline{第\thesection 章}#1}%
+  \else
+    \addcontentsline{toc}{section}{#1}%
+  \fi
+  \begingroup
+    \parindent\z@
+    \centering
+    \interlinepenalty\@M\reset@font
+    \ifnum \c@secnumdepth >\z@
+      {\fontsize{15pt}{18pt}\selectfont \bfseries 第 \thesection\hspace{1pt} 章 \hspace{7pt}\ignorespaces}
+    \fi
+    \fontsize{15pt}{18pt}\selectfont\bfseries#2\par
+  \endgroup
+  \vskip 14pt
+  \nobreak\vskip0.7\Cvs\@afterheading
+}
+\def\@scsection#1{%
+  \newpage
+  \begingroup
+    \parindent\z@
+    \centering
+    \interlinepenalty\@M\reset@font
+    \fontsize{15pt}{18pt}\selectfont\bfseries#1\par
   \endgroup
   \vskip 14pt
   \nobreak\vskip0.7\Cvs\@afterheading

@@ -13,29 +13,24 @@
 \RequirePackage{ifxetex}
 \RequirePackage{ifluatex}
 
-\newif\ifjapanesefont\japanesefontfalse
+\def\clsname{ENLP}
 
 \ifupTeX
-  \japanesefonttrue
   \def\zw{zw}
   \def\zh{zh}
 \else\ifpTeX
-  \japanesefonttrue
   \def\zw{zw}
   \def\zh{zh}
 \else\ifLuaTeX
-  \japanesefonttrue
   \RequirePackage{luatexja}
-\else\ifXeTeX
-  \japanesefonttrue
-\fi\fi\fi\fi
+\else
+  \ClassError{\clsname}{This class supports only upLaTeX, pLaTeX, or LuaLaTeX}{Use upLaTeX, pLaTeX, or LuaLaTeX to compile this document.}
+\fi\fi\fi
 
 \RequirePackage{enlplogo}
 \RequirePackage[absolute,overlay]{textpos}
 \RequirePackage{tikz}
 \RequirePackage{atbegshi}
-
-\def\clsname{ENLP}
 
 \newif\if@landscape\@landscapefalse
 \newif\if@restonecol\@restonecolfalse
@@ -62,11 +57,9 @@
   }%
   \maketombowbox
 }
-\ifjapanesefont
 \DeclareOption{tate}{%
   \AtBeginDocument{\tate\message{《縦組モード》}\adjustbaseline}%
 }
-\fi
 
 \DeclareOption{onecolumn}{\@twocolumnfalse}
 \DeclareOption{twocolumn}{\@twocolumntrue}
@@ -89,8 +82,21 @@
 \ExecuteOptions{japanese,onecolumn,final}
 \ProcessOptions\relax
 
-\ifjapanesefont 
-  \ifLuaTeX
+\ifLuaTeX
+\else
+  \ifupTeX
+    \DeclareFontShape{JY2}{mc}{m}{n}{<->s*[1.039] upjisr-h}{}
+    \DeclareFontShape{JY2}{mc}{m}{it}{<->s*[1.039] upjisr-h}{}
+    \DeclareFontShape{JY2}{mc}{m}{sc}{<->s*[1.039] upjisr-h}{}
+    \DeclareFontShape{JY2}{gt}{m}{n}{<->s*[1.039] upjisg-h}{}
+    \DeclareFontShape{JY2}{gt}{m}{it}{<->s*[1.039] upjisg-h}{}
+    \DeclareFontShape{JY2}{gt}{m}{sc}{<->s*[1.039] upjisg-h}{}
+    \DeclareFontShape{JT2}{mc}{m}{n}{<->s*[1.039] upjisr-v}{}
+    \DeclareFontShape{JT2}{mc}{m}{it}{<->s*[1.039] upjisr-v}{}
+    \DeclareFontShape{JT2}{mc}{m}{sc}{<->s*[1.039] upjisr-v}{}
+    \DeclareFontShape{JT2}{gt}{m}{n}{<->s*[1.039] upjisg-v}{}
+    \DeclareFontShape{JT2}{gt}{m}{it}{<->s*[1.039] upjisg-v}{}
+    \DeclareFontShape{JT2}{gt}{m}{sc}{<->s*[1.039] upjisg-v}{}
   \else
     \DeclareFontShape{JY1}{mc}{m}{n}{<->s*[1.039] jis}{}
     \DeclareFontShape{JY1}{mc}{m}{it}{<->s*[1.039] jis}{}
@@ -117,24 +123,18 @@
 }
 \normalsize
 
-\ifjapanesefont
-  \ifLuaTeX
-    \setbox0\hbox{　}
-  \else
-    \setbox0\hbox{\char\euc"A1A1}
-  \fi
-  \setlength\Cht{\ht0}
-  \setlength\Cdp{\dp0}
-  \setlength\Cwd{\wd0}
-  \setlength\Cvs{\baselineskip}
-  \setlength\Chs{\wd0}
+\ifLuaTeX
+  \setbox0\hbox{　}
+\else\ifupTeX
+  \setbox0\hbox{　}
 \else
-  \setlength\Cht{10pt}
-  \setlength\Cdp{0pt}
-  \setlength\Cwd{10pt}
-  \setlength\Cvs{17pt}
-  \setlength\Chs{10pt}
-\fi
+  \setbox0\hbox{\char\euc"A1A1}
+\fi\fi
+\setlength\Cht{\ht0}
+\setlength\Cdp{\dp0}
+\setlength\Cwd{\wd0}
+\setlength\Cvs{\baselineskip}
+\setlength\Chs{\wd0}
 
 \newcommand{\small}{%
   \@setfontsize\small\@ixpt{13}%
@@ -472,8 +472,6 @@
   \global\let\@eauthor\@empty
   \global\let\@eabstract\@empty
   \global\let\@ekeywords\@empty
-  % \global\let\footnotemark\@empty
-  % \global\let\footnotetext\@empty
 }
 \if@other
   \if@japanese
@@ -941,13 +939,23 @@
 \if@enablejfam
   \ifLuaTeX
   \else
-    \DeclareSymbolFont{mincho}{JY1}{mc}{m}{n}
-    \DeclareSymbolFontAlphabet{\mathmc}{mincho}
-    \SetSymbolFont{mincho}{bold}{JY1}{gt}{m}{n}
-    \DeclareMathAlphabet{\mathgt}{JY1}{gt}{m}{n}
-    \reDeclareMathAlphabet{\mathrm}{\@mathrm}{\@mathmc}
-    \reDeclareMathAlphabet{\mathbf}{\@mathbf}{\@mathgt}
-    \jfam\symmincho
+    \ifupTeX
+        \DeclareSymbolFont{mincho}{JY2}{mc}{m}{n}
+        \DeclareSymbolFontAlphabet{\mathmc}{mincho}
+        \SetSymbolFont{mincho}{bold}{JY2}{gt}{m}{n}
+        \DeclareMathAlphabet{\mathgt}{JY2}{gt}{m}{n}
+        \reDeclareMathAlphabet{\mathrm}{\@mathrm}{\@mathmc}
+        \reDeclareMathAlphabet{\mathbf}{\@mathbf}{\@mathgt}
+        \jfam\symmincho
+    \else
+        \DeclareSymbolFont{mincho}{JY1}{mc}{m}{n}
+        \DeclareSymbolFontAlphabet{\mathmc}{mincho}
+        \SetSymbolFont{mincho}{bold}{JY1}{gt}{m}{n}
+        \DeclareMathAlphabet{\mathgt}{JY1}{gt}{m}{n}
+        \reDeclareMathAlphabet{\mathrm}{\@mathrm}{\@mathmc}
+        \reDeclareMathAlphabet{\mathbf}{\@mathbf}{\@mathgt}
+        \jfam\symmincho
+    \fi
   \fi
 \else
   \DeclareRobustCommand{\mathmc}{%

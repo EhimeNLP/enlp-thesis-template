@@ -672,6 +672,7 @@
 }
 \def\@section[#1]#2{%
   \clearpage
+  \global\@topnum\z@
   \ifnum \c@secnumdepth >\z@
     \refstepcounter{section}%
     \addcontentsline{toc}{section}{\protect\numberline{第\thesection 章}#1}
@@ -691,6 +692,7 @@
 }
 \def\@ssection#1{%
   \clearpage
+  \global\@topnum\z@
   \begingroup
   \parindent\z@\raggedright
   \interlinepenalty\@M\reset@font
@@ -705,6 +707,7 @@
 }
 \def\@csection[#1]#2{%
   \clearpage
+  \global\@topnum\z@
   \ifnum \c@secnumdepth >\z@
     \refstepcounter{section}%
     \addcontentsline{toc}{section}{\protect\numberline{第\thesection 章}#1}%
@@ -725,6 +728,7 @@
 }
 \def\@scsection#1{%
   \clearpage
+  \global\@topnum\z@
   \begingroup
     \parindent\z@
     \centering

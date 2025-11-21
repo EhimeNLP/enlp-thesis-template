@@ -766,6 +766,9 @@
   \renewcommand{\thesection}{\@Alph\c@section}%
 }
 
+% Workaround: Allow flexible spacing to prevent overfull hboxes in mixed Japanese/English text.
+% This is specifically to handle unhyphenated English proper nouns in citations (e.g., "Mizukami").
+\setlength{\emergencystretch}{3\zw}
 \setlength\leftmargini{3\Cwd}
 \setlength\leftmarginii{3\Cwd}
 \setlength\leftmarginiii{3\Cwd}

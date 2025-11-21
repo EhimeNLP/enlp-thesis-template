@@ -8,6 +8,18 @@
 %%
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{enlpbbl}[2025/11/20 v0.1.0 Citation support for Ehime Univ. NLP Lab]
+\@ifpackageloaded{ifluatex}{\RequirePackage{ifluatex}}
+\ifupTeX
+  \def\zw{zw}
+  \def\zh{zh}
+\else\ifpTeX
+  \def\zw{zw}
+  \def\zh{zh}
+\else\ifLuaTeX
+  \@ifpackageloaded{luatexja}{}{\RequirePackage{luatexja}}
+\else\ifXeTeX
+\fi\fi\fi\fi
+
 %%%%%%%%%%%%%%%%%%%%
 %%% APA CITATION %%%
 %%%%%%%%%%%%%%%%%%%%
@@ -674,11 +686,11 @@
 
 \newskip{\bibleftmargin}
 \newskip{\bibitemindent}
-\bibleftmargin=2zw
-\bibitemindent=-0.5zw
+\bibleftmargin=2\zw
+\bibitemindent=-0.5\zw
 \newenvironment{thebibliography}[1]{%
     \clearpage
-    \section*{\refname}%
+    \csection*{\refname}%
     \addcontentsline{toc}{section}{\refname}
     \list{\@biblabel{\@arabic\c@enumiv}}{%
         \settowidth\labelwidth{\@biblabel{#1}}%

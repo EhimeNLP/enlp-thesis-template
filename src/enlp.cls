@@ -17,10 +17,15 @@
 
 \ifupTeX
   \japanesefonttrue
+  \def\zw{zw}
+  \def\zh{zh}
 \else\ifpTeX
   \japanesefonttrue
+  \def\zw{zw}
+  \def\zh{zh}
 \else\ifLuaTeX
   \japanesefonttrue
+  \RequirePackage{luatexja}
 \else\ifXeTeX
   \japanesefonttrue
 \fi\fi\fi\fi
@@ -84,19 +89,22 @@
 \ExecuteOptions{japanese,onecolumn,final}
 \ProcessOptions\relax
 
-\ifjapanesefont
-\DeclareFontShape{JY1}{mc}{m}{n}{<->s*[1.039] jis}{}
-\DeclareFontShape{JY1}{mc}{m}{it}{<->s*[1.039] jis}{}
-\DeclareFontShape{JY1}{mc}{m}{sc}{<->s*[1.039] jis}{}
-\DeclareFontShape{JY1}{gt}{m}{n}{<->s*[1.039] jisg}{}
-\DeclareFontShape{JY1}{gt}{m}{it}{<->s*[1.039] jisg}{}
-\DeclareFontShape{JY1}{gt}{m}{sc}{<->s*[1.039] jisg}{}
-\DeclareFontShape{JT1}{mc}{m}{n}{<->s*[1.039] jis-v}{}
-\DeclareFontShape{JT1}{mc}{m}{it}{<->s*[1.039] jis-v}{}
-\DeclareFontShape{JT1}{mc}{m}{sc}{<->s*[1.039] jis-v}{}
-\DeclareFontShape{JT1}{gt}{m}{n}{<->s*[1.039] jisg-v}{}
-\DeclareFontShape{JT1}{gt}{m}{it}{<->s*[1.039] jisg-v}{}
-\DeclareFontShape{JT1}{gt}{m}{sc}{<->s*[1.039] jisg-v}{}
+\ifjapanesefont 
+  \ifLuaTeX
+  \else
+    \DeclareFontShape{JY1}{mc}{m}{n}{<->s*[1.039] jis}{}
+    \DeclareFontShape{JY1}{mc}{m}{it}{<->s*[1.039] jis}{}
+    \DeclareFontShape{JY1}{mc}{m}{sc}{<->s*[1.039] jis}{}
+    \DeclareFontShape{JY1}{gt}{m}{n}{<->s*[1.039] jisg}{}
+    \DeclareFontShape{JY1}{gt}{m}{it}{<->s*[1.039] jisg}{}
+    \DeclareFontShape{JY1}{gt}{m}{sc}{<->s*[1.039] jisg}{}
+    \DeclareFontShape{JT1}{mc}{m}{n}{<->s*[1.039] jis-v}{}
+    \DeclareFontShape{JT1}{mc}{m}{it}{<->s*[1.039] jis-v}{}
+    \DeclareFontShape{JT1}{mc}{m}{sc}{<->s*[1.039] jis-v}{}
+    \DeclareFontShape{JT1}{gt}{m}{n}{<->s*[1.039] jisg-v}{}
+    \DeclareFontShape{JT1}{gt}{m}{it}{<->s*[1.039] jisg-v}{}
+    \DeclareFontShape{JT1}{gt}{m}{sc}{<->s*[1.039] jisg-v}{}
+  \fi
 \fi
 
 \renewcommand{\normalsize}{%
@@ -110,7 +118,11 @@
 \normalsize
 
 \ifjapanesefont
-  \setbox0\hbox{\char\euc"A1A1}
+  \ifLuaTeX
+    \setbox0\hbox{　}
+  \else
+    \setbox0\hbox{\char\euc"A1A1}
+  \fi
   \setlength\Cht{\ht0}
   \setlength\Cdp{\dp0}
   \setlength\Cwd{\wd0}
@@ -351,42 +363,18 @@
   \let\ps@jpl@in\ps@mainpage
   \let\@mkboth\markboth
   \def\@oddhead{\setlength{\fboxsep}{3pt}\setlength{\fboxrule}{0.25pt}\raisebox{6pt}[0pt][0pt]{\framebox{\hspace{0.5\Cwd}\semilarge\bfseries\protect\@IssuetitleX\hspace{1\Cwd}}}\hfil}
-  \def\@oddfoot{%
-    \hfill
-    \begin{minipage}{246pt}%
-      \tiny (C) The Association for Natural Language Processing. Licensed under CC BY 4.0 \\
-      (https://creativecommons.org/licenses/by/4.0/).
-    \end{minipage}%
-  }%
+  \def\@oddfoot{}%
   \def\@evenhead{\setlength{\fboxsep}{3pt}\setlength{\fboxrule}{0.25pt}\raisebox{6pt}[0pt][0pt]{\framebox{\hspace{0.5\Cwd}\semilarge\bfseries\protect\@IssuetitleX\hspace{1\Cwd}}}\hfil}
-  \def\@evenfoot{%
-    \hfill
-    \begin{minipage}{246pt}%
-      \tiny (C) The Association for Natural Language Processing. Licensed under CC BY 4.0 \\
-      (https://creativecommons.org/licenses/by/4.0/).
-    \end{minipage}%
-  }%
+  \def\@evenfoot{}%
 }
 
 \def\ps@frontpage{%
   \let\ps@jpl@in\ps@mainpage
   \let\@mkboth\markboth
   \def\@oddhead{}
-  \def\@oddfoot{%
-    \hfill
-    \begin{minipage}{246pt}%
-      \tiny (C) The Association for Natural Language Processing. Licensed under CC BY 4.0 \\
-      (https://creativecommons.org/licenses/by/4.0/).
-    \end{minipage}%
-  }%
+  \def\@oddfoot{}%
   \def\@evenhead{}
-  \def\@evenfoot{%
-    \hfill
-    \begin{minipage}{246pt}%
-      \tiny (C) The Association for Natural Language Processing. Licensed under CC BY 4.0 \\
-      (https://creativecommons.org/licenses/by/4.0/).
-    \end{minipage}%
-  }%
+  \def\@evenfoot{}%
 }
 
 \def\p@thanks#1{%
@@ -424,13 +412,13 @@
 \providecommand{\phantomsection}{}
 \newcommand{\tableofcontents}{%
   \phantomsection
-  \section*{\contentsname}%
+  \csection*{\contentsname}%
   \@mkboth{\contentsname}{\contentsname}%
   \@starttoc{toc}%
 }
 
 \newcommand{\makeabstract}{%
-  \section*{\absttitle}%
+  \csection*{\absttitle}%
   \centerline{%
     \begin{minipage}{0.9\textwidth}
       \@jabstract\par
@@ -449,7 +437,7 @@
       \advance\leftskip\@FMwidth
       \parindent 1\Cwd\noindent\llap{\@textsuperscript{\normalfont \@thefnmark}~}##1
     }
-    \newpage
+    \clearpage
     \global\@topnum\z@
     \if@specialissue
       \thispagestyle{frontspecialpage}\@thanks
@@ -490,7 +478,7 @@
 \if@other
   \if@japanese
     \def\@maketitle{%
-      \newpage
+      \clearpage
       \parindent\z@
       \semilarge{{\bfseries \@jsubject}\hfill\raisebox{0pt}[0pt][0pt]{\fbox{Non Peer-Reviewed}}} \par
       \vskip 8pt
@@ -505,7 +493,7 @@
     }
   \else
     \def\@maketitle{%
-      \newpage
+      \clearpage
       \parindent\z@
       \semilarge{{\bfseries \@esubject}\hfill\raisebox{0pt}[0pt][0pt]{\fbox{Non Peer-Reviewed}}} \par
       \vskip 8pt
@@ -522,7 +510,7 @@
 \else
   \if@japanese
     \def\@maketitle{%
-      \newpage
+      \clearpage
       \parindent\z@
       \vskip 8pt
       \setlength{\leftskip}{25pt}\setlength{\rightskip}{25pt}
@@ -682,7 +670,7 @@
   \secdef\@section\@ssection
 }
 \def\@section[#1]#2{%
-  \newpage
+  \clearpage
   \ifnum \c@secnumdepth >\z@
     \refstepcounter{section}%
     \addcontentsline{toc}{section}{\protect\numberline{第\thesection 章}#1}
@@ -700,13 +688,22 @@
   \vskip 14pt
   \nobreak\vskip0.7\Cvs\@afterheading
 }
+\def\@ssection#1{%
+  \clearpage
+  \begingroup
+  \parindent\z@\raggedright
+  \interlinepenalty\@M\reset@font
+  \large\bfseries#1\par
+  \endgroup
+  \nobreak\vskip0.7\Cvs\@afterheading
+}
 \newcommand{\csection}{%
   \par\addvspace{1.3\Cvs}%
   \@afterindenttrue
   \secdef\@csection\@scsection
 }
 \def\@csection[#1]#2{%
-  \newpage
+  \clearpage
   \ifnum \c@secnumdepth >\z@
     \refstepcounter{section}%
     \addcontentsline{toc}{section}{\protect\numberline{第\thesection 章}#1}%
@@ -726,7 +723,7 @@
   \nobreak\vskip0.7\Cvs\@afterheading
 }
 \def\@scsection#1{%
-  \newpage
+  \clearpage
   \begingroup
     \parindent\z@
     \centering
@@ -734,14 +731,6 @@
     \fontsize{15pt}{18pt}\selectfont\bfseries#1\par
   \endgroup
   \vskip 14pt
-  \nobreak\vskip0.7\Cvs\@afterheading
-}
-\def\@ssection#1{%
-  \begingroup
-  \parindent\z@\raggedright
-  \interlinepenalty\@M\reset@font
-  \large\bfseries#1\par
-  \endgroup
   \nobreak\vskip0.7\Cvs\@afterheading
 }
 \newcommand{\subsection}{%
@@ -768,9 +757,9 @@
 \newcommand{\appendix}{%
   \par
   \if@japanese
-    \section*{付録}
+    \csection*{付録}
   \else
-    \section*{Appendix}
+    \csection*{Appendix}
   \fi
   \setcounter{section}{0}%
   \setcounter{subsection}{0}%
@@ -942,13 +931,16 @@
 
 \renewcommand{\theequation}{\@arabic\c@equation}
 \if@enablejfam
-  \DeclareSymbolFont{mincho}{JY1}{mc}{m}{n}
-  \DeclareSymbolFontAlphabet{\mathmc}{mincho}
-  \SetSymbolFont{mincho}{bold}{JY1}{gt}{m}{n}
-  \DeclareMathAlphabet{\mathgt}{JY1}{gt}{m}{n}
-  \reDeclareMathAlphabet{\mathrm}{\@mathrm}{\@mathmc}
-  \reDeclareMathAlphabet{\mathbf}{\@mathbf}{\@mathgt}
-  \jfam\symmincho
+  \ifLuaTeX
+  \else
+    \DeclareSymbolFont{mincho}{JY1}{mc}{m}{n}
+    \DeclareSymbolFontAlphabet{\mathmc}{mincho}
+    \SetSymbolFont{mincho}{bold}{JY1}{gt}{m}{n}
+    \DeclareMathAlphabet{\mathgt}{JY1}{gt}{m}{n}
+    \reDeclareMathAlphabet{\mathrm}{\@mathrm}{\@mathmc}
+    \reDeclareMathAlphabet{\mathbf}{\@mathbf}{\@mathgt}
+    \jfam\symmincho
+  \fi
 \else
   \DeclareRobustCommand{\mathmc}{%
     \@latex@error{Command \noexpand\mathmc invalid with\space
@@ -1009,7 +1001,7 @@
     \setlength\@lnumwidth{\@tempdima}%
     \advance\leftskip\@lnumwidth \hskip-\leftskip
     \textbf{#1}\nobreak
-    \hspace{1zw}%
+    \hspace{1\zw}%
     \leaders\hbox{$\m@th \mkern \@dotsep mu.\mkern \@dotsep mu$}%
     \hfill
     \nobreak
@@ -1103,21 +1095,21 @@
 
 \def\acknowledgment{%
   \clearpage
-  \section*{\acknowledgtitle}%
+  \csection*{\acknowledgtitle}%
   \addcontentsline{toc}{section}{\acknowledgtitle}%
 }
 
 \if@japanese
-  \newcommand{\absttitle}{概　要}
-  \newcommand{\contentsname}{目　次}
-  \newcommand{\listfigurename}{図　目　次}
-  \newcommand{\listtablename}{表　目　次}
+  \newcommand{\absttitle}{概要}
+  \newcommand{\contentsname}{目次}
+  \newcommand{\listfigurename}{図目次}
+  \newcommand{\listtablename}{表目次}
   \newcommand{\refname}{参考文献}
-  \newcommand{\indexname}{索　引}
+  \newcommand{\indexname}{索引}
   \newcommand{\figurename}{図}
   \newcommand{\tablename}{表}
   \newcommand{\biotitlename}{略歴}
-  \newcommand{\acknowledgtitle}{謝　辞}
+  \newcommand{\acknowledgtitle}{謝辞}
   \newcommand{\publicationtitle}{対外発表・論文・受賞等}
 \else
   \newcommand{\absttitle}{Abstract}

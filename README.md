@@ -10,5 +10,5 @@
   - BibTeX スタイルファイル：`jnlpbbl_1.7.bst`
 
 > [!WARNING]
-> **[2025/11/20] 対応しているLaTeXエンジンは, pLaTeXとupLaTeXのみです.**
+> **[2025/11/20] 対応しているLaTeXエンジンは, pLaTeXとupLaTeXのみです.**  
 > **[2025/11/21] 試験的にLuaLaTeXへの対応を開始しました.**

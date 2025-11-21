@@ -8,7 +8,7 @@
 %%
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{enlpbbl}[2025/11/20 v0.1.0 Citation support for Ehime Univ. NLP Lab]
-\@ifpackageloaded{ifluatex}{\RequirePackage{ifluatex}}
+\RequirePackage{ifluatex}
 \ifupTeX
   \def\zw{zw}
   \def\zh{zh}
@@ -31,6 +31,8 @@
 \def\BBAY{\ }
 \def\BBC{; }
 \def\BBN{, }
+\def\BBC{; \allowbreak}
+\def\BBN{, \allowbreak}
 \def\BBCP{)}
 \def\BBOQ{``}
 \def\BBCQ{''}

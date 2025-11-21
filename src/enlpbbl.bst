@@ -1675,7 +1675,7 @@ FUNCTION {begin.bib}
     'skip$
     { preamble$ write$ newline$ }
   if$
-  "% JNLP Citation Style - 18-Feb-04" write$ newline$
+  "% ENLP Citation Style - 25-Nov-21" write$ newline$
   "\begin{thebibliography}{}"  write$ newline$
 }
 

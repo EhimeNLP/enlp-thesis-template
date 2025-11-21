@@ -1,8 +1,6 @@
 \input regression-test.tex
 
 \documentclass[japanese]{enlp}
-\usepackage{enlpbbl}
-\usepackage[dvipdfmx]{graphicx}
 \usepackage{appendix}
 \usepackage{amsmath}
 \usepackage{amssymb}

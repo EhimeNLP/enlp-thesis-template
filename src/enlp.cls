@@ -18,19 +18,17 @@
 \ifupTeX
   \def\zw{zw}
   \def\zh{zh}
-\else\ifpTeX
-  \def\zw{zw}
-  \def\zh{zh}
 \else\ifLuaTeX
   \RequirePackage{luatexja}
 \else
   \ClassError{\clsname}{This class supports only upLaTeX, pLaTeX, or LuaLaTeX}{Use upLaTeX, pLaTeX, or LuaLaTeX to compile this document.}
-\fi\fi\fi
+\fi\fi
 
 \RequirePackage{enlplogo}
 \RequirePackage[absolute,overlay]{textpos}
 \RequirePackage{tikz}
 \RequirePackage{atbegshi}
+\RequirePackage{enlpbbl}
 
 \newif\if@landscape\@landscapefalse
 \newif\if@restonecol\@restonecolfalse
@@ -85,31 +83,33 @@
 \ifLuaTeX
 \else
   \ifupTeX
-    \DeclareFontShape{JY2}{mc}{m}{n}{<->s*[1.039] upjisr-h}{}
-    \DeclareFontShape{JY2}{mc}{m}{it}{<->s*[1.039] upjisr-h}{}
-    \DeclareFontShape{JY2}{mc}{m}{sc}{<->s*[1.039] upjisr-h}{}
-    \DeclareFontShape{JY2}{gt}{m}{n}{<->s*[1.039] upjisg-h}{}
-    \DeclareFontShape{JY2}{gt}{m}{it}{<->s*[1.039] upjisg-h}{}
-    \DeclareFontShape{JY2}{gt}{m}{sc}{<->s*[1.039] upjisg-h}{}
-    \DeclareFontShape{JT2}{mc}{m}{n}{<->s*[1.039] upjisr-v}{}
-    \DeclareFontShape{JT2}{mc}{m}{it}{<->s*[1.039] upjisr-v}{}
-    \DeclareFontShape{JT2}{mc}{m}{sc}{<->s*[1.039] upjisr-v}{}
-    \DeclareFontShape{JT2}{gt}{m}{n}{<->s*[1.039] upjisg-v}{}
-    \DeclareFontShape{JT2}{gt}{m}{it}{<->s*[1.039] upjisg-v}{}
-    \DeclareFontShape{JT2}{gt}{m}{sc}{<->s*[1.039] upjisg-v}{}
-  \else
-    \DeclareFontShape{JY1}{mc}{m}{n}{<->s*[1.039] jis}{}
-    \DeclareFontShape{JY1}{mc}{m}{it}{<->s*[1.039] jis}{}
-    \DeclareFontShape{JY1}{mc}{m}{sc}{<->s*[1.039] jis}{}
-    \DeclareFontShape{JY1}{gt}{m}{n}{<->s*[1.039] jisg}{}
-    \DeclareFontShape{JY1}{gt}{m}{it}{<->s*[1.039] jisg}{}
-    \DeclareFontShape{JY1}{gt}{m}{sc}{<->s*[1.039] jisg}{}
-    \DeclareFontShape{JT1}{mc}{m}{n}{<->s*[1.039] jis-v}{}
-    \DeclareFontShape{JT1}{mc}{m}{it}{<->s*[1.039] jis-v}{}
-    \DeclareFontShape{JT1}{mc}{m}{sc}{<->s*[1.039] jis-v}{}
-    \DeclareFontShape{JT1}{gt}{m}{n}{<->s*[1.039] jisg-v}{}
-    \DeclareFontShape{JT1}{gt}{m}{it}{<->s*[1.039] jisg-v}{}
-    \DeclareFontShape{JT1}{gt}{m}{sc}{<->s*[1.039] jisg-v}{}
+    \ifnum\jis"2121="3000
+      \DeclareFontShape{JY2}{mc}{m}{n}{<->s*[1.039] upjisr-h}{}
+      \DeclareFontShape{JY2}{mc}{m}{it}{<->s*[1.039] upjisr-h}{}
+      \DeclareFontShape{JY2}{mc}{m}{sc}{<->s*[1.039] upjisr-h}{}
+      \DeclareFontShape{JY2}{gt}{m}{n}{<->s*[1.039] upjisg-h}{}
+      \DeclareFontShape{JY2}{gt}{m}{it}{<->s*[1.039] upjisg-h}{}
+      \DeclareFontShape{JY2}{gt}{m}{sc}{<->s*[1.039] upjisg-h}{}
+      \DeclareFontShape{JT2}{mc}{m}{n}{<->s*[1.039] upjisr-v}{}
+      \DeclareFontShape{JT2}{mc}{m}{it}{<->s*[1.039] upjisr-v}{}
+      \DeclareFontShape{JT2}{mc}{m}{sc}{<->s*[1.039] upjisr-v}{}
+      \DeclareFontShape{JT2}{gt}{m}{n}{<->s*[1.039] upjisg-v}{}
+      \DeclareFontShape{JT2}{gt}{m}{it}{<->s*[1.039] upjisg-v}{}
+      \DeclareFontShape{JT2}{gt}{m}{sc}{<->s*[1.039] upjisg-v}{}
+    \else
+      \DeclareFontShape{JY1}{mc}{m}{n}{<->s*[1.039] jis}{}
+      \DeclareFontShape{JY1}{mc}{m}{it}{<->s*[1.039] jis}{}
+      \DeclareFontShape{JY1}{mc}{m}{sc}{<->s*[1.039] jis}{}
+      \DeclareFontShape{JY1}{gt}{m}{n}{<->s*[1.039] jisg}{}
+      \DeclareFontShape{JY1}{gt}{m}{it}{<->s*[1.039] jisg}{}
+      \DeclareFontShape{JY1}{gt}{m}{sc}{<->s*[1.039] jisg}{}
+      \DeclareFontShape{JT1}{mc}{m}{n}{<->s*[1.039] jis-v}{}
+      \DeclareFontShape{JT1}{mc}{m}{it}{<->s*[1.039] jis-v}{}
+      \DeclareFontShape{JT1}{mc}{m}{sc}{<->s*[1.039] jis-v}{}
+      \DeclareFontShape{JT1}{gt}{m}{n}{<->s*[1.039] jisg-v}{}
+      \DeclareFontShape{JT1}{gt}{m}{it}{<->s*[1.039] jisg-v}{}
+      \DeclareFontShape{JT1}{gt}{m}{sc}{<->s*[1.039] jisg-v}{}
+    \fi
   \fi
 \fi
 
@@ -125,11 +125,15 @@
 
 \ifLuaTeX
   \setbox0\hbox{　}
-\else\ifupTeX
-  \setbox0\hbox{　}
 \else
-  \setbox0\hbox{\char\euc"A1A1}
-\fi\fi
+  \ifupTeX
+    \ifnum\jis"2121="3000
+      \setbox0\hbox{　}
+    \else
+      \setbox0\hbox{\char\euc"A1A1}
+    \fi
+  \fi
+\fi
 \setlength\Cht{\ht0}
 \setlength\Cdp{\dp0}
 \setlength\Cwd{\wd0}
@@ -940,6 +944,7 @@
   \ifLuaTeX
   \else
     \ifupTeX
+      \ifnum\jis"2121="3000
         \DeclareSymbolFont{mincho}{JY2}{mc}{m}{n}
         \DeclareSymbolFontAlphabet{\mathmc}{mincho}
         \SetSymbolFont{mincho}{bold}{JY2}{gt}{m}{n}
@@ -947,7 +952,7 @@
         \reDeclareMathAlphabet{\mathrm}{\@mathrm}{\@mathmc}
         \reDeclareMathAlphabet{\mathbf}{\@mathbf}{\@mathgt}
         \jfam\symmincho
-    \else
+      \else
         \DeclareSymbolFont{mincho}{JY1}{mc}{m}{n}
         \DeclareSymbolFontAlphabet{\mathmc}{mincho}
         \SetSymbolFont{mincho}{bold}{JY1}{gt}{m}{n}
@@ -955,6 +960,7 @@
         \reDeclareMathAlphabet{\mathrm}{\@mathrm}{\@mathmc}
         \reDeclareMathAlphabet{\mathbf}{\@mathbf}{\@mathgt}
         \jfam\symmincho
+      \fi
     \fi
   \fi
 \else

@@ -522,7 +522,7 @@
           \centering
           {\bfseries\fontsize{18pt}{22pt}\selectfont {\bfseries \@jtitle} \par}
         }
-        \vskip 100pt
+        \vfill
         \parbox[c][5em][c]{\textwidth}{%
           \centering
           \fontsize{13pt}{19pt}\selectfont \@institute \par
@@ -539,11 +539,12 @@
           \par
         }
         \vskip 14pt
-        {\fontsize{13pt}{15pt}\selectfont \@date \par}
+        {\fontsize{13pt}{15pt}\selectfont \@date 
+          \begin{tikzpicture}[remember picture, overlay]
+             \node[anchor=south west, xshift=1cm, yshift=1.25cm] at (current page.south west) {\elogo[scale=1]};
+          \end{tikzpicture}%
+        \par}
       \end{center}
-      \begin{tikzpicture}[remember picture, overlay]
-        \node[anchor=south west, xshift=1cm, yshift=1.25cm] at (current page.south west) {\elogo[scale=1]};
-      \end{tikzpicture}
       \clearpage
       \makeabstract
       \clearpage

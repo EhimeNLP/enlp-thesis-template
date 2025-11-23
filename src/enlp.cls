@@ -1,14 +1,17 @@
 %%
 %% This is file `enlp.cls',
-%% Academic thesis class for Ehime University NLP Lab (based on JNLP style)
+%% Academic thesis class for Ehime University NLP Lab
 %%
 %% Author: Eito Yoneyama
 %% Created: 2025/11/20
-%% Updated: 2025/11/21
+%% Updated: 2025/11/24
 %%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{enlp}[2025/11/20 v0.1.0 Academic thesis class for Ehime Univ. NLP Lab]
+\ProvidesClass{enlp}[2025/11/24 v0.2.0 Academic thesis class for Ehime Univ. NLP Lab]
 
+%% ===============================================
+%% Engine detection and font settings
+%% ===============================================
 \RequirePackage{ifptex}
 \RequirePackage{ifluatex}
 
@@ -23,40 +26,27 @@
   \ClassError{\clsname}{This class supports only upLaTeX, pLaTeX, or LuaLaTeX}{Use upLaTeX, pLaTeX, or LuaLaTeX to compile this document.}
 \fi\fi
 
+%% ===============================================
+%% Required packages
+%% ===============================================
 \RequirePackage{enlplogo}
 \RequirePackage[absolute,overlay]{textpos}
 \RequirePackage{tikz}
 \RequirePackage{atbegshi}
 \RequirePackage{enlpbbl}
 
-\newif\if@landscape\@landscapefalse
-\newif\if@restonecol\@restonecolfalse
+%% ===============================================
+%% Option settings
+%% ===============================================
 \newif\if@enablejfam\@enablejfamtrue
 
+% For paper size calculation
 \hour\time \divide\hour by 60\relax
 \@tempcnta\hour \multiply\@tempcnta 60\relax
 \minute\time \advance\minute-\@tempcnta
 
 \setlength\paperheight{731pt}
 \setlength\paperwidth{518pt}
-
-\DeclareOption{landscape}{%
-  \@landscapetrue
-  \setlength\@tempdima{\paperheight}%
-  \setlength\paperheight{\paperwidth}%
-  \setlength\paperwidth{\@tempdima}%
-}
-\DeclareOption{tombow}{%
-  \tombowtrue\tombowdatetrue
-  \setlength{\@tombowwidth}{.1\p@}%
-  \@bannertoken{%
-    \jobname\space:\space\number\year/\number\month/\number\day(\number\hour:\number\minute)% fname: YYY/MM/DD (hh:mm)
-  }%
-  \maketombowbox
-}
-\DeclareOption{tate}{%
-  \AtBeginDocument{\tate\message{《縦組モード》}\adjustbaseline}%
-}
 
 \DeclareOption{onecolumn}{\@twocolumnfalse}
 \DeclareOption{twocolumn}{\@twocolumntrue}
@@ -66,19 +56,12 @@
 \DeclareOption{draft}{\setlength\overfullrule{5pt}}
 \DeclareOption{final}{\setlength\overfullrule{0pt}}
 
-\newif\if@japanese\@japanesetrue
-\newif\if@other\@otherfalse
-\newif\if@specialissue\@specialissuefalse
-\DeclareOption{japanese}{\@japanesetrue}
-\DeclareOption{english}{\@japanesefalse}
-\DeclareOption{other}{\@othertrue}
-\DeclareOption{specialissue}{\@specialissuetrue}
-\newif\if@fontsizeplain\@fontsizeplaintrue
-\newif\if@zinbunsize\@zinbunsizefalse
-
-\ExecuteOptions{japanese,onecolumn,final}
+\ExecuteOptions{onecolumn,final}
 \ProcessOptions\relax
 
+%% ===============================================
+%% Font definitions (JIS/UPJIS compatible)
+%% ===============================================
 \ifLuaTeX
 \else
   \ifstrictplatex
@@ -112,6 +95,9 @@
   \fi
 \fi
 
+%% ===============================================
+%% Size and layout settings
+%% ===============================================
 \renewcommand{\normalsize}{%
   \@setfontsize\normalsize\@xpt{17}%
   \abovedisplayskip 8.5\p@ \@plus8.5\p@ \@minus\z@
@@ -252,11 +238,8 @@
 \setlength\normallineskip{1\p@}
 \renewcommand{\baselinestretch}{}
 \setlength\parskip{0\p@ \@plus \p@}
-\if@japanese
-    \setlength\parindent{1\Cwd}
-\else
-    \setlength\parindent{15pt}
-\fi
+\setlength\parindent{1\Cwd}
+
 \@lowpenalty 51
 \@medpenalty 151
 \@highpenalty 301
@@ -271,6 +254,9 @@
 \renewcommand{\dbltopfraction}{.9}
 \renewcommand{\dblfloatpagefraction}{.5}
 
+%% ===============================================
+%% Headers and Footers
+%% ===============================================
 \def\ps@plain{%
   \let\@mkboth\@gobbletwo
   \let\ps@jpl@in\ps@plain
@@ -290,85 +276,13 @@
   \let\subsectionmark\@gobble
 }
 
-\if@japanese
- \def\headjnlp{\@thesis}
-\else
- \def\headjnlp{Journal of Natural Language Processing\qquad}
-\fi
-\def\Volume#1{\gdef\@Volume{#1}}
-\let\@Volume\relax
-\def\Number#1{\gdef\@Number{#1}}
-\let\@Number\relax
-\def\Month#1{\gdef\@Month{#1}}
-\let\@Month\relax
-\def\Year#1{\gdef\@Year{#1}}
-\let\@Year\relax
-\def\Issuetitle#1{\gdef\@Issuetitle{#1}}
-\let\@Issuetitle\relax
-\def\headauthor#1{\gdef\@headauthor{#1}}
-\let\@headauthor\relax
-\def\headtitle#1{\gdef\@headtitle{#1}}
-\let\@headtitle\relax
-
 \def\ps@mainpage{%
   \let\ps@jpl@in\ps@mainpage
-  \def\@VolumeX{%
-    \@ifundefined{@Volume}{%
-      \GenericWarning{}{\clsname\space Warning: No \noexpand\Volume given}%
-      \global\let\@Volume\@empty
-    }{\@Volume}%
-  }%
-  \def\@NumberX{%
-    \@ifundefined{@Number}{%
-      \GenericWarning{}{\clsname\space Warning: No \noexpand\Number given}%
-      \global\let\@Number\@empty
-    }{\@Number}%
-  }%
-  \def\@MonthX{%
-    \@ifundefined{@Month}{%
-      \GenericWarning{}{\clsname\space Warning: No \noexpand\Month given}%
-      \global\let\@Month\@empty
-    }{\@Month}%
-  }%
-  \def\@YearX{%
-    \@ifundefined{@Year}{%
-      \GenericWarning{}{\clsname\space Warning: No \noexpand\Year given}%
-      \global\let\@Year\@empty
-    }{\@Year}%
-  }%
-  \def\@headauthorX{%
-    \@ifundefined{@headauthor}{%
-      \GenericWarning{}{\clsname\space Warning: No \noexpand\headauthor given}%
-      \global\let\@headauthor\@empty
-    }{\@headauthor}%
-  }%
-  \def\@headtitleX{%
-    \@ifundefined{@headtitle}{%
-      \GenericWarning{}{\clsname\space Warning: No \noexpand\headtitle given}%
-      \global\let\@headtitle\@empty
-    }{\@headtitle}%
-  }%
   \let\@mkboth\markboth
-  \def\@evenhead{\footnotesize\bfseries\hfill\protect\@headtitleX}
-  \def\@evenfoot{\hfil{\mdseries\thepage}\hfil}
-
-  \def\@oddhead{\footnotesize\bfseries\protect\@headauthorX\hfill\protect\@headtitleX}
+  \def\@oddhead{}
   \def\@oddfoot{\hfil{\mdseries\thepage}\hfil}
-}
-
-\def\ps@frontspecialpage{%
-  \def\@IssuetitleX{%
-    \@ifundefined{@Issuetitle}{%
-      \GenericWarning{}{\clsname\space Warning: No \noexpand\Issuetitle given}%
-      \global\let\@Issuetitle\@empty
-    }{\@Issuetitle}%
-  }%
-  \let\ps@jpl@in\ps@mainpage
-  \let\@mkboth\markboth
-  \def\@oddhead{\setlength{\fboxsep}{3pt}\setlength{\fboxrule}{0.25pt}\raisebox{6pt}[0pt][0pt]{\framebox{\hspace{0.5\Cwd}\semilarge\bfseries\protect\@IssuetitleX\hspace{1\Cwd}}}\hfil}
-  \def\@oddfoot{}%
-  \def\@evenhead{\setlength{\fboxsep}{3pt}\setlength{\fboxrule}{0.25pt}\raisebox{6pt}[0pt][0pt]{\framebox{\hspace{0.5\Cwd}\semilarge\bfseries\protect\@IssuetitleX\hspace{1\Cwd}}}\hfil}
-  \def\@evenfoot{}%
+  \def\@evenhead{}
+  \def\@evenfoot{\hfil{\mdseries\thepage}\hfil}
 }
 
 \def\ps@frontpage{%
@@ -380,6 +294,9 @@
   \def\@evenfoot{}%
 }
 
+%% ===============================================
+%% Metadata definitions (Standard commands + Custom)
+%% ===============================================
 \def\p@thanks#1{%
   \footnotemark
   \protected@xdef\@thanks{%
@@ -388,48 +305,21 @@
   }%
 }
 
-\def\jsubject#1{\gdef\@jsubject{#1}}
-\def\jtitle#1{\gdef\@jtitle{#1}}
-\def\jauthor#1{\long\gdef\@jauthor{#1}}
-\long\def\jabstract#1{\gdef\@jabstract{#1}}
-\def\teacher#1{\gdef\@teacher{#1}}
-\def\thesis#1{\gdef\@thesis{#1}}
-\def\institute#1{\gdef\@institute{#1}}
-\def\jkeywords#1{\gdef\@jkeywords{\hangafter=1\hangindent=6\Cwd\leavevmode\hbox to6\Cwd{\textgt{キーワード}：\hfill}\unskip{#1}\par}}
-\def\esubject#1{\gdef\@esubject{#1}}
-\def\etitle#1{\gdef\@etitle{#1}}
-\def\eauthor#1{\long\gdef\@eauthor{#1}}
-\long\def\eabstract#1{\gdef\@eabstract{#1}}
-\def\ekeywords#1{\gdef\@ekeywords{\hangafter=1\hangindent=60pt\leavevmode\hbox to60pt{\textbf{Key~Words}:\hfill}\unskip{\itshape #1}\par}}
-\def\@jsubject{\GenericWarning{}{\clsname\space Warning: No \noexpand\jsubject given}}
-\def\@jtitle{\GenericWarning{}{\clsname\space Warning: No \noexpand\jtitle given}}
-\def\@jauthor{\GenericWarning{}{\clsname\space Warning: No \noexpand\jauthor given}}
-\def\@jabstract{\GenericWarning{}{\clsname\space Warning: No \noexpand\jabstract given}}
-\def\@jkeywords{\GenericWarning{}{\clsname\space Warning: No \noexpand\jkeywords given}}
-\def\@esubject{\GenericWarning{}{\clsname\space Warning: No \noexpand\esubject given}}
-\def\@etitle{\GenericWarning{}{\clsname\space Warning: No \noexpand\etitle given}}
-\def\@eauthor{\GenericWarning{}{\clsname\space Warning: No \noexpand\eauthor given}}
-\def\@eabstract{\GenericWarning{}{\clsname\space Warning: No \noexpand\eabstract given}}
-\def\@ekeywords{\GenericWarning{}{\clsname\space Warning: No \noexpand\ekeywords given}}
+% Additional metadata
+\def\thesis#1{\gdef\@thesis{#1}}        % Example: Graduation Thesis, Master's Thesis
+\def\teacher#1{\gdef\@teacher{#1}}      % Supervisor
+\def\institute#1{\gdef\@institute{#1}}  % Affiliation (Faculty/Department, etc.)
+\def\keywords#1{\gdef\@keywords{\hangafter=1\hangindent=6\Cwd\leavevmode\hbox to6\Cwd{\textgt{キーワード}：\hfill}\unskip{#1}\par}}
 
-\providecommand{\phantomsection}{}
-\newcommand{\tableofcontents}{%
-  \phantomsection
-  \csection*{\contentsname}%
-  \@mkboth{\contentsname}{\contentsname}%
-  \@starttoc{toc}%
-}
+% Warnings for undefined variables
+\def\@thesis{\GenericWarning{}{\clsname\space Warning: No \noexpand\thesis given}}
+\def\@teacher{\GenericWarning{}{\clsname\space Warning: No \noexpand\teacher given}}
+\def\@institute{\GenericWarning{}{\clsname\space Warning: No \noexpand\institute given}}
+\def\@keywords{\GenericWarning{}{\clsname\space Warning: No \noexpand\keywords given}}
 
-\newcommand{\makeabstract}{%
-  \csection*{\absttitle}%
-  \centerline{%
-    \begin{minipage}{0.9\textwidth}
-      \@jabstract\par
-    \end{minipage}%
-  }%
-  \setcounter{page}{1}%
-}
-
+%% ===============================================
+%% Title page creation
+%% ===============================================
 \newcommand{\maketitle}{%
   \par
   \begingroup
@@ -442,217 +332,88 @@
     }
     \clearpage
     \global\@topnum\z@
-    \if@specialissue
-      \thispagestyle{frontspecialpage}\@thanks
-    \else
-      \thispagestyle{frontpage}\@thanks
-    \fi
-  \@maketitle
+    \thispagestyle{frontpage}\@thanks
+    \@maketitle
   \endgroup
   \setcounter{footnote}{0}%
   \global\let\thanks\relax
   \global\let\maketitle\relax
-  \global\let\jsubject\relax
-  \global\let\jtitle\relax
-  \global\let\jauthor\relax
-  \global\let\and\relax
-  \global\let\jabstract\relax
-  \global\let\jkeywords\relax
-  \global\let\esubject\relax
-  \global\let\etitle\relax
-  \global\let\eauthor\relax
-  \global\let\eabstract\relax
-  \global\let\ekeywords\relax
+  \global\let\thesis\relax
+  \global\let\teacher\relax
+  \global\let\institute\relax
+  \global\let\keywords\relax
   \global\let\@thanks\@empty
   \global\let\p@thanks\@empty
-  \global\let\@jsubject\@empty
-  \global\let\@jtitle\@empty
-  \global\let\@jauthor\@empty
-  \global\let\@jabstract\@empty
-  \global\let\@jkeywords\@empty
-  \global\let\@esubject\@empty
-  \global\let\@etitle\@empty
-  \global\let\@eauthor\@empty
-  \global\let\@eabstract\@empty
-  \global\let\@ekeywords\@empty
+  \global\let\@thesis\@empty
+  \global\let\@teacher\@empty
+  \global\let\@institute\@empty
+  \global\let\@keywords\@empty
 }
-\if@other
-  \if@japanese
-    \def\@maketitle{%
-      \clearpage
-      \parindent\z@
-      \semilarge{{\bfseries \@jsubject}\hfill\raisebox{0pt}[0pt][0pt]{\fbox{Non Peer-Reviewed}}} \par
-      \vskip 8pt
-      \setlength{\leftskip}{25pt}\setlength{\rightskip}{25pt}
-      \begin{center}
-        \let\footnote\thanks
-        \Large\bfseries \@jtitle \par
-        \vskip 8pt
-        \large\mdseries \mkt@makejauthor \par
-        \vskip 14pt
-      \end{center}
+
+\def\@maketitle{%
+  \clearpage
+  \parindent\z@
+  \vskip 8pt
+  \setlength{\leftskip}{25pt}\setlength{\rightskip}{25pt}
+  \begin{center}
+    \let\footnote\thanks
+    \vspace*{45pt}
+    \Large \@thesis \par
+    \parbox[c][10em][c]{\textwidth}{%
+      \centering
+      {\bfseries\fontsize{18pt}{22pt}\selectfont {\bfseries \@title} \par}
     }
-  \else
-    \def\@maketitle{%
-      \clearpage
-      \parindent\z@
-      \semilarge{{\bfseries \@esubject}\hfill\raisebox{0pt}[0pt][0pt]{\fbox{Non Peer-Reviewed}}} \par
-      \vskip 8pt
-      \setlength{\leftskip}{25pt}\setlength{\rightskip}{25pt}
-      \let\footnote\thanks
-      \begin{center}
-        \Large\bfseries \@etitle \mdseries\par
-        \vskip 7pt
-        \normalsize\upshape \mkt@makeeauthor \par
-        \vskip 14pt
-      \end{center}
+    \vfill
+    \parbox[c][5em][c]{\textwidth}{%
+      \centering
+      \fontsize{13pt}{19pt}\selectfont \@institute \par
+      \vskip 0.5\baselineskip
+      \@author \par
+      \par
     }
-  \fi
-\else
-  \if@japanese
-    \def\@maketitle{%
-      \clearpage
-      \parindent\z@
-      \vskip 8pt
-      \setlength{\leftskip}{25pt}\setlength{\rightskip}{25pt}
-      \begin{center}
-        \let\footnote\thanks
-        \vspace*{45pt}
-        \Large \@thesis \par
-        \parbox[c][10em][c]{\textwidth}{%
-          \centering
-          {\bfseries\fontsize{18pt}{22pt}\selectfont {\bfseries \@jtitle} \par}
-        }
-        \vfill
-        \parbox[c][5em][c]{\textwidth}{%
-          \centering
-          \fontsize{13pt}{19pt}\selectfont \@institute \par
-          \vskip 0.5\baselineskip
-          \@author \par
-          \par
-        }
-        \parbox[c][8em][c]{\textwidth}{%
-          \centering
-          \fontsize{13pt}{15pt}\selectfont 指導教員 \par\vskip 0.5\baselineskip
-          \begin{tabular}[t]{c}%
-            \@teacher
-          \end{tabular}%
-          \par
-        }
-        \vskip 14pt
-        {\fontsize{13pt}{15pt}\selectfont \@date 
-          \begin{tikzpicture}[remember picture, overlay]
-             \node[anchor=south west, xshift=1cm, yshift=1.25cm] at (current page.south west) {\elogo[scale=1]};
-          \end{tikzpicture}%
-        \par}
-      \end{center}
-      \clearpage
-      \makeabstract
-      \clearpage
-    }%
-  \fi
-\fi
+    \parbox[c][8em][c]{\textwidth}{%
+      \centering
+      \fontsize{13pt}{15pt}\selectfont 指導教員 \par\vskip 0.5\baselineskip
+      \begin{tabular}[t]{c}%
+        \@teacher
+      \end{tabular}%
+      \par
+    }
+    \vskip 14pt
+    {\fontsize{13pt}{15pt}\selectfont \@date 
+      \begin{tikzpicture}[remember picture, overlay]
+          \node[anchor=south west, xshift=1cm, yshift=1.25cm] at (current page.south west) {\elogo[scale=1]};
+      \end{tikzpicture}%
+    \par}
+  \end{center}
+  \clearpage
+}
 
 \renewcommand{\@makefnmark}{%
   \kern0pt\raisebox{0.3ex}{\@textsuperscript{\normalfont\@thefnmark}}%
 }
 
-\newenvironment{publication}{%
-  \clearpage
-  {\csection*{\publicationtitle} \vskip 0.5\baselineskip}%
-  \addcontentsline{toc}{section}{\publicationtitle}
-}{}
+%% ===============================================
+%% Table of Contents and Sections
+%% ===============================================
+\providecommand{\phantomsection}{}
+\newcommand{\tableofcontents}{%
+  \phantomsection
+  \csection*{\contentsname}%
+  \@mkboth{\contentsname}{\contentsname}%
+  \@starttoc{toc}%
+}
 
-\def\mkt@makejauthor{%
-  \leavevmode\let\mkt@and\relax\gdef\affi@thefnmark{}%
-	\def\@thefnmark{\affi@thefnmark}%
-	\expandafter\mkt@imakejauthor\@jauthor\and\@nil\and
+\newenvironment{abstract}{%
+  \phantomsection
+  \csection*{\absttitle}%
+  \begin{center}%
+    \begin{minipage}{0.9\textwidth}%
+}{%
+    \end{minipage}%
+  \end{center}%
+  \setcounter{page}{1}%
 }
-\def\mkt@imakejauthor#1\and#2\and{%
-	\def\@tempa{#2}
-	\ifx\@tempa\@nnil
-	  #1\m@th\@makefnmark\let\next\relax
-	\else
-		\def\@tempb{#1}\def\next{\mkt@iimakejauthor#2\and}%
-	\fi\next
-}
-\def\mkt@iimakejauthor#1\and{%
-	\def\@tempa{#1}
-	\ifx\@tempa\@nnil
-		\mkt@and\gdef\affi@thefnmark{}{\@tempb}%
-		\@makefnmark\let\next\relax
-	\else
-		\mkt@and{\@tempb}\let\mkt@and\mkt@jandmid
-		\let\next\mkt@iimakejauthor
-	\fi
-  \def\@tempb{#1}\next
-}
-\def\mkt@jandmid{\unskip\@makefnmark\gdef\affi@thefnmark{}\m@th{・}}
-
-\def\mkt@makeeauthor{\leavevmode\let\mkt@and\relax\gdef\affi@thefnmark{}
-	\def\@thefnmark{\affi@thefnmark}%
-	\expandafter\mkt@imakeeauthor\@eauthor\and\@nil\and}
-\def\mkt@imakeeauthor#1\and#2\and{%
-	\def\@tempa{#2}
-	\ifx\@tempa\@nnil
-		#1\m@th\@makefnmark\let\next\relax
-	\else
-		\def\@tempb{#1}\def\next{\mkt@iimakeeauthor#2\and}%
-	\fi\next}
-\def\mkt@iimakeeauthor#1\and{%
-	\def\@tempa{#1}
-	\ifx\@tempa\@nnil
-		\unskip\@makefnmark\ {\textup{and}~}\gdef\affi@thefnmark{}{\@tempb}%
-		\@makefnmark\let\next\relax
-	\else
-		\mkt@and{\@tempb}\let\mkt@and\mkt@eandmid
-		\let\next\mkt@iimakeeauthor
-	\fi\def\@tempb{#1}\next}
-\def\mkt@eandmid{\unskip\@makefnmark\gdef\affi@thefnmark{}, }
-
-\newcounter{affi@footnote}
-\c@affi@footnote\z@
-\def\affilabel{%
-  \begingroup
-	\def\@mpfn{affi@footnote}%
-  \def\thempfn{\theaffi@footnote}%
-	\affi@label
-}
-\def\paffilabel#1#2#3{%
-  \begingroup
-  \PF@adjustfnote
-	\affi@label{#1}{現在\quad#2}{Presently with #3}%
-}
-\def\affi@label#1#2#3{%
-  \stepcounter{\@mpfn}%
-	\@ifundefined{affi@r@#1}%
-		{\expandafter\xdef\csname affi@r@#1\endcsname{\thempfn}}
-		{\GenericWarning{}{\clsname\space Warning: Affiliation label `#1' multiply defined}}
-	\let\affi@footnotetext\relax\let\\\relax
-  \if@japanese
-    \setbox0\hbox{\ignorespaces #2\ignorespaces}%
-    \ifdim\wd0>\z@
-      \if@other
-        \xdef\@thanks{\@thanks\affi@footnotetext{\thempfn}{#2}}
-      \else
-        \xdef\@thanks{\@thanks\affi@footnotetext{\thempfn}{#2, #3}}
-      \fi
-    \else
-      \xdef\@thanks{\@thanks\affi@footnotetext{\thempfn}{#3}}
-    \fi
-	\else
-		\xdef\@thanks{\@thanks\affi@footnotetext{\thempfn}{#3}}
-	\fi
-	\endgroup
-}
-\def\affiref#1{%
-  \@ifundefined{affi@r@#1}%
-		{\GenericWarning{}{\clsname\space Warning: Affiliation reference `#1' undefined}\xdef\affi@thefnmark{\affi@thefnmark?}}%
-		{\xdef\affi@thefnmark{\affi@thefnmark\csname affi@r@#1\endcsname}}%
-	\@ifnextchar\affiref{\xdef\affi@thefnmark{\affi@thefnmark,}}{\relax}
-}
-\def\affi@footnotetext#1#2{{\def\@thefnmark{#1}\@footnotetext{#2}}}
-\def\theaffi@footnote{\alph{affi@footnote}}
 
 \setcounter{secnumdepth}{3}
 \newcounter{section}
@@ -691,7 +452,7 @@
   \vskip 14pt
   \nobreak\vskip0.7\Cvs\@afterheading
 }
-\def\@ssection#1{%
+\def\@ssection[#1]#2{%
   \clearpage
   \global\@topnum\z@
   \begingroup
@@ -762,18 +523,15 @@
 
 \newcommand{\appendix}{%
   \par
-  \if@japanese
-    \csection*{付録}
-  \else
-    \csection*{Appendix}
-  \fi
+  \csection*{付録}
   \setcounter{section}{0}%
   \setcounter{subsection}{0}%
   \renewcommand{\thesection}{\@Alph\c@section}%
 }
 
-% Workaround: Allow flexible spacing to prevent overfull hboxes in mixed Japanese/English text.
-% This is specifically to handle unhyphenated English proper nouns in citations (e.g., "Mizukami").
+%% ===============================================
+%% List and Figure/Table settings
+%% ===============================================
 \setlength{\emergencystretch}{3\zw}
 \setlength\leftmargini{3\Cwd}
 \setlength\leftmarginii{3\Cwd}
@@ -824,13 +582,7 @@
 }{\endlist}
 
 \newcommand{\labelitemi}{\textbullet}
-\newcommand{\labelitemii}{%
-  \iftdir
-     {\textcircled{~}}
-  \else
-     {\normalfont\bfseries\textendash}
-  \fi
-}
+\newcommand{\labelitemii}{\normalfont\bfseries\textendash}
 \newcommand{\labelitemiii}{\textasteriskcentered}
 \newcommand{\labelitemiv}{\textperiodcentered}
 
@@ -872,29 +624,8 @@
   \let\makelabel\descriptionlabel}%
 }{\endlist}
 \newcommand{\descriptionlabel}[1]{\hspace\labelsep\normalfont\bfseries #1}
-\newenvironment{verse}{%
-  \let\\\@centercr
-  \list{}{%
-    \itemsep\z@ \itemindent -2\Cwd%
-    \listparindent\itemindent
-    \rightmargin\leftmargin \advance\leftmargin 2\Cwd
-  }%
-  \item\relax
-}{\endlist}
-\newenvironment{quotation}{%
-  \list{}{%
-    \listparindent 1\Cwd%
-    \itemindent\listparindent
-    \leftmargin 2\Cwd%
-    \rightmargin\z@
-    \parsep\z@ \@plus\p@
-  }%
-  \item\relax
-}{\endlist}
-\newenvironment{quote}{%
-  \list{}{\leftmargin 2\Cwd\rightmargin\z@}%
-  \item\relax
-}{\endlist}
+
+% Figure and Table environments
 \newcounter{figure}
 \renewcommand{\thefigure}{\@arabic\c@figure}
 \def\fps@figure{tbp}
@@ -939,6 +670,10 @@
 \setlength\fboxrule{0.25\p@}
 
 \renewcommand{\theequation}{\@arabic\c@equation}
+
+%% ===============================================
+%% Math font settings
+%% ===============================================
 \if@enablejfam
   \ifLuaTeX
   \else
@@ -962,15 +697,6 @@
       \fi
     \fi
   \fi
-\else
-  \DeclareRobustCommand{\mathmc}{%
-    \@latex@error{Command \noexpand\mathmc invalid with\space
-       `disablejfam' class option.}\@eha
-  }
-  \DeclareRobustCommand{\mathgt}{%
-    \@latex@error{Command \noexpand\mathgt invalid with\space
-       `disablejfam' class option.}\@eha
-  }
 \fi
 \DeclareOldFontCommand{\rm}{\normalfont\rmfamily}{\mathrm}
 \DeclareOldFontCommand{\sf}{\normalfont\sffamily}{\mathsf}
@@ -982,6 +708,9 @@
 \DeclareRobustCommand*{\cal}{\@fontswitch\relax\mathcal}
 \DeclareRobustCommand*{\mit}{\@fontswitch\relax\mathnormal}
 
+%% ===============================================
+%% Table of Contents format
+%% ===============================================
 \setcounter{tocdepth}{3}
 \newcommand{\@pnumwidth}{2\Cwd}
 \newcommand{\@tocrmarg}{3\Cwd}
@@ -1039,18 +768,9 @@
 \newcommand{\listoftables}{\section*{\listtablename}\@starttoc{lot}}
 \let\l@table\l@figure
 
-\newenvironment{theindex}{%
-  \if@twocolumn
-    \@restonecolfalse
-  \else
-    \@restonecoltrue
-  \fi
-  \columnseprule\z@ \columnsep 2\Cwd
-  \twocolumn[\section*{\indexname}]%
-  \thispagestyle{jpl@in}\parindent\z@
-  \parskip\z@ \relax
-  \let\item\@idxitem
-}{\if@restonecol\onecolumn\else\clearpage\fi}
+%% ===============================================
+%% Other environments (Acknowledgments, Publications, etc.)
+%% ===============================================
 \newcommand{\@idxitem}{\par\hangindent 4\Cwd}
 \newcommand{\subitem}{\@idxitem \hspace*{2\Cwd}}
 \newcommand{\subsubitem}{\@idxitem \hspace*{3\Cwd}}
@@ -1064,87 +784,31 @@
   \llap{\@makefnmark~}#1
 }
 
-\def\biotitle{\textgt{\large\biotitlename}\par}
-\newcommand{\bioauthor}[3][：]{%
-	\if#1:
-    \@japanesefalse
-  \else
-    \@japanesetrue
-  \fi
-	\if@japanese
-	  \def\@bioauthername##1{　\textbf{##1}：}
-	\else
-	  \def\@bioauthername##1{\hspace{10pt}\textbf{##1}:~}
-	\fi
-	\hangafter=1\hangindent=20pt\@bioauthername{#2}#3\par
-}
-\newenvironment{biography}{%
- \parindent=\z@
- \vspace{\baselineskip}\par
- \biotitle
- \setlength{\leftskip}{10pt}\setlength{\rightskip}{50pt}%
-}{}
-
-\def\MonthName#1{\ifcase#1\or January\or February\or March\or April\or May\or June\or July\or August\or September\or October\or November\or December\else\fi}
-\if@japanese
-  \def\received#1#2#3{\gdef\ra@received{（#1 年 #2 月 #3 日　受付）}}
-  \def\revised#1#2#3{\gdef\ra@revised{（#1 年 #2 月 #3 日　再受付）}}
-  \def\rerevised#1#2#3{\gdef\ra@rerevised{（#1 年 #2 月 #3 日　再々受付）}}
-  \def\accepted#1#2#3{\gdef\ra@accepted{（#1 年 #2 月 #3 日　採録）}}
-\else
-  \def\received#1#2#3{\gdef\ra@received{(Received\ \MonthName{#2}~#3, #1)}}
-  \def\revised#1#2#3{\gdef\ra@revised{(Revised\ \MonthName{#2}~#3, #1)}}
-  \def\rerevised#1#2#3{\gdef\ra@rerevised{(Rerevised\ \MonthName{#2}~#3, #1)}}
-  \def\accepted#1#2#3{\gdef\ra@accepted{(Accepted\ \MonthName{#2}~#3, #1)}}
-\fi
-\long\def\biodate{%
-  \addvspace{0.5\Cvs}
-  \begin{flushright}
-  \setlength{\rightskip}{50pt}
-  \small\selectfont
-  \begin{tabular}{l}
-    \@ifundefined{ra@received}{%
-	  \GenericWarning{}{\clsname\space Warning: No \noexpand\received given}}%
-	  {\ra@received\\}
-    \@ifundefined{ra@revised}{}{\ra@revised\\}
-    \@ifundefined{ra@rerevised}{}{\ra@rerevised\\}
-    \@ifundefined{ra@accepted}{%
-	  \GenericWarning{}{\clsname\space Warning: No \noexpand\accepted given}}%
-	  {\ra@accepted\\}
-  \end{tabular}
-\end{flushright}}
-
-\def\acknowledgment{%
+\newenvironment{acknowledgment}{%
   \clearpage
   \csection*{\acknowledgtitle}%
   \addcontentsline{toc}{section}{\acknowledgtitle}%
-}
+}{}
 
-\if@japanese
-  \newcommand{\absttitle}{概要}
-  \newcommand{\contentsname}{目次}
-  \newcommand{\listfigurename}{図目次}
-  \newcommand{\listtablename}{表目次}
-  \newcommand{\refname}{参考文献}
-  \newcommand{\indexname}{索引}
-  \newcommand{\figurename}{図}
-  \newcommand{\tablename}{表}
-  \newcommand{\biotitlename}{略歴}
-  \newcommand{\acknowledgtitle}{謝辞}
-  \newcommand{\publicationtitle}{対外発表・論文・受賞等}
-\else
-  \newcommand{\absttitle}{Abstract}
-  \newcommand{\contentsname}{Contents}
-  \newcommand{\listfigurename}{List of Figures}
-  \newcommand{\listtablename}{List of Tables}
-  \newcommand{\refname}{References}
-  \newcommand{\indexname}{Index}
-  \newcommand{\figurename}{Figure}
-  \newcommand{\tablename}{Table}
-  \newcommand{\biotitlename}{\relax}
-  \newcommand{\acknowledgtitle}{Acknowledgement}
-  \newcommand{\publicationtitle}{Publications}
-\fi
+\newenvironment{publication}{%
+  \clearpage
+  {\csection*{\publicationtitle} \vskip 0.5\baselineskip}%
+  \addcontentsline{toc}{section}{\publicationtitle}
+}{}
+
+%% ===============================================
+%% Japanese name definitions
+%% ===============================================
+\newcommand{\absttitle}{概要}
+\newcommand{\contentsname}{目次}
+\newcommand{\listfigurename}{図目次}
+\newcommand{\listtablename}{表目次}
+\newcommand{\refname}{参考文献}
+\newcommand{\indexname}{索引}
+\newcommand{\figurename}{図}
+\newcommand{\tablename}{表}
+\newcommand{\acknowledgtitle}{謝辞}
+\newcommand{\publicationtitle}{対外発表・論文・受賞等}
 
 \clubpenalty0
 \widowpenalty0

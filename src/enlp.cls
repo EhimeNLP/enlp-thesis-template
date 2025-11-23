@@ -4,18 +4,17 @@
 %%
 %% Author: Eito Yoneyama
 %% Created: 2025/11/20
-%% Updated: 2025/11/20
+%% Updated: 2025/11/21
 %%
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{enlp}[2025/11/20 v0.1.0 Academic thesis class for Ehime Univ. NLP Lab]
 
-\RequirePackage{ifuptex}
-\RequirePackage{ifxetex}
+\RequirePackage{ifptex}
 \RequirePackage{ifluatex}
 
 \def\clsname{ENLP}
 
-\ifupTeX
+\ifpTeX
   \def\zw{zw}
   \def\zh{zh}
 \else\ifLuaTeX
@@ -82,8 +81,21 @@
 
 \ifLuaTeX
 \else
-  \ifupTeX
-    \ifnum\jis"2121="3000
+  \ifstrictplatex
+    \DeclareFontShape{JY1}{mc}{m}{n}{<->s*[1.039] jis}{}
+    \DeclareFontShape{JY1}{mc}{m}{it}{<->s*[1.039] jis}{}
+    \DeclareFontShape{JY1}{mc}{m}{sc}{<->s*[1.039] jis}{}
+    \DeclareFontShape{JY1}{gt}{m}{n}{<->s*[1.039] jisg}{}
+    \DeclareFontShape{JY1}{gt}{m}{it}{<->s*[1.039] jisg}{}
+    \DeclareFontShape{JY1}{gt}{m}{sc}{<->s*[1.039] jisg}{}
+    \DeclareFontShape{JT1}{mc}{m}{n}{<->s*[1.039] jis-v}{}
+    \DeclareFontShape{JT1}{mc}{m}{it}{<->s*[1.039] jis-v}{}
+    \DeclareFontShape{JT1}{mc}{m}{sc}{<->s*[1.039] jis-v}{}
+    \DeclareFontShape{JT1}{gt}{m}{n}{<->s*[1.039] jisg-v}{}
+    \DeclareFontShape{JT1}{gt}{m}{it}{<->s*[1.039] jisg-v}{}
+    \DeclareFontShape{JT1}{gt}{m}{sc}{<->s*[1.039] jisg-v}{}
+  \else
+    \ifstrictuplatex
       \DeclareFontShape{JY2}{mc}{m}{n}{<->s*[1.039] upjisr-h}{}
       \DeclareFontShape{JY2}{mc}{m}{it}{<->s*[1.039] upjisr-h}{}
       \DeclareFontShape{JY2}{mc}{m}{sc}{<->s*[1.039] upjisr-h}{}
@@ -96,19 +108,6 @@
       \DeclareFontShape{JT2}{gt}{m}{n}{<->s*[1.039] upjisg-v}{}
       \DeclareFontShape{JT2}{gt}{m}{it}{<->s*[1.039] upjisg-v}{}
       \DeclareFontShape{JT2}{gt}{m}{sc}{<->s*[1.039] upjisg-v}{}
-    \else
-      \DeclareFontShape{JY1}{mc}{m}{n}{<->s*[1.039] jis}{}
-      \DeclareFontShape{JY1}{mc}{m}{it}{<->s*[1.039] jis}{}
-      \DeclareFontShape{JY1}{mc}{m}{sc}{<->s*[1.039] jis}{}
-      \DeclareFontShape{JY1}{gt}{m}{n}{<->s*[1.039] jisg}{}
-      \DeclareFontShape{JY1}{gt}{m}{it}{<->s*[1.039] jisg}{}
-      \DeclareFontShape{JY1}{gt}{m}{sc}{<->s*[1.039] jisg}{}
-      \DeclareFontShape{JT1}{mc}{m}{n}{<->s*[1.039] jis-v}{}
-      \DeclareFontShape{JT1}{mc}{m}{it}{<->s*[1.039] jis-v}{}
-      \DeclareFontShape{JT1}{mc}{m}{sc}{<->s*[1.039] jis-v}{}
-      \DeclareFontShape{JT1}{gt}{m}{n}{<->s*[1.039] jisg-v}{}
-      \DeclareFontShape{JT1}{gt}{m}{it}{<->s*[1.039] jisg-v}{}
-      \DeclareFontShape{JT1}{gt}{m}{sc}{<->s*[1.039] jisg-v}{}
     \fi
   \fi
 \fi
@@ -126,11 +125,11 @@
 \ifLuaTeX
   \setbox0\hbox{　}
 \else
-  \ifupTeX
-    \ifnum\jis"2121="3000
+  \ifstrictplatex
+    \setbox0\hbox{\char\euc"A1A1}
+  \else
+    \ifstrictuplatex
       \setbox0\hbox{　}
-    \else
-      \setbox0\hbox{\char\euc"A1A1}
     \fi
   \fi
 \fi
@@ -943,20 +942,20 @@
 \if@enablejfam
   \ifLuaTeX
   \else
-    \ifupTeX
-      \ifnum\jis"2121="3000
+    \ifstrictplatex
+      \DeclareSymbolFont{mincho}{JY1}{mc}{m}{n}
+      \DeclareSymbolFontAlphabet{\mathmc}{mincho}
+      \SetSymbolFont{mincho}{bold}{JY1}{gt}{m}{n}
+      \DeclareMathAlphabet{\mathgt}{JY1}{gt}{m}{n}
+      \reDeclareMathAlphabet{\mathrm}{\@mathrm}{\@mathmc}
+      \reDeclareMathAlphabet{\mathbf}{\@mathbf}{\@mathgt}
+      \jfam\symmincho
+    \else
+      \ifstrictuplatex
         \DeclareSymbolFont{mincho}{JY2}{mc}{m}{n}
         \DeclareSymbolFontAlphabet{\mathmc}{mincho}
         \SetSymbolFont{mincho}{bold}{JY2}{gt}{m}{n}
         \DeclareMathAlphabet{\mathgt}{JY2}{gt}{m}{n}
-        \reDeclareMathAlphabet{\mathrm}{\@mathrm}{\@mathmc}
-        \reDeclareMathAlphabet{\mathbf}{\@mathbf}{\@mathgt}
-        \jfam\symmincho
-      \else
-        \DeclareSymbolFont{mincho}{JY1}{mc}{m}{n}
-        \DeclareSymbolFontAlphabet{\mathmc}{mincho}
-        \SetSymbolFont{mincho}{bold}{JY1}{gt}{m}{n}
-        \DeclareMathAlphabet{\mathgt}{JY1}{gt}{m}{n}
         \reDeclareMathAlphabet{\mathrm}{\@mathrm}{\@mathmc}
         \reDeclareMathAlphabet{\mathbf}{\@mathbf}{\@mathgt}
         \jfam\symmincho

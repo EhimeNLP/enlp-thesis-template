@@ -1,6 +1,6 @@
 \input regression-test.tex
 
-\documentclass[japanese]{enlp}
+\documentclass{enlp}
 \usepackage{appendix}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -17,12 +17,8 @@
 \usepackage{varwidth}
 \allowdisplaybreaks
 
-\Month{February}
-\Year{2021}
-\Issuetitle{「\qquad 」特集号}
-\jsubject{論文種別（査読有）}
 \thesis{学位論文}
-\jtitle{ここに論文タイトルここに論文タイトルここに論文タイトルここに論文タイトル}
+\title{ここに論文タイトルここに論文タイトルここに論文タイトルここに論文タイトル}
 \author{9999999X\quad 土竜 戦士}
 \teacher{
     〇〇 〇〇 准教授 \\
@@ -32,15 +28,15 @@
     理工学専攻 数理情報プログラム
 }
 \date{2099 年 2 月 吉日 提出}
-\jabstract{
-ここに概要
-}
 
 \begin{document}
 \START
 
 \TEST{Title Page and Abstract}{
     \maketitle
+    \begin{abstract}
+    概要はこちらに記述して下さい。
+    \end{abstract}
 }
 
 \TEST{Table of Contents}{
@@ -69,11 +65,11 @@
     \section{関連研究}
     これはセクションです。
 
-    \acknowledgment
+    \begin{acknowledgment}
     謝辞はこちらに記述して下さい。
+    \end{acknowledgment}
 
-    % テスト環境用に標準スタイルを使用
-    \bibliographystyle{plain}
+    \bibliographystyle{enlpbbl}
     \bibliography{test}
 
     \begin{publication}

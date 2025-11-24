@@ -4,7 +4,7 @@
 %%
 %% Author: Eito Yoneyama
 %% Created: 2025/11/20
-%% Updated: 2025/11/20
+%% Updated: 2025/11/25
 %%
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{enlpbbl}[2025/11/20 v0.1.0 Citation support for Ehime Univ. NLP Lab]
@@ -19,6 +19,8 @@
   \@ifpackageloaded{luatexja}{}{\RequirePackage{luatexja}}
 \else\ifXeTeX
 \fi\fi\fi\fi
+
+\@ifpackageloaded{expl3}{}{\RequirePackage{expl3}}
 
 %%%%%%%%%%%%%%%%%%%%
 %%% APA CITATION %%%
@@ -664,7 +666,7 @@
     \UL@stop \discretionary{\copy\UL@hyphenbox}{}{}\UL@start
 }
 
-\typeout{JNLP Citation Style - 07-Sep-06}
+\typeout{ENLP Citation Style - 07-Sep-06}
 
 \def\Bbf{\bf}
 \NoCommaBetweenTwoAuthors
@@ -725,4 +727,90 @@
     \fi
     \ignorespaces
 }
+\ExplSyntaxOn
+
+\ior_new:N \g_enlpbbl_bbl_stream
+\int_new:N \l_enlpbbl_line_num_int
+\str_new:N \g_enlpbbl_check_mode_str
+
+\str_gset:Nn \g_enlpbbl_check_mode_str { none }
+
+\regex_const:Nn \c_enlpbbl_abbr_name_regex { ,\s+[A-Z]\. }
+
+\keys_define:nn { enlpbbl }
+  {
+    check-bbl .choice:,
+    check-bbl / warning .code:n = { \str_gset:Nn \g_enlpbbl_check_mode_str { warning } },
+    check-bbl / error   .code:n = { \str_gset:Nn \g_enlpbbl_check_mode_str { error } },
+    check-bbl / none    .code:n = { \str_gset:Nn \g_enlpbbl_check_mode_str { none } },
+    check-bbl .initial:n = none,
+  }
+
+\NewDocumentCommand{\bblsetup}{ m }
+  {
+    \keys_set:nn { enlpbbl } { #1 }
+  }
+
+\msg_new:nnn { enlpbbl-check } { abbr-found }
+  {
+    ^^J
+    ----------------------------------------^^J
+    [ENLP-BBL]~Abbreviation~Detected!^^J
+    Loc:~\c_space_tl #1~:line~#2^^J
+    Src:~\c_space_tl \detokenize{#3}^^J
+    ^^J
+    Please~use~full~names~in~your~bibliography.^^J
+    ----------------------------------------
+  }
+
+\msg_new:nnn { enlpbbl-check } { file-not-found }
+  {
+    ^^J
+    [ENLP-BBL]~File~'#1'~not~found.~Skipping.
+  }
+
+\cs_new_protected:Nn \__enlpbbl_scan_bbl_file:n
+  {
+    \group_begin:
+    \file_if_exist:nTF { #1 }
+      {
+        \ior_open:Nn \g_enlpbbl_bbl_stream { #1 }
+        \int_zero:N \l_enlpbbl_line_num_int
+        
+        \ior_map_inline:Nn \g_enlpbbl_bbl_stream
+          {
+            \int_incr:N \l_enlpbbl_line_num_int
+            
+            \regex_match:NnT \c_enlpbbl_abbr_name_regex { ##1 }
+              {
+                \str_if_eq:VnTF \g_enlpbbl_check_mode_str { error }
+                  {
+                    \msg_error:nnxxx { enlpbbl-check } { abbr-found } 
+                      { #1 } { \int_use:N \l_enlpbbl_line_num_int } { \detokenize{##1} }
+                  }
+                  {
+                    \msg_warning:nnxxx { enlpbbl-check } { abbr-found } 
+                      { #1 } { \int_use:N \l_enlpbbl_line_num_int } { \detokenize{##1} }
+                  }
+              }
+          }
+        \ior_close:N \g_enlpbbl_bbl_stream
+      }
+      {
+        \msg_warning:nnn { enlpbbl-check } { file-not-found } { #1 }
+      }
+    \group_end:
+  }
+
+\cs_new_protected:Nn \enlpbbl_exec_check_at_end:
+  {
+    \str_if_eq:VnF \g_enlpbbl_check_mode_str { none }
+      {
+        \__enlpbbl_scan_bbl_file:n { \jobname.bbl }
+      }
+  }
+
+\AtEndDocument { \enlpbbl_exec_check_at_end: }
+
+\ExplSyntaxOff
 \endinput

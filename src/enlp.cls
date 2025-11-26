@@ -183,31 +183,6 @@
 \@settopoint\oddsidemargin
 \@settopoint\evensidemargin
 
-% % (A4 / 12pt)
-% \setlength\headheight{12\p@}
-% \setlength\headsep{25\p@}
-% \setlength\topskip{1\Cht}
-% \setlength\footskip{30\p@}
-
-% % 28 lines per page
-% \setlength\textheight{28\Cvs}\addtolength\textheight{\topskip}
-% \@settopoint\textheight
-
-% \setlength\topmargin{25mm}
-% \addtolength\topmargin{-1in}
-% \@settopoint\topmargin
-% \setlength\textwidth{460pt}
-% \@settopoint\textwidth
-% \setlength\marginparsep{\z@}
-% \setlength\marginparpush{\z@}
-% \setlength\marginparwidth{\z@}
-% \@settopoint\marginparwidth
-% \setlength\@tempdima{\paperwidth}\addtolength\@tempdima{-\textwidth}
-% \setlength\oddsidemargin{.5\@tempdima}\addtolength\oddsidemargin{-1in}
-% \evensidemargin\oddsidemargin
-% \@settopoint\oddsidemargin
-% \@settopoint\evensidemargin
-
 \setlength\footnotesep{7\p@}
 \setlength\@tempdima{1\Cvs}\addtolength\@tempdima{-1\Cht}\addtolength\@tempdima{7\p@}
 \setlength{\skip\footins}{\@tempdima \@plus 1\Cvs \@minus \z@}

@@ -39,25 +39,35 @@
 %% Option settings
 %% ===============================================
 \newif\if@enablejfam\@enablejfamtrue
+\newif\if@ldebug\@ldebugfalse
 
-% For paper size calculation
+% Calculate current time (hour/minute)
 \hour\time \divide\hour by 60\relax
 \@tempcnta\hour \multiply\@tempcnta 60\relax
 \minute\time \advance\minute-\@tempcnta
 
+% Paper size settings
 \setlength\paperheight{297mm}
 \setlength\paperwidth{210mm}
 
-\DeclareOption{onecolumn}{\@twocolumnfalse}
-\DeclareOption{twocolumn}{\@twocolumntrue}
+% Debug option
+\DeclareOption{ldebug}{\@ldebugtrue}
+
 \DeclareOption{leqno}{\input{leqno.clo}}
 \DeclareOption{fleqn}{\input{fleqn.clo}}
 \DeclareOption{disablejfam}{\@enablejfamfalse}
 \DeclareOption{draft}{\setlength\overfullrule{5pt}}
 \DeclareOption{final}{\setlength\overfullrule{0pt}}
 
-\ExecuteOptions{onecolumn,final}
+\ExecuteOptions{final}
 \ProcessOptions\relax
+
+% Load lua-visual-debug if ldebug is enabled AND using LuaTeX
+\if@ldebug
+  \ifluatex
+    \RequirePackage{lua-visual-debug}
+  \fi
+\fi
 
 %% ===============================================
 %% Font definitions (JIS/UPJIS compatible)
@@ -837,12 +847,7 @@
 \pagestyle{mainpage}
 \pagenumbering{arabic}
 \raggedbottom
-\if@twocolumn
-  \twocolumn
-  \sloppy
-\else
-  \onecolumn
-\fi
+\onecolumn
 \@twosidetrue
 \@mparswitchtrue
 \endinput

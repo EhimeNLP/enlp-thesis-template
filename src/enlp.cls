@@ -4,10 +4,10 @@
 %%
 %% Author: Eito Yoneyama
 %% Created: 2025/11/20
-%% Updated: 2025/11/24
-%%
+%% Updated: 2025/11/26
+
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{enlp}[2025/11/23 v0.1.0 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
+\ProvidesClass{enlp}[2025/11/26 v0.1.0 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
 
 %% ===============================================
 %% Engine detection and font settings
@@ -45,8 +45,8 @@
 \@tempcnta\hour \multiply\@tempcnta 60\relax
 \minute\time \advance\minute-\@tempcnta
 
-\setlength\paperheight{731pt}
-\setlength\paperwidth{518pt}
+\setlength\paperheight{297mm}
+\setlength\paperwidth{210mm}
 
 \DeclareOption{onecolumn}{\@twocolumnfalse}
 \DeclareOption{twocolumn}{\@twocolumntrue}
@@ -99,11 +99,11 @@
 %% Size and layout settings
 %% ===============================================
 \renewcommand{\normalsize}{%
-  \@setfontsize\normalsize\@xpt{17}%
-  \abovedisplayskip 8.5\p@ \@plus8.5\p@ \@minus\z@
-  \abovedisplayshortskip\abovedisplayskip
-  \belowdisplayshortskip\abovedisplayskip
-  \belowdisplayskip\abovedisplayskip
+  \@setfontsize\normalsize\@xiipt{22}% 12pt / 22pt
+  \abovedisplayskip 11\p@ \@plus3\p@ \@minus6\p@
+  \abovedisplayshortskip \z@ \@plus3\p@
+  \belowdisplayshortskip 6.5\p@ \@plus3.5\p@ \@minus3\p@
+  \belowdisplayskip \abovedisplayskip
   \let\@listi\@listI
 }
 \normalsize
@@ -126,49 +126,52 @@
 \setlength\Chs{\wd0}
 
 \newcommand{\small}{%
-  \@setfontsize\small\@ixpt{13}%
-  \abovedisplayskip 8.5\p@ \@plus8.5\p@ \@minus\z@
-  \abovedisplayshortskip\abovedisplayskip
-  \belowdisplayshortskip\abovedisplayskip
+  \@setfontsize\small\@xipt{17}% 11pt
+  \abovedisplayskip 9\p@ \@plus3\p@ \@minus4\p@
+  \abovedisplayshortskip \z@ \@plus2\p@
+  \belowdisplayshortskip 5\p@ \@plus2\p@ \@minus2\p@
   \def\@listi{\leftmargin\leftmargini
-              \topsep \z@
-              \parsep \z@
+              \topsep 5\p@ \@plus2\p@ \@minus2\p@
+              \parsep 2\p@ \@plus\p@ \@minus\p@
               \itemsep \parsep}%
-  \belowdisplayskip\abovedisplayskip
+  \belowdisplayskip \abovedisplayskip
 }
 
 \newcommand{\footnotesize}{%
-  \@setfontsize\footnotesize\@viiipt{10}%
-  \abovedisplayskip 5\p@ \@plus5\p@ \@minus\z@
-  \abovedisplayshortskip \abovedisplayskip
-  \belowdisplayshortskip \abovedisplayskip
+  \@setfontsize\footnotesize\@xpt{15}% 10pt
+  \abovedisplayskip 6\p@ \@plus2\p@ \@minus2\p@
+  \abovedisplayshortskip \z@ \@plus1\p@
+  \belowdisplayshortskip 3\p@ \@plus\p@ \@minus\p@
   \def\@listi{\leftmargin\leftmargini
-              \topsep \z@
-              \parsep \z@
+              \topsep 3\p@ \@plus\p@ \@minus\p@
+              \parsep 2\p@ \@plus\p@ \@minus\p@
               \itemsep \parsep}%
-  \belowdisplayskip\abovedisplayskip
+  \belowdisplayskip \abovedisplayskip
 }
 
-\newcommand{\scriptsize}{\@setfontsize\scriptsize\@viipt\@viiipt}
-\newcommand{\tiny}{\@setfontsize\tiny\@vpt\@vipt}
-\newcommand{\large}{\@setfontsize\large\@xiipt{17}}
-\newcommand{\Large}{\@setfontsize\Large\@xivpt{21}}
-\newcommand{\LARGE}{\@setfontsize\LARGE\@xviipt{34}}
-\newcommand{\huge}{\@setfontsize\huge\@xxpt{34}}
-\newcommand{\Huge}{\@setfontsize\Huge\@xxvpt{34}}
-\newcommand{\semilarge}{\@setfontsize\semilarge{11\p@}{34}}
+\newcommand{\scriptsize}{\@setfontsize\scriptsize\@viiipt{10}}
+\newcommand{\tiny}{\@setfontsize\tiny\@vipt{7}}
+\newcommand{\large}{\@setfontsize\large\@xivpt{25}}     % 14pt
+\newcommand{\Large}{\@setfontsize\Large\@xviipt{30}}    % 17pt
+\newcommand{\LARGE}{\@setfontsize\LARGE\@xxpt{35}}      % 20pt
+\newcommand{\huge}{\@setfontsize\huge\@xxvpt{40}}       % 25pt
+\newcommand{\Huge}{\@setfontsize\Huge{30}{45}}          % 30pt
+\newcommand{\semilarge}{\@setfontsize\semilarge\@xivpt{25}} % 14pt
 
-\setlength\headheight{8\p@}
-\setlength\headsep{22\p@}
+% (A4 / 12pt)
+\setlength\headheight{12\p@}
+\setlength\headsep{25\p@}
 \setlength\topskip{1\Cht}
 \setlength\footskip{30\p@}
-\setlength\maxdepth{1\Cwd}
-\setlength\textheight{32\Cvs}\addtolength\textheight{10\p@}
+
+% 29 lines per page
+\setlength\textheight{29\Cvs}\addtolength\textheight{\topskip}
 \@settopoint\textheight
-\setlength\topmargin{57\p@}
+
+\setlength\topmargin{25mm}
 \addtolength\topmargin{-1in}
 \@settopoint\topmargin
-\setlength\textwidth{390\p@}
+\setlength\textwidth{460pt}
 \@settopoint\textwidth
 \setlength\marginparsep{\z@}
 \setlength\marginparpush{\z@}
@@ -179,6 +182,31 @@
 \evensidemargin\oddsidemargin
 \@settopoint\oddsidemargin
 \@settopoint\evensidemargin
+
+% % (A4 / 12pt)
+% \setlength\headheight{12\p@}
+% \setlength\headsep{25\p@}
+% \setlength\topskip{1\Cht}
+% \setlength\footskip{30\p@}
+
+% % 28 lines per page
+% \setlength\textheight{28\Cvs}\addtolength\textheight{\topskip}
+% \@settopoint\textheight
+
+% \setlength\topmargin{25mm}
+% \addtolength\topmargin{-1in}
+% \@settopoint\topmargin
+% \setlength\textwidth{460pt}
+% \@settopoint\textwidth
+% \setlength\marginparsep{\z@}
+% \setlength\marginparpush{\z@}
+% \setlength\marginparwidth{\z@}
+% \@settopoint\marginparwidth
+% \setlength\@tempdima{\paperwidth}\addtolength\@tempdima{-\textwidth}
+% \setlength\oddsidemargin{.5\@tempdima}\addtolength\oddsidemargin{-1in}
+% \evensidemargin\oddsidemargin
+% \@settopoint\oddsidemargin
+% \@settopoint\evensidemargin
 
 \setlength\footnotesep{7\p@}
 \setlength\@tempdima{1\Cvs}\addtolength\@tempdima{-1\Cht}\addtolength\@tempdima{7\p@}
@@ -309,13 +337,11 @@
 \def\thesis#1{\gdef\@thesis{#1}}        % Example: Graduation Thesis, Master's Thesis
 \def\teacher#1{\gdef\@teacher{#1}}      % Supervisor
 \def\institute#1{\gdef\@institute{#1}}  % Affiliation (Faculty/Department, etc.)
-\def\keywords#1{\gdef\@keywords{\hangafter=1\hangindent=6\Cwd\leavevmode\hbox to6\Cwd{\textgt{キーワード}：\hfill}\unskip{#1}\par}}
 
 % Warnings for undefined variables
 \def\@thesis{\GenericWarning{}{\clsname\space Warning: No \noexpand\thesis given}}
 \def\@teacher{\GenericWarning{}{\clsname\space Warning: No \noexpand\teacher given}}
 \def\@institute{\GenericWarning{}{\clsname\space Warning: No \noexpand\institute given}}
-\def\@keywords{\GenericWarning{}{\clsname\space Warning: No \noexpand\keywords given}}
 
 %% ===============================================
 %% Title page creation
@@ -341,15 +367,16 @@
   \global\let\thesis\relax
   \global\let\teacher\relax
   \global\let\institute\relax
-  \global\let\keywords\relax
   \global\let\@thanks\@empty
   \global\let\p@thanks\@empty
   \global\let\@thesis\@empty
   \global\let\@teacher\@empty
   \global\let\@institute\@empty
-  \global\let\@keywords\@empty
 }
 
+%% ===============================================
+%% Title page creation
+%% ===============================================
 \def\@maketitle{%
   \clearpage
   \parindent\z@
@@ -357,30 +384,48 @@
   \setlength{\leftskip}{25pt}\setlength{\rightskip}{25pt}
   \begin{center}
     \let\footnote\thanks
-    \vspace*{45pt}
-    \Large \@thesis \par
-    \parbox[c][10em][c]{\textwidth}{%
+    % \vspace*{30pt}
+    \vspace*{40pt}
+    
+    % {\fontsize{18pt}{25pt}\selectfont \@thesis \par}
+    {\fontsize{20pt}{25pt}\selectfont \@thesis \par}
+
+    \vspace{30pt}
+    
+    \parbox{\textwidth}{%
       \centering
-      {\bfseries\fontsize{18pt}{22pt}\selectfont {\bfseries \@title} \par}
+      \vspace{15pt}
+      {\bfseries\fontsize{25pt}{35pt}\selectfont {\bfseries \@title} \par}
     }
-    \vfill
-    \parbox[c][5em][c]{\textwidth}{%
+    
+    % \vfill
+    \vspace{70pt}
+    
+    \parbox{\textwidth}{%
       \centering
-      \fontsize{13pt}{19pt}\selectfont \@institute \par
-      \vskip 0.5\baselineskip
+      \fontsize{16pt}{24pt}\selectfont
+      \@institute \par
+      \vspace{10pt}
       \@author \par
-      \par
     }
-    \parbox[c][8em][c]{\textwidth}{%
+    
+    % \vspace{40pt}
+    \vspace{70pt}
+    
+    \parbox{\textwidth}{%
       \centering
-      \fontsize{13pt}{15pt}\selectfont 指導教員 \par\vskip 0.5\baselineskip
+      \fontsize{16pt}{24pt}\selectfont
+      指導教員 \par
+      \vspace{5pt}
       \begin{tabular}[t]{c}%
         \@teacher
       \end{tabular}%
-      \par
     }
-    \vskip 14pt
-    {\fontsize{13pt}{15pt}\selectfont \@date 
+    
+    \vspace{40pt}
+    
+    {\fontsize{16pt}{24pt}\selectfont
+     \@date 
       \begin{tikzpicture}[remember picture, overlay]
           \node[anchor=south west, xshift=1cm, yshift=1.25cm] at (current page.south west) {\elogo[scale=1]};
       \end{tikzpicture}%
@@ -445,9 +490,9 @@
   \parindent\z@\raggedright
   \interlinepenalty\@M\reset@font
   \ifnum \c@secnumdepth >\z@
-    {\fontsize{15pt}{18pt}\selectfont \bfseries 第 \thesection\hspace{1pt} 章 \hspace{7pt}\ignorespaces}
+    {\fontsize{18pt}{22pt}\selectfont \bfseries 第 \thesection\hspace{1pt} 章 \hspace{7pt}\ignorespaces}
   \fi
-  \fontsize{15pt}{18pt}\selectfont\bfseries#2\par
+  \fontsize{18pt}{22pt}\selectfont\bfseries#2\par
   \endgroup
   \vskip 14pt
   \nobreak\vskip0.7\Cvs\@afterheading
@@ -458,7 +503,7 @@
   \begingroup
   \parindent\z@\raggedright
   \interlinepenalty\@M\reset@font
-  \large\bfseries#1\par
+  \fontsize{18pt}{22pt}\selectfont\bfseries#1\par
   \endgroup
   \nobreak\vskip0.7\Cvs\@afterheading
 }
@@ -481,9 +526,9 @@
     \centering
     \interlinepenalty\@M\reset@font
     \ifnum \c@secnumdepth >\z@
-      {\fontsize{15pt}{18pt}\selectfont \bfseries 第 \thesection\hspace{1pt} 章 \hspace{7pt}\ignorespaces}
+      {\fontsize{18pt}{22pt}\selectfont \bfseries 第 \thesection\hspace{1pt} 章 \hspace{7pt}\ignorespaces}
     \fi
-    \fontsize{15pt}{18pt}\selectfont\bfseries#2\par
+    \fontsize{18pt}{22pt}\selectfont\bfseries#2\par
   \endgroup
   \vskip 14pt
   \nobreak\vskip0.7\Cvs\@afterheading
@@ -495,7 +540,7 @@
     \parindent\z@
     \centering
     \interlinepenalty\@M\reset@font
-    \fontsize{15pt}{18pt}\selectfont\bfseries#1\par
+    \fontsize{18pt}{22pt}\selectfont\bfseries#1\par
   \endgroup
   \vskip 14pt
   \nobreak\vskip0.7\Cvs\@afterheading
@@ -504,13 +549,13 @@
   \@startsection{subsection}{2}{\z@}%
     {.9\Cvs \@plus.4\Cvs \@minus.2\Cvs}%
     {.1\Cvs \@minus0.1\Cvs}%
-    {\reset@font\large\bfseries}%
+    {\reset@font\Large\bfseries}%
 }
 \newcommand{\subsubsection}{%
   \@startsection{subsubsection}{3}{\z@}%
     {.9\Cvs \@plus.4\Cvs \@minus.2\Cvs}%
     {.1\Cvs \@minus0.1\Cvs}%
-    {\reset@font\normalsize\bfseries}%
+    {\reset@font\large\bfseries}%
 }
 \newcommand{\paragraph}{%
   \@startsection{paragraph}{4}{\z@}%

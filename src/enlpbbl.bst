@@ -4,7 +4,7 @@
 %%
 %% Author: Eito Yoneyama
 %% Created: 2025/11/20
-%% Updated: 2025/11/20
+%% Updated: 2025/11/27
 %%
 ENTRY
   { address
@@ -52,15 +52,15 @@ FUNCTION {output.nonnull}
   output.state mid.sentence =
     { ", " * write$ }
     { output.state after.block =
-	{ add.period$ write$
-	  newline$
-	  "\newblock " write$
-	}
-	{ output.state before.all =
-	    'write$
-	    { add.period$ " " * write$ }
-	  if$
-	}
+  { add.period$ write$
+    newline$
+    "\newblock " write$
+  }
+  { output.state before.all =
+      'write$
+      { add.period$ " " * write$ }
+    if$
+  }
       if$
       mid.sentence 'output.state :=
     }
@@ -73,15 +73,15 @@ FUNCTION {output.atitle.nonnull}
   output.state mid.sentence =
     { "\ " * write$ }
     { output.state after.block =
-	{ "\ " * write$
-	  newline$
-	  "\newblock " write$
-	}
-	{ output.state before.all =
-	    'write$
-	    { "\ " * write$ }
-	  if$
-	}
+  { "\ " * write$
+    newline$
+    "\newblock " write$
+  }
+  { output.state before.all =
+      'write$
+      { "\ " * write$ }
+    if$
+  }
       if$
       mid.sentence 'output.state :=
     }
@@ -123,8 +123,8 @@ FUNCTION {output.year.check}
 { year empty$
      { "empty year in " cite$ * warning$ }
      { write$
-	" \BBOP " year * extra.label * "\BBCP" *
-	mid.sentence 'output.state :=
+  " \BBOP " year * extra.label * "\BBCP" *
+  mid.sentence 'output.state :=
      }
   if$
 }
@@ -158,8 +158,8 @@ FUNCTION {new.sentence}
 { output.state after.block =
     'skip$
     { output.state before.all =
-	'skip$
-	{ after.sentence 'output.state := }
+  'skip$
+  { after.sentence 'output.state := }
       if$
     }
   if$
@@ -226,8 +226,8 @@ FUNCTION {emphasize}
 { duplicate$ empty$
     { pop$ "" }
     { duplicate$ is.kanji.str$
-	{ "\Jem{" swap$ * "}" * }
-	{ "{\Bem " swap$ * "}" * }
+  { "\Jem{" swap$ * "}" * }
+  { "{\Bem " swap$ * "}" * }
       if$
     }
   if$
@@ -237,8 +237,8 @@ FUNCTION {emphasize.space}
 { duplicate$ empty$
     { pop$ "" }
     { duplicate$ is.kanji.str$
-	{ "\Jem{" swap$ * "}" * }
-	{ "{\Bem " swap$ * "\/}" * }
+  { "\Jem{" swap$ * "}" * }
+  { "{\Bem " swap$ * "\/}" * }
       if$
     }
   if$
@@ -253,46 +253,46 @@ FUNCTION {format.names}
   numnames 'namesleft :=
     { namesleft #0 > }
     { s is.kanji.str$
-	{ s nameptr "{ff}{ll}" format.name$ 't :=}
-	{ s nameptr "{vv~}{ll}{, jj}{, F.}" format.name$ 't :=}
+  { s nameptr "{ff}{ll}" format.name$ 't :=}
+  { s nameptr "{vv~}{ll}{, jj}{, F.}" format.name$ 't :=}
       if$
       nameptr #1 >
-	{ namesleft #1 >
-	    { s is.kanji.str$
-		{"\JBA " * t * }
-		{ ", " * t * }
-	      if$
-	    }
-	    { numnames #2 >
-		{ s is.kanji.str$
-		    { "" * }
-		    { "," * }
-		  if$
-		}
-%		    'skip$
-		    'skip$
-		  if$
-	          t "others" =
-		    { s is.kanji.str$
-		        { " \Jetal " * }
-		        {" et~al." * }
-		      if$
-		    }
-		    { s is.kanji.str$
-		        { "\JBA " * t * }
-%		        { "\BBACOMMA\ " * }
-			{ numnames #2 =
-			    { "\BBACOMMA\ \BBA\ " * t * }
-		            { " \BBA\ " * t * }
-			  if$
-			}
-		      if$
-		    }
-	      if$
-	    }
-	  if$
-	}
-	't
+  { namesleft #1 >
+      { s is.kanji.str$
+    {"\JBA " * t * }
+    { ", " * t * }
+        if$
+      }
+      { numnames #2 >
+    { s is.kanji.str$
+        { "" * }
+        { "," * }
+      if$
+    }
+%       'skip$
+        'skip$
+      if$
+            t "others" =
+        { s is.kanji.str$
+            { " \Jetal " * }
+            {" et~al." * }
+          if$
+        }
+        { s is.kanji.str$
+            { "\JBA " * t * }
+%           { "\BBACOMMA\ " * }
+      { numnames #2 =
+          { "\BBACOMMA\ \BBA\ " * t * }
+                { " \BBA\ " * t * }
+        if$
+      }
+          if$
+        }
+        if$
+      }
+    if$
+  }
+  't
       if$
       nameptr #1 + 'nameptr :=
       namesleft #1 - 'namesleft :=
@@ -312,16 +312,16 @@ FUNCTION {format.editors}
     { "" }
     { editor format.names
       editor num.names$ #1 >
-	{ editor is.kanji.str$
-	    { "\JEDS" * }
-	    { "\BEDS" * }
-	  if$
-	}
-	{ editor is.kanji.str$
-	    { "\JED" * }
-	    { "\BED" * }
-	  if$
-	}
+  { editor is.kanji.str$
+      { "\JEDS" * }
+      { "\BEDS" * }
+    if$
+  }
+  { editor is.kanji.str$
+      { "\JED" * }
+      { "\BED" * }
+    if$
+  }
       if$
     }
   if$
@@ -333,16 +333,16 @@ FUNCTION {format.editors.nodot}
     { "" }
     { editor format.names
       editor num.names$ #1 >
-	{ editor is.kanji.str$
-	    { "\JEDS\" * }
-	    { "\BEDS\" * }
-	  if$
-	}
-	{ editor is.kanji.str$
-	    { "\JED\" * }
-	    { "\BED\" * }
-	  if$
-	}
+  { editor is.kanji.str$
+      { "\JEDS\" * }
+      { "\BEDS\" * }
+    if$
+  }
+  { editor is.kanji.str$
+      { "\JED\" * }
+      { "\BED\" * }
+    if$
+  }
       if$
     }
   if$
@@ -371,8 +371,8 @@ FUNCTION {format.key}
 %%%%{ title empty$
 %%%%    { "" }
 %%%%    { title is.kanji.str$
-%%%%	{ "\JBOQ " title * "\JBCQ" *}
-%%%%	{ "\BBOQ " title * "\BBCQ" *}
+%%%%  { "\JBOQ " title * "\JBCQ" *}
+%%%%  { "\BBOQ " title * "\BBCQ" *}
 %%%%      if$
 %%%%    }
 %%%%  if$
@@ -383,8 +383,8 @@ FUNCTION {format.title}
 { title empty$
     { "" }
     { title is.kanji.str$
-	{ title add.period$ }
-	{ "\BBOQ " title add.period$ * "\BBCQ" *}
+  { title add.period$ }
+  { "\BBOQ " title add.period$ * "\BBCQ" *}
       if$
     }
   if$
@@ -397,21 +397,21 @@ FUNCTION {n.dashify}
   ""
     { t empty$ not }
     { t #1 #1 substring$ "-" =
-	{ t #1 #2 substring$ "--" = not
-	    { "--" *
-	      t #2 global.max$ substring$ 't :=
-	    }
-	    {   { t #1 #1 substring$ "-" = }
-		{ "-" *
-		  t #2 global.max$ substring$ 't :=
-		}
-	      while$
-	    }
-	  if$
-	}
-	{ t #1 #1 substring$ *
-	  t #2 global.max$ substring$ 't :=
-	}
+  { t #1 #2 substring$ "--" = not
+      { "--" *
+        t #2 global.max$ substring$ 't :=
+      }
+      {   { t #1 #1 substring$ "-" = }
+    { "-" *
+      t #2 global.max$ substring$ 't :=
+    }
+        while$
+      }
+    if$
+  }
+  { t #1 #1 substring$ *
+    t #2 global.max$ substring$ 't :=
+  }
       if$
     }
   while$
@@ -423,8 +423,8 @@ FUNCTION {format.btitle}
   { title empty$
     { title emphasize }
     { title is.kanji.str$
-	{ "\Jem{" title * "} (" * edition * " \JEd)" * "." * }
-	{ "{\Bem " title * "\/} (" * edition * " \BEd)" * "." * }
+  { "\Jem{" title * "} (" * edition * " \JEd)" * "." * }
+  { "{\Bem " title * "\/} (" * edition * " \BEd)" * "." * }
       if$
     }
     if$
@@ -438,8 +438,8 @@ FUNCTION {format.emphasize.booktitle}
   { booktitle empty$
     { booktitle emphasize }
     { booktitle is.kanji.str$
-	{ "\Jem{" booktitle * "} (" * edition * " \JEd)" * "." * }
-	{ "{\Bem " booktitle * "\/} (" * edition * " \BEd)" * "." * }
+  { "\Jem{" booktitle * "} (" * edition * " \JEd)" * "." * }
+  { "{\Bem " booktitle * "\/} (" * edition * " \BEd)" * "." * }
       if$
     }
     if$
@@ -466,18 +466,18 @@ FUNCTION {format.bvolume}
 { volume empty$
     { "" }
     { title is.kanji.str$
-	{ series empty$
-	    'skip$
-	    { ", " * series emphasize * }
-	  if$
-	  volume "\JVOL" *
-	}
-	{ "\lowercase{\BVOL}" volume tie.or.space.connect
-	  series empty$
-	    'skip$
-	    { " of " * series emphasize * }
-	  if$
-	}
+  { series empty$
+      'skip$
+      { ", " * series emphasize * }
+    if$
+    volume "\JVOL" *
+  }
+  { "\lowercase{\BVOL}" volume tie.or.space.connect
+    series empty$
+      'skip$
+      { " of " * series emphasize * }
+    if$
+  }
       if$
       "\losercase{\BVOL\ and \BNUM}" number either.or.check
     }
@@ -487,26 +487,26 @@ FUNCTION {format.bvolume}
 FUNCTION {format.number.series}
 { volume empty$
     { number empty$
-	{ series field.or.null }
-	{ title is.kanji.str$
-	    { series empty$
-		{ "there's a number but no series in " cite$ * warning$ }
-		{ ". " * series * }
-	      if$
-	      number "\JNUM" *
-	    }
-	    { output.state mid.sentence =
-		{ "\lowercase{\BNUM}" }
-		{ "\BNUM" }
-	      if$
-	      number tie.or.space.connect
-	      series empty$
-		{ "there's a number but no series in " cite$ * warning$ }
-		{ " in " * series * }
-	      if$
-	    }
-	  if$
-	}
+  { series field.or.null }
+  { title is.kanji.str$
+      { series empty$
+    { "there's a number but no series in " cite$ * warning$ }
+    { ". " * series * }
+        if$
+        number "\JNUM" *
+      }
+      { output.state mid.sentence =
+    { "\lowercase{\BNUM}" }
+    { "\BNUM" }
+        if$
+        number tie.or.space.connect
+        series empty$
+    { "there's a number but no series in " cite$ * warning$ }
+    { " in " * series * }
+        if$
+      }
+    if$
+  }
       if$
     }
     { "" }
@@ -517,12 +517,12 @@ FUNCTION {format.edition}
 { edition empty$
     { "" }
     { title is.kanji.str$
-	{ edition "\JEd" * }
-	{ output.state mid.sentence =
-	    { edition "l" change.case$ " \BEd" * }
-	    { edition "t" change.case$ " \BEd" * }
-	  if$
-	}
+  { edition "\JEd" * }
+  { output.state mid.sentence =
+      { edition "l" change.case$ " \BEd" * }
+      { edition "t" change.case$ " \BEd" * }
+    if$
+  }
       if$
     }
   if$
@@ -542,8 +542,8 @@ FUNCTION {multi.page.check}
       swap$ duplicate$ "," =
       swap$ "+" =
       or or
-	{ #1 'multiresult := }
-	{ t #2 global.max$ substring$ 't := }
+  { #1 'multiresult := }
+  { t #2 global.max$ substring$ 't := }
       if$
     }
   while$
@@ -554,10 +554,10 @@ FUNCTION {format.pages}
 { pages empty$
     { "" }
     { pages multi.page.check
-%	{ "\BPGS" pages n.dashify tie.or.space.connect }
-%	{ "\BPG" pages tie.or.space.connect }
-	{ "\mbox{\BPGS" pages n.dashify tie.or.space.connect "}" * }
-	{ "\mbox{\BPG" pages tie.or.space.connect "}" * }
+% { "\BPGS" pages n.dashify tie.or.space.connect }
+% { "\BPG" pages tie.or.space.connect }
+  { "\mbox{\BPGS" pages n.dashify tie.or.space.connect "}" * }
+  { "\mbox{\BPG" pages tie.or.space.connect "}" * }
       if$
     }
   if$
@@ -566,13 +566,13 @@ FUNCTION {format.pages}
 FUNCTION {format.vol.num.pages}
 { number empty$
     { volume empty$
-       'skip$
+       { "" }  %%% FIXED: Replaced 'skip$ with { "" } to prevent empty stack error
        { title is.kanji.str$
-%%%%	   { "\Bbf{" volume * "}" * }  %%%% jnlpbbl_1.2.bst
-	   { "{\Bbf " volume * "}" * }
-%%	   { "{\Bem " volume * "}" * }  %% volume no. in \bf (Gunji)
-	   { "{\Bbf " volume * "}" * }
-	 if$
+%%%%     { "\Bbf{" volume * "}" * }  %%%% jnlpbbl_1.2.bst
+     { "{\Bbf " volume * "}" * }
+%%     { "{\Bem " volume * "}" * }  %% volume no. in \bf (Gunji)
+     { "{\Bbf " volume * "}" * }
+   if$
        }
       if$
     }
@@ -598,21 +598,21 @@ FUNCTION {format.chapter.pages}
 { chapter empty$
     'format.pages
     { title is.kanji.str$
-	{ type empty$
-	    { chapter " \JCH" * }
-	    { type "l" change.case$ }
-	  if$
-	}
-	{ type empty$
-	    { "\BCH" }
-	    { type "l" change.case$ }
-	  if$
-	  chapter tie.or.space.connect
-	}
+  { type empty$
+      { chapter " \JCH" * }
+      { type "l" change.case$ }
+    if$
+  }
+  { type empty$
+      { "\BCH" }
+      { type "l" change.case$ }
+    if$
+    chapter tie.or.space.connect
+  }
       if$
       pages empty$
-	'skip$
-	{ ", " * format.pages * }
+  'skip$
+  { ", " * format.pages * }
       if$
     }
   if$
@@ -622,16 +622,16 @@ FUNCTION {format.in.ed.booktitle}
 { booktitle empty$
     { "" }
     { editor empty$
-	 { booktitle is.kanji.str$
-	     'format.emphasize.booktitle
-	     { "In " format.emphasize.booktitle * }
-	   if$
-	 }
-	 { booktitle is.kanji.str$
-	     { format.editors ", " * format.emphasize.booktitle * }
-	     { "In " format.editors * ", " * format.emphasize.booktitle * }
-	   if$
-	 }
+   { booktitle is.kanji.str$
+       'format.emphasize.booktitle
+       { "In " format.emphasize.booktitle * }
+     if$
+   }
+   { booktitle is.kanji.str$
+       { format.editors ", " * format.emphasize.booktitle * }
+       { "In " format.editors * ", " * format.emphasize.booktitle * }
+     if$
+   }
       if$
     }
   if$
@@ -669,8 +669,8 @@ FUNCTION {format.thesis.type}
 FUNCTION {format.tr.number}
 { type empty$
     { title is.kanji.str$
-	{ "\JTR" }
-	{ "\BTR" }
+  { "\JTR" }
+  { "\BTR" }
       if$
     }
     { type "t" change.case$ }
@@ -684,15 +684,15 @@ FUNCTION {format.tr.number}
 FUNCTION {format.article.crossref}
 { key empty$
     { journal empty$
-	{ "need key or journal for " cite$ * " to crossref " * crossref *
-	  warning$
-	  ""
-	}
-	{ journal is.kanji.str$
-	    { "\Jem{" journal * "}" * }
-	    { "In {\Bem " journal * "\/}" * }
-	  if$
-	}
+  { "need key or journal for " cite$ * " to crossref " * crossref *
+    warning$
+    ""
+  }
+  { journal is.kanji.str$
+      { "\Jem{" journal * "}" * }
+      { "In {\Bem " journal * "\/}" * }
+    if$
+  }
       if$
     }
     { "In " key * }
@@ -704,8 +704,8 @@ FUNCTION {format.crossref.editor}
 { editor is.kanji.str$
      { editor #1 "{ff}" format.name$ duplicate$
        empty$
-	   { pop$ editor #1 "{ll}" format.name$ }
-	   'skip$
+     { pop$ editor #1 "{ll}" format.name$ }
+     'skip$
        if$
      }
      { editor #1 "{vv~}{ll}" format.name$ }
@@ -713,32 +713,32 @@ FUNCTION {format.crossref.editor}
   editor num.names$ duplicate$
   #2 >
     { editor is.kanji.str$
-	{ pop$ "\Jetal " * }
-	{ pop$ " et~al." * }
+  { pop$ "\Jetal " * }
+  { pop$ " et~al." * }
       if$
     }
     { #2 <
-	'skip$
-	{ editor #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
-	    { editor is.kanji.str$
-		{"\Jetal " *}
-		{"et~al." * }
-	      if$
-	    }
-	    { editor is.kanji.str$
-		{"\JBA " *
-		   editor #2 "{ff}" format.name$ duplicate$
-			empty$
-			    { pop$ editor #2 "{ll}" format.name$ }
-			    'skip$
-			if$
-		  *
-		}
-		{ "\BBACOMMA\ \BBA\ " * editor #2 "{vv~}{ll}" format.name$ * }
-	      if$
-	    }
-	  if$
-	}
+  'skip$
+  { editor #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
+      { editor is.kanji.str$
+    {"\Jetal " *}
+    {"et~al." * }
+        if$
+      }
+      { editor is.kanji.str$
+    {"\JBA " *
+       editor #2 "{ff}" format.name$ duplicate$
+      empty$
+          { pop$ editor #2 "{ll}" format.name$ }
+          'skip$
+      if$
+      *
+    }
+    { "\BBACOMMA\ \BBA\ " * editor #2 "{vv~}{ll}" format.name$ * }
+        if$
+      }
+    if$
+  }
       if$
     }
   if$
@@ -748,15 +748,15 @@ FUNCTION {format.book.crossref}
 { volume empty$
     { "empty volume in " cite$ * "'s crossref of " * crossref * warning$
       title is.kanji.str$
-	{ "" }
-	{ "In " }
+  { "" }
+  { "In " }
       if$
     }
     { title is.kanji.str$
-	{ volume "\JVOL" * }
-	{ "\BVOL" volume tie.or.space.connect
-	  " of " *
-	}
+  { volume "\JVOL" * }
+  { "\BVOL" volume tie.or.space.connect
+    " of " *
+  }
       if$
     }
   if$
@@ -764,19 +764,19 @@ FUNCTION {format.book.crossref}
   editor field.or.null author field.or.null =
   or
     { key empty$
-	{ series empty$
-	    { "need editor, key, or series for " cite$ * " to crossref " *
-	      crossref * warning$
-	      "" *
-	    }
-	    { series is.kanji.str$
-		{ "\Jem{" * series * "}" * }
-		{ "{\Bem " * series * "\/}" * }
-	      if$
-	    }
-	  if$
-	}
-	{ key * }
+  { series empty$
+      { "need editor, key, or series for " cite$ * " to crossref " *
+        crossref * warning$
+        "" *
+      }
+      { series is.kanji.str$
+    { "\Jem{" * series * "}" * }
+    { "{\Bem " * series * "\/}" * }
+        if$
+      }
+    if$
+  }
+  { key * }
       if$
     }
     { format.crossref.editor * }
@@ -789,19 +789,19 @@ FUNCTION {format.incoll.inproc.crossref}
   editor field.or.null author field.or.null =
   or
     { key empty$
-	{ booktitle empty$
-	    { "need editor, key, or booktitle for " cite$ * " to crossref " *
-	      crossref * warning$
-	      ""
-	    }
-	    { booktitle is.kanji.str$
-		{ "\Jem{" booktitle * "}" *}
-		{ "In {\Bem " booktitle * "\/}" * }
-	     if$
-	    }
-	  if$
-	}
-	{ "In " key * }
+  { booktitle empty$
+      { "need editor, key, or booktitle for " cite$ * " to crossref " *
+        crossref * warning$
+        ""
+      }
+      { booktitle is.kanji.str$
+    { "\Jem{" booktitle * "}" *}
+    { "In {\Bem " booktitle * "\/}" * }
+       if$
+      }
+    if$
+  }
+  { "In " key * }
       if$
     }
     { "In " format.crossref.editor * }
@@ -849,8 +849,8 @@ FUNCTION {book}
     { format.editors.nodot "author and editor" output.check }
     { format.authors output.nonnull
       crossref missing$
-	{ "author and editor" editor either.or.check }
-	'skip$
+  { "author and editor" editor either.or.check }
+  'skip$
       if$
     }
   if$
@@ -898,8 +898,8 @@ FUNCTION {inbook}
     { format.editors.nodot "author and editor" output.check }
     { format.authors output.nonnull
       crossref missing$
-	{ "author and editor" editor either.or.check }
-	'skip$
+  { "author and editor" editor either.or.check }
+  'skip$
       if$
     }
   if$
@@ -967,16 +967,16 @@ FUNCTION {inproceedings}
       format.number.series output
       format.pages output
       address empty$
-	{ organization publisher new.sentence.checkb
-	  organization output
-	  publisher output
-	}
-%%%%	{ address output.atitle.nonnull %%%% jnlpbbl_1.5.bst
-	{ address output.nonnull
-	  new.sentence
-	  organization output
-	  publisher output
-	}
+  { organization publisher new.sentence.checkb
+    organization output
+    publisher output
+  }
+%%%%  { address output.atitle.nonnull %%%% jnlpbbl_1.5.bst
+  { address output.nonnull
+    new.sentence
+    organization output
+    publisher output
+  }
       if$
     }
     { format.incoll.inproc.crossref output.nonnull
@@ -995,10 +995,10 @@ FUNCTION {manual}
 { output.bibitem
   author empty$
     { organization empty$
-	'skip$
-	{ organization output.nonnull
-	  address output
-	}
+  'skip$
+  { organization output.nonnull
+    address output
+  }
       if$
     }
     { format.authors output.nonnull }
@@ -1008,10 +1008,10 @@ FUNCTION {manual}
   format.btitle "title" output.check
   author empty$
     { organization empty$
-	{ address new.block.checka
-	  address output
-	}
-	'skip$
+  { address new.block.checka
+    address output
+  }
+  'skip$
       if$
     }
     { organization address new.block.checkb
@@ -1142,18 +1142,18 @@ FUNCTION {proceedings}
   format.number.series output
   address empty$
     { editor empty$
-	{ publisher new.sentence.checka }
-	{ organization publisher new.sentence.checkb
-	  organization output
-	}
+  { publisher new.sentence.checka }
+  { organization publisher new.sentence.checkb
+    organization output
+  }
       if$
       publisher output
     }
     { address output.nonnull
       new.sentence
       editor empty$
-	'skip$
-	{ organization output }
+  'skip$
+  { organization output }
       if$
       publisher output
     }
@@ -1322,47 +1322,47 @@ FUNCTION {format.full.lab.names}
   numnames 'namesleft :=
     { namesleft #0 > }
     { s is.kanji.str$
-	{ s nameptr "{ff}" format.name$ 't :=
-	  t empty$
-	      { s nameptr "{ll}" format.name$ 't :=}
-	      'skip$
-	  if$
-	}
-	{ s nameptr "{vv~}{ll}" format.name$ 't :=}
+  { s nameptr "{ff}" format.name$ 't :=
+    t empty$
+        { s nameptr "{ll}" format.name$ 't :=}
+        'skip$
+    if$
+  }
+  { s nameptr "{vv~}{ll}" format.name$ 't :=}
       if$
       nameptr #1 >
-	{ namesleft #1 >
-	    { s is.kanji.str$
-		{ "\JBA " * t * }
-	    	{ ", " * t * }
-	      if$
-	    }
-	    { numnames #2 >
-		{ s is.kanji.str$
-		    { "" * }
-		    { "," * }
-		  if$
-		}
-%		{ "," * }
-		'skip$
-	      if$
-	      t "others" =
-		{ s is.kanji.str$
-%%%%		    { "\Jetal " * }
-		    { " \Jetal " * } %%%% revised `jnlpbbl_1.4.bst`
-		    { " et~al." * }
-		  if$
-		}
-		{ s is.kanji.str$
-		    { "\JBA " * t * }
-		    { " \BBA\ " * t * }
-		  if$
-		}
-	      if$
-	    }
-	  if$
-	}
-	't
+  { namesleft #1 >
+      { s is.kanji.str$
+    { "\JBA " * t * }
+        { ", " * t * }
+        if$
+      }
+      { numnames #2 >
+    { s is.kanji.str$
+        { "" * }
+        { "," * }
+      if$
+    }
+%   { "," * }
+    'skip$
+        if$
+        t "others" =
+    { s is.kanji.str$
+%%%%        { "\Jetal " * }
+        { " \Jetal " * } %%%% revised `jnlpbbl_1.4.bst`
+        { " et~al." * }
+      if$
+    }
+    { s is.kanji.str$
+        { "\JBA " * t * }
+        { " \BBA\ " * t * }
+      if$
+    }
+        if$
+      }
+    if$
+  }
+  't
       if$
       nameptr #1 + 'nameptr :=
       namesleft #1 - 'namesleft :=
@@ -1375,43 +1375,43 @@ FUNCTION {format.lab.names}
   s is.kanji.str$
      { s #1 "{ff}" format.name$ duplicate$
        empty$
-	    { pop$ s #1 "{ll}" format.name$ }
-	    'skip$
-	if$
+      { pop$ s #1 "{ll}" format.name$ }
+      'skip$
+  if$
      }
      { s #1 "{vv~}{ll}" format.name$ }
   if$
   s num.names$ duplicate$
   #2 >
      { s is.kanji.str$
-%%%%	{ pop$ "\Jetal " * } %%%% revised `jnlpbbl_1.4.bst`
-	{ pop$ " \Jetal " * }
-	{ pop$ " et~al." * }
+%%%%  { pop$ "\Jetal " * } %%%% revised `jnlpbbl_1.4.bst`
+  { pop$ " \Jetal " * }
+  { pop$ " et~al." * }
      if$
      }
      { #2 <
-	  'skip$
-	  { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
-		{ s is.kanji.str$
-		    {"\Jetal " *}
-%%%%		    { "et~al.{}" * } %%%% revised 'jnlpbbl_1.7.bst'
-		    { " et~al.{}" * } %%%% revised 'jnlpbbl_1.4.bst', 'jnlpbbl_1.7.bst'
-		  if$
-		}
-		{ s is.kanji.str$
-		    { "\JBA " *
-		      s #2 "{ff}" format.name$ duplicate$
-		      empty$
-			  {pop$ s #2 "{ll}" format.name$}
-			  'skip$
-		      if$
-		      *
-		    }
-		    { " \BBA\ " * s #2 "{vv~}{ll}" format.name$ * }
-		  if$
-		}
-	     if$
-	  }
+    'skip$
+    { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
+    { s is.kanji.str$
+        {"\Jetal " *}
+%%%%        { "et~al.{}" * } %%%% revised 'jnlpbbl_1.7.bst'
+        { " et~al.{}" * } %%%% revised 'jnlpbbl_1.4.bst', 'jnlpbbl_1.7.bst'
+      if$
+    }
+    { s is.kanji.str$
+        { "\JBA " *
+          s #2 "{ff}" format.name$ duplicate$
+          empty$
+        {pop$ s #2 "{ll}" format.name$}
+        'skip$
+          if$
+          *
+        }
+        { " \BBA\ " * s #2 "{vv~}{ll}" format.name$ * }
+      if$
+    }
+       if$
+    }
        if$
      }
   if$
@@ -1420,8 +1420,8 @@ FUNCTION {format.lab.names}
 FUNCTION {author.key.label}
 { author empty$
     { key empty$
-	{ cite$ #1 #3 substring$ }
-	{ key #3 text.prefix$ }
+  { cite$ #1 #3 substring$ }
+  { key #3 text.prefix$ }
       if$
     }
     { author format.lab.names }
@@ -1431,12 +1431,12 @@ FUNCTION {author.key.label}
 FUNCTION {author.editor.key.label}
 { author empty$
     { editor empty$
-	{ key empty$
-	    { cite$ #1 #3 substring$ }
-	    { key #3 text.prefix$ }
-	  if$
-	}
-	{ editor format.lab.names }
+  { key empty$
+      { cite$ #1 #3 substring$ }
+      { key #3 text.prefix$ }
+    if$
+  }
+  { editor format.lab.names }
       if$
     }
     { author format.lab.names }
@@ -1446,12 +1446,12 @@ FUNCTION {author.editor.key.label}
 FUNCTION {author.key.organization.label}
 { author empty$
     { key empty$
-	{ organization empty$
-	    { cite$ #1 #3 substring$ }
-	    { "The " #4 organization chop.word #3 text.prefix$ }
-	  if$
-	}
-	{ key #3 text.prefix$ }
+  { organization empty$
+      { cite$ #1 #3 substring$ }
+      { "The " #4 organization chop.word #3 text.prefix$ }
+    if$
+  }
+  { key #3 text.prefix$ }
       if$
     }
     { author format.lab.names }
@@ -1461,12 +1461,12 @@ FUNCTION {author.key.organization.label}
 FUNCTION {editor.key.organization.label}
 { editor empty$
     { key empty$
-	{ organization empty$
-	    { cite$ #1 #3 substring$ }
-	    { "The " #4 organization chop.word #3 text.prefix$ }
-	  if$
-	}
-	{ key #3 text.prefix$ }
+  { organization empty$
+      { cite$ #1 #3 substring$ }
+      { "The " #4 organization chop.word #3 text.prefix$ }
+    if$
+  }
+  { key #3 text.prefix$ }
       if$
     }
     { editor format.lab.names }
@@ -1479,12 +1479,12 @@ FUNCTION {calc.label}
   or
     'author.editor.key.label
     { type$ "proceedings" =
-	'editor.key.organization.label
-	{ type$ "manual" =
-	    'author.key.organization.label
-	    'author.key.label
-	  if$
-	}
+  'editor.key.organization.label
+  { type$ "manual" =
+      'author.key.organization.label
+      'author.key.label
+    if$
+  }
       if$
     }
   if$
@@ -1496,10 +1496,10 @@ FUNCTION {calc.label}
   if$
   "\protect\BCAY{" swap$ * "}{" * swap$ * "}{" *
 %%  year field.or.null purify$ #-1 #4 substring$ *
-  year field.or.null purify$ *  %% to allow "to appear" in year
+  year field.or.null purify$ * %% to allow "to appear" in year
   'label :=
 %%  year field.or.null purify$ #-1 #4 substring$ *
-  year field.or.null purify$ *  %% to allow "to appear" in year
+  year field.or.null purify$ * %% to allow "to appear" in year
   sortify 'sort.label :=
 }
 
@@ -1543,10 +1543,10 @@ FUNCTION {sort.format.title}
 FUNCTION {author.sort}
 { author empty$
     { key empty$
-	{ "to sort, need author or key in " cite$ * warning$
-	  ""
-	}
-	{ key sortify }
+  { "to sort, need author or key in " cite$ * warning$
+    ""
+  }
+  { key sortify }
       if$
     }
     { author sort.format.names }
@@ -1556,14 +1556,14 @@ FUNCTION {author.sort}
 FUNCTION {author.editor.sort}
 { author empty$
     { editor empty$
-	{ key empty$
-	    { "to sort, need author, editor, or key in " cite$ * warning$
-	      ""
-	    }
-	    { key sortify }
-	  if$
-	}
-	{ editor sort.format.names }
+  { key empty$
+      { "to sort, need author, editor, or key in " cite$ * warning$
+        ""
+      }
+      { key sortify }
+    if$
+  }
+  { editor sort.format.names }
       if$
     }
     { author sort.format.names }
@@ -1573,14 +1573,14 @@ FUNCTION {author.editor.sort}
 FUNCTION {author.organization.sort}
 { author empty$
     { organization empty$
-	{ key empty$
-	    { "to sort, need author, organization, or key in " cite$ * warning$
-	      ""
-	    }
-	    { key sortify }
-	  if$
-	}
-	{ "The " #4 organization chop.word sortify }
+  { key empty$
+      { "to sort, need author, organization, or key in " cite$ * warning$
+        ""
+      }
+      { key sortify }
+    if$
+  }
+  { "The " #4 organization chop.word sortify }
       if$
     }
     { author sort.format.names }
@@ -1590,14 +1590,14 @@ FUNCTION {author.organization.sort}
 FUNCTION {editor.organization.sort}
 { editor empty$
     { organization empty$
-	{ key empty$
-	    { "to sort, need editor, organization, or key in " cite$ * warning$
-	      ""
-	    }
-	    { key sortify }
-	  if$
-	}
-	{ "The " #4 organization chop.word sortify }
+  { key empty$
+      { "to sort, need editor, organization, or key in " cite$ * warning$
+        ""
+      }
+      { key sortify }
+    if$
+  }
+  { "The " #4 organization chop.word sortify }
       if$
     }
     { editor sort.format.names }
@@ -1614,12 +1614,12 @@ FUNCTION {presort}
   or
     'author.editor.sort
     { type$ "proceedings" =
-	'editor.organization.sort
-	{ type$ "manual" =
-	    'author.organization.sort
-	    'author.sort
-	  if$
-	}
+  'editor.organization.sort
+  { type$ "manual" =
+      'author.organization.sort
+      'author.sort
+    if$
+  }
       if$
     }
   if$
@@ -1675,7 +1675,7 @@ FUNCTION {begin.bib}
     'skip$
     { preamble$ write$ newline$ }
   if$
-  "% ENLP Citation Style - 25-Nov-21" write$ newline$
+  "% ENLP Citation Style - 2025-11-27" write$ newline$
   "\begin{thebibliography}{}"  write$ newline$
 }
 

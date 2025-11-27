@@ -8,22 +8,26 @@ on:
 jobs:
   build-release:
     runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Create distribution folder
         run: |
-          mkdir -p dist
-          cp -r src/* dist/
-          rsync -av --exclude='Makefile' --exclude='README.md' sample/ dist/
+          mkdir -p dist/enlp-template
+          cp -r src/* dist/enlp-template/
+          rsync -av --exclude='Makefile' --exclude='README.md' sample/ dist/enlp-template/
 
       - name: Compress dist
-        run: zip -r enlp-template.zip dist
+        run: cd dist && zip -r ../enlp-template.zip enlp-template
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           files: enlp-template.zip
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

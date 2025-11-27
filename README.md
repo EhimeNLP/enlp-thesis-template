@@ -11,3 +11,23 @@
 
 > [!WARNING]
 > **[2025/11/21] 対応しているLaTeXエンジンは, pLaTeXとupLaTeX, LuaLaTeXのみです.**  
+
+## インストール
+
+### Local
+
+`l3build` を使用して, `TEXMFHOME` に追加してください.
+
+```bash
+git clone https://github.com/EhimeNLP/graduation_thesis_tex_template.git
+cd graduation_thesis_tex_template
+l3build install
+```
+
+### Overleaf
+
+[Releases](https://github.com/EhimeNLP/graduation_thesis_tex_template/releases)から最新バージョンの `enlp-template.zip` を取得して, Overleafのプロジェクトに配置してください.
+
+## 使用方法
+
+使用方法については, [ユーザ向けドキュメント](https://github.com/EhimeNLP/enlp-latex/blob/main/docs/documentation.pdf)を参照してください.

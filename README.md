@@ -30,4 +30,4 @@ l3build install
 
 ## 使用方法
 
-使用方法については, [ユーザ向けドキュメント](https://github.com/EhimeNLP/enlp-latex/blob/main/docs/documentation.pdf)を参照してください.
+使用方法については, [ユーザ向けドキュメント](https://github.com/EhimeNLP/graduation_thesis_tex_template/blob/main/docs/documentation.pdf)を参照してください.

@@ -735,7 +735,14 @@
 
 \str_gset:Nn \g_enlpbbl_check_mode_str { none }
 
-\regex_const:Nn \c_enlpbbl_abbr_name_regex { ,\s+[A-Z]\. | [A-Z]\.[\~\s] }
+% \regex_const:Nn \c_enlpbbl_abbr_name_regex { ,\s+[A-Z]\. | [A-Z]\.[\~\s] }
+\regex_const:Nn \c_enlpbbl_abbr_name_regex
+  {
+    ,\s+[A-Z]\.
+    |
+    (?:^|\\BBA\s+)
+    [A-Z]\.[\~\s]
+  }
 
 \keys_define:nn { enlpbbl }
   {

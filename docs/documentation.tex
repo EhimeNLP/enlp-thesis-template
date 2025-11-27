@@ -1,0 +1,328 @@
+\documentclass{ltjsarticle}
+\usepackage[hidelinks]{hyperref}
+\usepackage{listings,showexpl,enumitem}
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  numbers=left,
+  numberstyle=\ttfamily\small,
+  numbersep=1em,
+  columns=fixed,
+}
+\usepackage[most]{tcolorbox}%
+\newtcolorbox{warning}[1][]{enhanced,
+  before skip balanced=2mm,after skip balanced=3mm,
+  boxrule=0.4pt,left=5mm,right=2mm,top=1mm,bottom=1mm,
+  colback=yellow!50,
+  colframe=yellow!20!black,
+  sharp corners,rounded corners=southeast,arc is angular,arc=3mm,
+  underlay={%
+    \path[fill=tcbcolback!80!black] ([yshift=3mm]interior.south east)--++(-0.4,-0.1)--++(0.1,-0.2);
+    \path[draw=tcbcolframe,shorten <=-0.05mm,shorten >=-0.05mm] ([yshift=3mm]interior.south east)--++(-0.4,-0.1)--++(0.1,-0.2);
+    \path[fill=yellow!50!black,draw=none] (interior.south west) rectangle node[white]{\Huge\bfseries !} ([xshift=4mm]interior.north west);
+    },
+  drop fuzzy shadow,#1}
+
+\newcommand{\pkg}[1]{\texttt{#1}}
+\newcommand{\cs}[1]{\texttt{\textbackslash#1}}
+\title{愛媛大学自然言語処理研究室\\学位論文{\LaTeX}テンプレート\\ユーザ向けドキュメント}
+\author{米山瑛人}
+\begin{document}
+\maketitle
+\tableofcontents
+\clearpage
+\section{はじめに}
+これは, 言語処理学会論文誌の{\LaTeX}テンプレート (\pkg{jnlp\_3.8.cls}, \pkg{jnlpbbl\_2.2.sty}, \pkg{jnlpbbl\_1.7.bst}) を愛媛大学自然言語処理研究室の学位論文用に一部改変したものです.
+\section{クラスオプション}
+\begin{itemize}
+    \item \texttt{draft}：草稿モードでコンパイル
+    \item \texttt{final}：最終稿モードでコンパイル (\textit{default})
+    \item \texttt{ldebug}：レイアウトデバッグ用の枠線を表示 (LuaLaTeXのみ)
+\end{itemize}
+\section{主要マクロ}
+\begin{itemize}
+    \item \cs{thesis\{<paper type>\}}：論文種別の指定（例：学位論文, 修士論文）
+    \item \cs{teacher\{<teacher name>\}}：指導教員名の指定
+    \item \cs{institute\{<affiliation>\}}：所属の指定
+    \item \cs{date\{<submission date>\}}：提出日の指定
+    \item \cs{maketitle}：タイトルページの生成
+    \item \cs{tableofcontents}：目次の生成
+    \item \cs{bibliographystyle\{enlpbbl\}}：参考文献スタイルの指定
+    \item \cs{bibliography\{<bibtex file>\}}：参考文献リストの生成
+    \item \cs{cite\{<key>\}}：(Author, Year) 形式の参考文献の引用
+    \item \cs{citeA\{<key>\}}：Author (Year) 形式の参考文献の引用
+    \item \cs{allowdisplaybreaks}：数式のページ分割を許可
+    \item \cs{bibsetup\{check-bbl=<mode>\}}：参考文献の略称名チェック設定
+    \begin{itemize}
+        \item \texttt{check-bbl=warning}：略称名が見つかった場合, 警告を出力
+        \item \texttt{check-bbl=error}：略称名が見つかった場合, エラーを出力 (\textit{default})
+        \item \texttt{check-bbl=none}：略称名チェックを無効化
+    \end{itemize}
+\end{itemize}
+\section{主要環境}
+\begin{itemize}
+    \item \pkg{abstract} (\textit{env.})：概要の記述
+    \item \pkg{acknowledgment} (\textit{env.})：謝辞の記述
+    \item \pkg{publication} (\textit{env.})：対外発表の記述
+\end{itemize}
+\section{参考文献スタイル}
+\subsection{BibTeXのエントリタイプとフィールド}
+\begin{itemize}
+    \item \texttt{@article}：論文誌
+    \begin{itemize}
+        \item \texttt{author}：著者名 (\textit{required}) % Full Name必須
+        \item \texttt{title}：論文タイトル (\textit{required})
+        \item \texttt{journal}：論文誌名 (\textit{required})
+        \item \texttt{year}：発行年 (\textit{required})
+        \item \texttt{volume}：巻
+        \item \texttt{number}：号
+        \item \texttt{pages}：ページ範囲
+    \end{itemize}
+
+    \item \texttt{@book}：書籍（単行本）
+    \begin{itemize}
+        \item \texttt{author} / \texttt{editor}：著者または編者 (\textit{one of them is required})
+        \item \texttt{title}：書名 (\textit{required})
+        \item \texttt{publisher}：出版社 (\textit{required})
+        \item \texttt{year}：発行年 (\textit{required})
+        \item \texttt{series}：シリーズ名
+        \item \texttt{address}：出版地
+    \end{itemize}
+
+    \item \texttt{@inproceedings} / \texttt{@conference}：会議録 (学会発表論文)
+    \begin{itemize}
+        \item \texttt{author}：著者名 (\textit{required})
+        \item \texttt{title}：論文タイトル (\textit{required})
+        \item \texttt{booktitle}：会議名 (\textit{required})
+        \item \texttt{year}：開催年 (\textit{required})
+        \item \texttt{pages}：ページ範囲
+        \item \texttt{publisher}：発行元
+    \end{itemize}
+
+    \item \texttt{@incollection}：論文集 (編者がいる書籍) 内の論文
+    \begin{itemize}
+        \item \texttt{author}：著者名 (\textit{required})
+        \item \texttt{title}：論文タイトル (\textit{required})
+        \item \texttt{booktitle}：書籍名 (\textit{required})
+        \item \texttt{publisher}：出版社 (\textit{required})
+        \item \texttt{year}：発行年 (\textit{required})
+        \item \texttt{editor}：編者名
+        \item \texttt{pages}：ページ範囲
+    \end{itemize}
+
+    \item \texttt{@phdthesis} / \texttt{@mastersthesis}：学位論文
+    \begin{itemize}
+        \item \texttt{author}：著者名 (\textit{required})
+        \item \texttt{title}：論文題目 (\textit{required})
+        \item \texttt{school}：大学名・授与機関 (\textit{required})
+        \item \texttt{year}：授与年 (\textit{required})
+        \item \texttt{type}：種類 (例：「修士論文」)
+    \end{itemize}
+
+    \item \texttt{@techreport}：技術報告書
+    \begin{itemize}
+        \item \texttt{author}：著者名 (\textit{required})
+        \item \texttt{title}：レポート名 (\textit{required})
+        \item \texttt{institution}：発行機関・組織名 (\textit{required})
+        \item \texttt{year}：発行年 (\textit{required})
+        \item \texttt{number}：レポート番号
+    \end{itemize}
+
+    \item \texttt{@inbook}：書籍内の特定章・ページ
+    \begin{itemize}
+        \item \texttt{author} / \texttt{editor}：著者または編者 (one of them is required)
+        \item \texttt{title}：書名 (\textit{required})
+        \item \texttt{chapter} / \texttt{pages}：章またはページ (one of them is required)
+        \item \texttt{publisher}：出版社 (\textit{required})
+        \item \texttt{year}：発行年 (\textit{required})
+    \end{itemize}
+
+    \item \texttt{@manual}：マニュアル・仕様書
+    \begin{itemize}
+        \item \texttt{title}：タイトル (\textit{required})
+        \item \texttt{year}：発行年 (\textit{required})
+        \item \texttt{organization}：組織名
+    \end{itemize}
+
+    \item \texttt{@webpage}：Webページ
+    \begin{itemize}
+        \item \texttt{title}：ページタイトル (\textit{required})
+        \item \texttt{url}：URLアドレス (\textit{required})
+        \item \texttt{author}：著者・サイト運営者
+        \item \texttt{year}：公開年・更新年
+        \item \texttt{note}：アクセス日など
+    \end{itemize}
+
+    \item \texttt{@misc}：汎用
+    \begin{itemize}
+        \item \texttt{author}：著者名
+        \item \texttt{title}：タイトル (\textit{required})
+        \item \texttt{year}：年 (\textit{required})
+        \item \texttt{howpublished}：発表形式や媒体
+        \item \texttt{note}：備考
+    \end{itemize}
+
+    \item \texttt{@booklet}：小冊子
+    \begin{itemize}
+        \item \texttt{title}：タイトル (\textit{required})
+        \item \texttt{year}：発行年 (\textit{required})
+        \item \texttt{author}：著者名
+        \item \texttt{howpublished}：発行方法
+    \end{itemize}
+
+    \item \texttt{@proceedings}：会議録全体
+    \begin{itemize}
+        \item \texttt{title}：会議録名 (\textit{required})
+        \item \texttt{year}：発行年 (\textit{required})
+        \item \texttt{editor}：編者
+    \end{itemize}
+
+    \item \texttt{@unpublished}：未出版物
+    \begin{itemize}
+        \item \texttt{author}：著者名 (\textit{required})
+        \item \texttt{title}：タイトル (\textit{required})
+        \item \texttt{note}：状況記述 (例：submitted to ...) (\textit{required})
+        \item \texttt{year}：執筆年 (\textit{required})
+    \end{itemize}
+\end{itemize}
+\subsection{入力形式に関する注意事項}
+
+BibTeXファイル (\texttt{.bib}) の記述において, 意図通りの出力を得るために以下の入力規則に従う必要があります.
+
+\begin{itemize}
+    \item \textbf{組織名を著者にする場合 (二重中括弧)} \\
+    著者が個人ではなく組織の場合, 単なる \texttt{author = \{Ehime University\}} という記述では, BibTeXは "Ehime" を「姓」と解釈してしまいます (出力が "Ehime University" ではなく, "University, E." として処理されます)~\footnote{より厳密には, BibTeXはauthorフィールドの値をスペースで区切り, 「名」と「姓」に分解するため, 「OpenAI」などのスペースを含まない組織名ならば出力上は問題になりません.}. 
+    組織名を正しく出力させるには, 以下のように\textbf{二重中括弧 \texttt{\{\{...\}\}}} で囲んで記述します.
+    
+\begin{lstlisting}[language=TeX]
+author = {{Ehime University}},
+\end{lstlisting}
+
+\item \textbf{フィールドの囲み文字 (中括弧の推奨)} \\
+    BibTeXの仕様上, フィールドの値は \texttt{""} (ダブルクォーテーション) または \texttt{\{\}} (中括弧) のどちらで囲んでも構いません. 
+    しかし, 以下の理由から本テンプレートでは \textbf{\texttt{\{...\}} (中括弧) の使用を強く推奨}します.
+
+    \begin{itemize}
+        \item \textbf{内部の引用符の扱い：} \\
+        タイトル内にダブルクォーテーションが含まれる場合, 外側を \texttt{""} で囲むと構文エラーになりますが, \texttt{\{\}} であれば問題なく記述できます.
+\begin{lstlisting}[language=TeX]
+% エラーになる例
+title = "The impact of "AI" on society",
+
+% 推奨される記述
+title = {The impact of "AI" on society},
+\end{lstlisting}
+
+        \item \textbf{入れ子構造 (ネスト) の統一：} \\
+        前述の「組織名の指定 (\texttt{\{\{...\}\}} )」や, 一般的なBibTeXスタイルにおける「大文字維持 (\texttt{\{NLP\}} )」のように, 内部で中括弧を使用するケースは多々あります. 外側の囲み文字も \texttt{\{\}} に統一することで, 括弧の対応関係が明確になり, 記述ミスを防ぐことができます.
+    \end{itemize}
+\end{itemize}
+
+\subsection{著者名の扱い}
+参考文献の著者名に関して, 以下の点に注意して記述してください.
+
+\begin{itemize}
+    \item \textbf{省略形の禁止} \\
+    参考文献の著者は, 省略形 (例：\texttt{E. Yoneyama}) ではなく, \textbf{Full Name (例：\texttt{Eito Yoneyama})} で記述してください. 
+
+    \item \textbf{自動チェック機能} \\
+    コンパイル時に \texttt{.bbl} ファイルを走査し, 省略形と思われる記述が含まれている場合, 警告またはエラーを出力します. 
+    この挙動は, \cs{bibsetup\{check-bbl=<mode>\}} で制御可能です. 
+    
+    \begin{itemize}
+        \item \texttt{check-bbl=warning}：省略形が見つかった場合, コンパイルを止めずに警告メッセージを出力します.
+        \item \texttt{check-bbl=error}：省略形が見つかった場合, コンパイルエラーとして停止させます. (\textit{default})
+        \item \texttt{check-bbl=none}：チェックを行いません.
+    \end{itemize}
+    
+\begin{lstlisting}[language=TeX]
+% 悪い例
+author = {E. Yoneyama},
+
+% 良い例
+author = {Eito Yoneyama},
+\end{lstlisting}
+    \item \textbf{著者名の形式} \\
+    著者名は, 以下のいずれかの形式で記述してください.
+
+\begin{lstlisting}[language=TeX]
+% FirstName LastName
+author = {Eito Yoneyama},
+
+% LastName, FirstName
+author = {Yoneyama, Eito},
+\end{lstlisting}
+
+また, 複数著者の場合は \texttt{and} で区切ってください.
+\begin{lstlisting}[language=TeX]
+author = {Eito Yoneyama and Tomoyuki Kajiwara},
+\end{lstlisting}
+\end{itemize}
+\section{使用例}
+\subsection{クラスファイルの読み込み}
+クラスファイルは以下のように読み込みます.
+\begin{lstlisting}[language=TeX]
+\documentclass{enlp}
+\end{lstlisting}
+クラスオプションを指定する場合は, 以下のようにします.
+\begin{lstlisting}[language=TeX]
+\documentclass[draft]{enlp}
+\end{lstlisting}
+\subsection{メタデータの設定}
+メタデータはプリアンブル~\footnote{プリアンブルとは, \cs{documentclass\{...\}} から \cs{begin\{document\}} の間のことです.}で以下のように設定します.
+\begin{lstlisting}[language=TeX]
+\thesis{修士論文}
+\title{論文タイトル}
+\author{9999999X\quad 土竜 戦士}
+\teacher{梶原 智之 准教授}
+\institute{
+    愛媛大学 大学院理工学研究科 \\
+    理工学専攻 数理情報プログラム
+}
+\date{2099 年 2 月 吉日 提出}
+\end{lstlisting}
+\subsection{表紙の生成}
+表紙は本文開始直後に以下のマクロで生成します.
+\begin{lstlisting}[language=TeX]
+\maketitle
+\end{lstlisting}
+\subsection{概要の記述}
+概要は以下の環境で記述します.
+\begin{lstlisting}[language=TeX]
+\begin{abstract}
+概要
+\end{abstract}
+\end{lstlisting}
+\subsection{目次の生成}
+目次は以下のマクロで生成します.
+\begin{lstlisting}[language=TeX]
+\tableofcontents
+\end{lstlisting}
+\begin{warning}
+\cs{tableofcontents} は, \texttt{abstract} 環境の直後に配置してください.
+\end{warning}
+\subsection{参考文献の設定と引用}
+参考文献スタイルの指定と参考文献リストの生成は以下のように行います.
+\begin{lstlisting}[language=TeX]
+\bibliographystyle{enlpbbl}
+\bibliography{references} % references.bib
+\end{lstlisting}
+参考文献の引用は以下のマクロで行います.
+\begin{lstlisting}[language=TeX]
+\cite{key}      % (Author, Year)
+\end{lstlisting}
+\subsection{謝辞の記述}
+謝辞は以下の環境で記述します.
+\begin{lstlisting}[language=TeX]
+\begin{acknowledgment}
+謝辞の内容
+\end{acknowledgment}
+\end{lstlisting}
+\subsection{対外発表の記述}
+対外発表は以下の環境で記述します.
+\begin{lstlisting}[language=TeX]
+\begin{publication}
+対外発表の内容
+\end{publication}
+\end{lstlisting}
+\end{document}

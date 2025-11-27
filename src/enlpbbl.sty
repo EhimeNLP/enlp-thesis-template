@@ -750,7 +750,7 @@
     check-bbl / warning .code:n = { \str_gset:Nn \g_enlpbbl_check_mode_str { warning } },
     check-bbl / error   .code:n = { \str_gset:Nn \g_enlpbbl_check_mode_str { error } },
     check-bbl / none    .code:n = { \str_gset:Nn \g_enlpbbl_check_mode_str { none } },
-    check-bbl .initial:n = none,
+    check-bbl .initial:n = error,
   }
 
 \NewDocumentCommand{\bblsetup}{ m }

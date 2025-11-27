@@ -33,10 +33,12 @@ ENTRY
     url
     romaji
   }
-  {}
+  % {}
+  { citation.order }
   { label extra.label sort.label }
 
 INTEGERS { output.state before.all mid.sentence after.sentence after.block }
+INTEGERS { citation.counter }
 
 FUNCTION {init.state.consts}
 { #0 'before.all :=
@@ -254,7 +256,9 @@ FUNCTION {format.names}
     { namesleft #0 > }
     { s is.kanji.str$
   { s nameptr "{ff}{ll}" format.name$ 't :=}
-  { s nameptr "{vv~}{ll}{, jj}{, F.}" format.name$ 't :=}
+  % { s nameptr "{vv~}{ll}{, jj}{, F.}" format.name$ 't :=} % Last, F.
+  % { s nameptr "{ll~}{vv~}{ff}{, jj}" format.name$ 't :=} % Last First
+  { s nameptr "{ff~}{vv~}{ll}{, jj}" format.name$ 't :=} % First　 Last
       if$
       nameptr #1 >
   { namesleft #1 >
@@ -1637,12 +1641,24 @@ FUNCTION {presort}
   'sort.key$ :=
 }
 
-ITERATE {presort}
+FUNCTION {init.citation.counter}
+{ #0 'citation.counter := }
 
+FUNCTION {save.citation.order}
+{ citation.counter #1 + 'citation.counter :=
+  citation.counter 'citation.order :=
+}
+
+FUNCTION {represort}
+{ citation.order #10000 + int.to.str$ 'sort.key$ := }
+
+EXECUTE {init.citation.counter}
+ITERATE {save.citation.order}
+
+ITERATE {presort}
 SORT
 
 STRINGS { last.sort.label next.extra }
-
 INTEGERS { last.extra.num }
 
 FUNCTION {forward.pass}
@@ -1667,8 +1683,10 @@ FUNCTION {reverse.pass}
 }
 
 ITERATE {forward.pass}
-
 REVERSE {reverse.pass}
+ 
+ITERATE {represort}
+SORT
 
 FUNCTION {begin.bib}
 { preamble$ empty$

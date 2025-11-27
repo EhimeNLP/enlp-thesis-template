@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create distribution folder
+        run: |
+          mkdir -p dist
+          cp -r src/* dist/
+          rsync -av --exclude='Makefile' --exclude='README.md' sample/ dist/
+
+      - name: Compress dist
+        run: zip -r enlp-template.zip dist
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: enlp-template.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

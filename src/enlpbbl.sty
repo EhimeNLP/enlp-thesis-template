@@ -4,7 +4,7 @@
 %%
 %% Author: Eito Yoneyama
 %% Created: 2025/11/20
-%% Updated: 2025/11/25
+%% Updated: 2025/11/27
 %%
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{enlpbbl}[2025/11/20 v0.1.0 Citation support for Ehime Univ. NLP Lab]
@@ -735,7 +735,7 @@
 
 \str_gset:Nn \g_enlpbbl_check_mode_str { none }
 
-\regex_const:Nn \c_enlpbbl_abbr_name_regex { ,\s+[A-Z]\. }
+\regex_const:Nn \c_enlpbbl_abbr_name_regex { ,\s+[A-Z]\. | [A-Z]\.[\~\s] }
 
 \keys_define:nn { enlpbbl }
   {

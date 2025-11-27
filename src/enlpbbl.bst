@@ -255,7 +255,8 @@ FUNCTION {format.names}
   numnames 'namesleft :=
     { namesleft #0 > }
     { s is.kanji.str$
-  { s nameptr "{ff}{ll}" format.name$ 't :=}
+  % { s nameptr "{ff}{ll}" format.name$ 't :=} % seimei
+  { s nameptr "{ff}{~ll}" format.name$ 't :=} % sei mei
   % { s nameptr "{vv~}{ll}{, jj}{, F.}" format.name$ 't :=} % Last, F.
   % { s nameptr "{ll~}{vv~}{ff}{, jj}" format.name$ 't :=} % Last First
   { s nameptr "{ff~}{vv~}{ll}{, jj}" format.name$ 't :=} % First　 Last

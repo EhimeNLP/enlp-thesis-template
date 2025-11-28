@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+defaults:
+  - template: "bug_report.yml"
+    name: "バグ報告"
+    about: "バグを報告する"
+  - template: "feature_request.yml"
+    name: "機能リクエスト"
+    about: "新機能をリクエストする"

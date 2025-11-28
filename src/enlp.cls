@@ -4,10 +4,10 @@
 %%
 %% Author: Eito Yoneyama
 %% Created: 2025/11/20
-%% Updated: 2025/11/26
+%% Updated: 2025/11/28
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{enlp}[2025/11/26 v0.1.0 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
+\ProvidesClass{enlp}[2025/11/28 v0.1.1 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
 
 %% ===============================================
 %% Engine detection and font settings
@@ -348,6 +348,7 @@
   \endgroup
   \setcounter{footnote}{0}%
   \global\let\thanks\relax
+  \global\@enlp@titleproducedtrue
   \global\let\maketitle\relax
   \global\let\thesis\relax
   \global\let\teacher\relax
@@ -358,6 +359,12 @@
   \global\let\@teacher\@empty
   \global\let\@institute\@empty
 }
+
+%% ===============================================
+%% Order enforcement flags
+%% ===============================================
+\newif\if@enlp@titleproduced \@enlp@titleproducedfalse
+\newif\if@enlp@abstractdone  \@enlp@abstractdonefalse
 
 %% ===============================================
 %% Title page creation
@@ -428,6 +435,14 @@
 %% ===============================================
 \providecommand{\phantomsection}{}
 \newcommand{\tableofcontents}{%
+  \if@enlp@abstractdone
+  \else
+    \ClassError{\clsname}{%
+      \string\tableofcontents\space must be used after abstract environment%
+    }{%
+      The structure must be: \string\maketitle -> abstract -> \string\tableofcontents.%
+    }%
+  \fi
   \phantomsection
   \csection*{\contentsname}%
   \@mkboth{\contentsname}{\contentsname}%
@@ -435,6 +450,14 @@
 }
 
 \newenvironment{abstract}{%
+  \if@enlp@titleproduced
+  \else
+    \ClassError{\clsname}{%
+      abstract environment must be used after \string\maketitle%
+    }{%
+      The structure must be: \string\maketitle -> abstract -> \string\tableofcontents.%
+    }%
+  \fi
   \phantomsection
   \csection*{\absttitle}%
   \begin{center}%
@@ -443,6 +466,7 @@
     \end{minipage}%
   \end{center}%
   \setcounter{page}{1}%
+  \global\@enlp@abstractdonetrue
 }
 
 \setcounter{secnumdepth}{3}

@@ -306,7 +306,8 @@ author = {Eito Yoneyama and Tomoyuki Kajiwara},
 \tableofcontents
 \end{lstlisting}
 \begin{warning}
-\cs{tableofcontents} は, \texttt{abstract} 環境の直後に配置してください.
+\cs{tableofcontents} は, \texttt{abstract} 環境の直後に配置してください. \\
+なお, 内部で \cs{maketitle} $\rightarrow$ \texttt{abstract} (\textit{env.}) $\rightarrow$ \cs{tableofcontents} の順序をチェックしているため, これらの順序が守られていない場合, コンパイルエラーとなります.
 \end{warning}
 \subsection{参考文献の設定と引用}
 参考文献スタイルの指定と参考文献リストの生成は以下のように行います.

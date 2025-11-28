@@ -1,4 +1,6 @@
 \documentclass{ltjsarticle}
+\usepackage{float}
+\usepackage{enumitem}
 \usepackage[hidelinks]{hyperref}
 \usepackage{listings,showexpl,enumitem}
 \lstset{
@@ -319,7 +321,7 @@ DVIドライバはパッケージオプションではなく, クラスオプシ
 \end{lstlisting}
 \begin{warning}
 \cs{tableofcontents} は, \texttt{abstract} 環境の直後に配置してください. \\
-なお, 内部で \cs{maketitle} $\rightarrow$ \texttt{abstract} (\textit{env.}) $\rightarrow$ \cs{tableofcontents} の順序をチェックしているため, これらの順序が守られていない場合, コンパイルエラーとなります.
+なお, 内部で \cs{maketitle} $\to$ \texttt{abstract} (\textit{env.}) $\to$ \cs{tableofcontents} の順序をチェックしているため, これらの順序が守られていない場合, コンパイルエラーとなります.
 \end{warning}
 \subsection{参考文献の設定と引用}
 参考文献スタイルの指定と参考文献リストの生成は以下のように行います.
@@ -345,4 +347,18 @@ DVIドライバはパッケージオプションではなく, クラスオプシ
 対外発表の内容
 \end{publication}
 \end{lstlisting}
+\section{更新履歴}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{llp{11cm}}
+        \textbf{v0.1.0}&2025-11-27&開発版リリース\\
+        \textbf{v0.1.1}&2025-11-28&\cs{maketitle} $\to$ \texttt{abstract} (\textit{env.}) $\to$ \cs{tableofcontents} の順序チェックを追加\\
+        \textbf{v0.1.2}&2025-11-28&以下を追加：
+        \begin{itemize}[nosep]
+            \item DVIドライバオプションのグローバル化
+            \item \pkg{bxpapersize} による厳密なPDFサイズ制御
+            \item pTeX系互換性のための \pkg{plautopatch} 自動読み込み
+        \end{itemize}\\
+    \end{tabular}
+\end{table}
 \end{document}

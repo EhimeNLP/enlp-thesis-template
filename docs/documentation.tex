@@ -275,6 +275,18 @@ author = {Eito Yoneyama and Tomoyuki Kajiwara},
 \begin{lstlisting}[language=TeX]
 \documentclass[draft]{enlp}
 \end{lstlisting}
+\begin{warning}
+DVIドライバはパッケージオプションではなく, クラスオプションとして指定することを推奨します.
+\begin{lstlisting}[language=TeX,xleftmargin=1.5em]
+% 非推奨
+\documentclass{enlp}
+\usepackage[dvipdfmx]{graphicx}
+
+% 推奨
+\documentclass[dvipdfmx]{enlp}
+\usepackage{graphicx}
+\end{lstlisting}
+\end{warning}
 \subsection{メタデータの設定}
 メタデータはプリアンブル~\footnote{プリアンブルとは, \cs{documentclass\{...\}} から \cs{begin\{document\}} の間のことです.}で以下のように設定します.
 \begin{lstlisting}[language=TeX]

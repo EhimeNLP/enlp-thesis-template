@@ -16,13 +16,44 @@
 
 ### Local
 
-`l3build` を使用して, `TEXMFHOME` に追加してください.
+まず, 本リポジトリをローカル環境にクローンしてください.
 
 ```bash
 git clone https://github.com/EhimeNLP/graduation_thesis_tex_template.git
 cd graduation_thesis_tex_template
+```
+
+#### Windows / macOS / Linux
+
+`l3build` を使用して, `TEXMFHOME` に追加してください.
+
+```bash
 l3build install
 ```
+
+#### Windows
+
+バッチファイルを使用して, `TEXMFLOCAL` または `TEXMFHOME` に追加してください.
+
+```bash
+install [--texmflocal|--texmfhome]
+```
+
+- `--texmflocal`: `TEXMFLOCAL` に追加 (default)
+- `--texmfhome`: `TEXMFHOME` に追加
+
+#### macOS / Linux
+
+シェルスクリプトを使用して, `TEXMFLOCAL` または `TEXMFHOME` に追加してください. 
+ただし, 実行権限の付与が必要です. また, `TEXMFLOCAL` に追加する場合は, 管理者権限が必要です. 
+
+```bash
+chmod +x install.sh
+./install.sh [--texmflocal|--texmfhome]
+```
+
+- `--texmflocal`: `TEXMFLOCAL` に追加 (default)
+- `--texmfhome`: `TEXMFHOME` に追加
 
 ### Overleaf
 

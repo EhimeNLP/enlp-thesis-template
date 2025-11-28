@@ -44,7 +44,7 @@ install [--texmflocal|--texmfhome]
 
 #### macOS / Linux
 
-シェルスクリプトを使用して, `TEXMFLOCAL` または `TEXMFHOME` に追加してください. 
+シェルスクリプトを使用して, `TEXMFLOCAL` または `TEXMFHOME` に追加してください.  
 ただし, 実行権限の付与が必要です. また, `TEXMFLOCAL` に追加する場合は, 管理者権限が必要です. 
 
 ```bash

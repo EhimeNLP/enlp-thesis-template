@@ -7,7 +7,7 @@
 %% Updated: 2025/11/28
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{enlp}[2025/11/28 v0.1.1 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
+\ProvidesClass{enlp}[2025/11/26 v0.1.2 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
 
 %% ===============================================
 %% Engine detection and font settings
@@ -20,6 +20,7 @@
 \ifpTeX
   \def\zw{zw}
   \def\zh{zh}
+  \RequirePackage{plautopatch}
 \else\ifLuaTeX
   \RequirePackage{luatexja}
 \else
@@ -58,9 +59,12 @@
 \DeclareOption{disablejfam}{\@enablejfamfalse}
 \DeclareOption{draft}{\setlength\overfullrule{5pt}}
 \DeclareOption{final}{\setlength\overfullrule{0pt}}
+\DeclareOption*{}
 
 \ExecuteOptions{final}
 \ProcessOptions\relax
+
+\RequirePackage{bxpapersize}
 
 % Load lua-visual-debug if ldebug is enabled AND using LuaTeX
 \if@ldebug

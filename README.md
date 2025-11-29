@@ -65,4 +65,4 @@ chmod +x install.sh
 
 ## Issue
 
-バグ報告や機能リクエストはIssueからお願いします.
+バグ報告や機能リクエストは[Issues](https://github.com/EhimeNLP/graduation_thesis_tex_template/issues)からお願いします.

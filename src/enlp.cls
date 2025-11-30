@@ -4,10 +4,10 @@
 %%
 %% Author: Eito Yoneyama
 %% Created: 2025/11/20
-%% Updated: 2025/11/28
+%% Updated: 2025/11/30
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{enlp}[2025/11/26 v0.1.2 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
+\ProvidesClass{enlp}[2025/11/30 v0.1.3 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
 
 %% ===============================================
 %% Engine detection and font settings
@@ -41,11 +41,6 @@
 %% ===============================================
 \newif\if@enablejfam\@enablejfamtrue
 \newif\if@ldebug\@ldebugfalse
-
-% Calculate current time (hour/minute)
-\hour\time \divide\hour by 60\relax
-\@tempcnta\hour \multiply\@tempcnta 60\relax
-\minute\time \advance\minute-\@tempcnta
 
 % Paper size settings
 \setlength\paperheight{297mm}
@@ -276,15 +271,12 @@
 %% ===============================================
 \def\ps@plain{%
   \let\@mkboth\@gobbletwo
-  \let\ps@jpl@in\ps@plain
   \let\@oddhead\@empty
   \def\@oddfoot{\reset@font\hfil\thepage\hfil}%
   \let\@evenhead\@empty
   \let\@evenfoot\@oddfoot
 }
-\let\ps@jpl@in\ps@plain
 \def\ps@myheadings{%
-  \let\ps@jpl@in\ps@plain
   \let\@oddfoot\@empty\let\@evenfoot\@empty
   \def\@evenhead{\thepage\hfil\leftmark}%
   \def\@oddhead{{\rightmark}\hfil\thepage}%
@@ -294,7 +286,6 @@
 }
 
 \def\ps@mainpage{%
-  \let\ps@jpl@in\ps@mainpage
   \let\@mkboth\markboth
   \def\@oddhead{}
   \def\@oddfoot{\hfil{\mdseries\thepage}\hfil}
@@ -303,7 +294,6 @@
 }
 
 \def\ps@frontpage{%
-  \let\ps@jpl@in\ps@mainpage
   \let\@mkboth\markboth
   \def\@oddhead{}
   \def\@oddfoot{}%
@@ -335,12 +325,13 @@
 %% ===============================================
 %% Title page creation
 %% ===============================================
+\newlength{\@FMwidth}\setlength{\@FMwidth}{14pt}
+
 \newcommand{\maketitle}{%
   \par
   \begingroup
   \def\thefootnote{\ifcase\c@footnote\or *\or ** \or *** \else **** \fi}
   \def\@makefnmark{\kern0pt\raisebox{0.3ex}{\@textsuperscript{\normalfont \@thefnmark}}}%
-  \newlength{\@FMwidth}\setlength{\@FMwidth}{14pt}
     \renewcommand\@makefntext[1]{%
       \advance\leftskip\@FMwidth
       \parindent 1\Cwd\noindent\llap{\@textsuperscript{\normalfont \@thefnmark}~}##1
@@ -380,10 +371,8 @@
   \setlength{\leftskip}{25pt}\setlength{\rightskip}{25pt}
   \begin{center}
     \let\footnote\thanks
-    % \vspace*{30pt}
     \vspace*{40pt}
     
-    % {\fontsize{18pt}{25pt}\selectfont \@thesis \par}
     {\fontsize{20pt}{25pt}\selectfont \@thesis \par}
 
     \vspace{30pt}
@@ -394,7 +383,6 @@
       {\bfseries\fontsize{25pt}{35pt}\selectfont {\bfseries \@title} \par}
     }
     
-    % \vfill
     \vspace{70pt}
     
     \parbox{\textwidth}{%
@@ -405,7 +393,6 @@
       \@author \par
     }
     
-    % \vspace{40pt}
     \vspace{70pt}
     
     \parbox{\textwidth}{%
@@ -740,8 +727,6 @@
       \DeclareSymbolFontAlphabet{\mathmc}{mincho}
       \SetSymbolFont{mincho}{bold}{JY1}{gt}{m}{n}
       \DeclareMathAlphabet{\mathgt}{JY1}{gt}{m}{n}
-      \reDeclareMathAlphabet{\mathrm}{\@mathrm}{\@mathmc}
-      \reDeclareMathAlphabet{\mathbf}{\@mathbf}{\@mathgt}
       \jfam\symmincho
     \else
       \ifstrictuplatex
@@ -749,8 +734,6 @@
         \DeclareSymbolFontAlphabet{\mathmc}{mincho}
         \SetSymbolFont{mincho}{bold}{JY2}{gt}{m}{n}
         \DeclareMathAlphabet{\mathgt}{JY2}{gt}{m}{n}
-        \reDeclareMathAlphabet{\mathrm}{\@mathrm}{\@mathmc}
-        \reDeclareMathAlphabet{\mathbf}{\@mathbf}{\@mathgt}
         \jfam\symmincho
       \fi
     \fi
@@ -829,10 +812,6 @@
 %% ===============================================
 %% Other environments (Acknowledgments, Publications, etc.)
 %% ===============================================
-\newcommand{\@idxitem}{\par\hangindent 4\Cwd}
-\newcommand{\subitem}{\@idxitem \hspace*{2\Cwd}}
-\newcommand{\subsubitem}{\@idxitem \hspace*{3\Cwd}}
-\newcommand{\indexspace}{\par \vskip 10\p@ \@plus5\p@ \@minus5\p@\relax}
 \renewcommand{\footnoterule}{\kern-3\p@\hrule width .4\columnwidth\kern 2.6\p@}
 \newcommand\@makefntext[1]{%
   \samepage
@@ -862,7 +841,6 @@
 \newcommand{\listfigurename}{図目次}
 \newcommand{\listtablename}{表目次}
 \newcommand{\refname}{参考文献}
-\newcommand{\indexname}{索引}
 \newcommand{\figurename}{図}
 \newcommand{\tablename}{表}
 \newcommand{\acknowledgtitle}{謝辞}

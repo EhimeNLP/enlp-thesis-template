@@ -1,6 +1,6 @@
 [package]
 name = "enlp"
-version = "0.1.2"
+version = "0.1.3"
 entrypoints = ["src/enlp.cls", "src/enlpbbl.sty", "src/enlpbbl.bst", "src/enlplogo.sty"]
 authors = ["Eito YONEYAMA"]
 description = "Academic thesis class for Ehime University NLP Lab."

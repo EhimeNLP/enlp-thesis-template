@@ -4,10 +4,10 @@
 %%
 %% Author: Eito Yoneyama
 %% Created: 2025/11/20
-%% Updated: 2025/11/30
+%% Updated: 2025/12/01
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{enlp}[2025/11/30 v0.1.3 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
+\ProvidesClass{enlp}[2025/12/01 v0.1.4 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
 
 %% ===============================================
 %% Engine detection and font settings
@@ -33,7 +33,6 @@
 \RequirePackage{enlplogo}
 \RequirePackage[absolute,overlay]{textpos}
 \RequirePackage{tikz}
-\RequirePackage{atbegshi}
 \RequirePackage{enlpbbl}
 
 %% ===============================================
@@ -135,37 +134,36 @@
 \setlength\Chs{\wd0}
 
 \newcommand{\small}{%
-  \@setfontsize\small\@xipt{17}% 11pt
+  \@setfontsize\small\@xipt{17}% 11pt / 17pt
   \abovedisplayskip 9\p@ \@plus3\p@ \@minus4\p@
   \abovedisplayshortskip \z@ \@plus2\p@
+  \belowdisplayskip \abovedisplayskip
   \belowdisplayshortskip 5\p@ \@plus2\p@ \@minus2\p@
   \def\@listi{\leftmargin\leftmargini
               \topsep 5\p@ \@plus2\p@ \@minus2\p@
               \parsep 2\p@ \@plus\p@ \@minus\p@
               \itemsep \parsep}%
-  \belowdisplayskip \abovedisplayskip
 }
 
 \newcommand{\footnotesize}{%
-  \@setfontsize\footnotesize\@xpt{15}% 10pt
+  \@setfontsize\footnotesize\@xpt{15}% 10pt / 15pt
   \abovedisplayskip 6\p@ \@plus2\p@ \@minus2\p@
   \abovedisplayshortskip \z@ \@plus1\p@
+  \belowdisplayskip \abovedisplayskip
   \belowdisplayshortskip 3\p@ \@plus\p@ \@minus\p@
   \def\@listi{\leftmargin\leftmargini
               \topsep 3\p@ \@plus\p@ \@minus\p@
               \parsep 2\p@ \@plus\p@ \@minus\p@
               \itemsep \parsep}%
-  \belowdisplayskip \abovedisplayskip
 }
 
-\newcommand{\scriptsize}{\@setfontsize\scriptsize\@viiipt{10}}
-\newcommand{\tiny}{\@setfontsize\tiny\@vipt{7}}
-\newcommand{\large}{\@setfontsize\large\@xivpt{25}}     % 14pt
-\newcommand{\Large}{\@setfontsize\Large\@xviipt{30}}    % 17pt
-\newcommand{\LARGE}{\@setfontsize\LARGE\@xxpt{35}}      % 20pt
-\newcommand{\huge}{\@setfontsize\huge\@xxvpt{40}}       % 25pt
-\newcommand{\Huge}{\@setfontsize\Huge{30}{45}}          % 30pt
-\newcommand{\semilarge}{\@setfontsize\semilarge\@xivpt{25}} % 14pt
+\newcommand{\tiny}{\@setfontsize\tiny\@vipt{7}} % 6pt / 7pt
+\newcommand{\scriptsize}{\@setfontsize\scriptsize\@viiipt{10}} % 8pt / 10pt
+\newcommand{\large}{\@setfontsize\large\@xivpt{25}} % 14pt / 25pt
+\newcommand{\Large}{\@setfontsize\Large\@xviipt{30}} % 17pt / 30pt
+\newcommand{\LARGE}{\@setfontsize\LARGE\@xxpt{35}} % 20pt / 35pt
+\newcommand{\huge}{\@setfontsize\huge\@xxvpt{40}} % 25pt / 40pt
+\newcommand{\Huge}{\@setfontsize\Huge{30}{45}} % 30pt / 45pt
 
 % (A4 / 12pt)
 \setlength\headheight{12\p@}
@@ -173,15 +171,14 @@
 \setlength\topskip{1\Cht}
 \setlength\footskip{30\p@}
 
-% 29 lines per page
 \setlength\textheight{29\Cvs}\addtolength\textheight{\topskip}
 \@settopoint\textheight
+\setlength\textwidth{460pt}
+\@settopoint\textwidth
 
 \setlength\topmargin{25mm}
 \addtolength\topmargin{-1in}
 \@settopoint\topmargin
-\setlength\textwidth{460pt}
-\@settopoint\textwidth
 \setlength\marginparsep{\z@}
 \setlength\marginparpush{\z@}
 \setlength\marginparwidth{\z@}

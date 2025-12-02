@@ -4,10 +4,10 @@
 %%
 %% Author: Eito Yoneyama
 %% Created: 2025/11/20
-%% Updated: 2025/12/01
+%% Updated: 2025/12/02
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{enlp}[2025/12/01 v0.1.4 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
+\ProvidesClass{enlp}[2025/12/02 v0.1.5 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
 
 %% ===============================================
 %% Engine detection and font settings
@@ -192,17 +192,12 @@
 \setlength\footnotesep{7\p@}
 \setlength\@tempdima{1\Cvs}\addtolength\@tempdima{-1\Cht}\addtolength\@tempdima{7\p@}
 \setlength{\skip\footins}{\@tempdima \@plus 1\Cvs \@minus \z@}
-\setlength\floatsep    {17\p@}
+\setlength\floatsep{17\p@}
 \setlength\textfloatsep{2\@tempdima \@plus \@tempdima \@minus \@tempdima}
-\setlength\intextsep   {2\@tempdima \@plus \@tempdima \@minus \@tempdima}
-\setlength\dblfloatsep {17\p@}
-\setlength\dbltextfloatsep{\@tempdima \@plus \@tempdima \@minus \@tempdima}
+\setlength\intextsep{2\@tempdima \@plus \@tempdima \@minus \@tempdima}
 \setlength\@fptop{0\p@}
 \setlength\@fpsep{17\p@}
 \setlength\@fpbot{0\p@ \@plus 1fil}
-\setlength\@dblfptop{0\p@}
-\setlength\@dblfpsep{17\p@}
-\setlength\@dblfpbot{0\p@ \@plus 1fil}
 
 \setlength\partopsep{\z@}
 \def\@listi{
@@ -255,13 +250,10 @@
 \setcounter{topnumber}{4}
 \setcounter{bottomnumber}{4}
 \setcounter{totalnumber}{5}
-\setcounter{dbltopnumber}{4}
 \renewcommand{\topfraction}{.9}
 \renewcommand{\bottomfraction}{.9}
 \renewcommand{\textfraction}{.1}
 \renewcommand{\floatpagefraction}{.5}
-\renewcommand{\dbltopfraction}{.9}
-\renewcommand{\dblfloatpagefraction}{.5}
 
 %% ===============================================
 %% Headers and Footers
@@ -675,7 +667,6 @@
 \def\ext@figure{lof}
 \def\fnum@figure{\textbf{\figurename~\thefigure}}
 \newenvironment{figure}{\@float{figure}}{\end@float}
-\newenvironment{figure*}{\@dblfloat{figure}}{\end@dblfloat}
 \newcounter{table}
 \renewcommand{\thetable}{\@arabic\c@table}
 \def\fps@table{tbp}
@@ -683,7 +674,6 @@
 \def\ext@table{lot}
 \def\fnum@table{\textbf{\tablename~\thetable}}
 \newenvironment{table}{\@float{table}}{\end@float}
-\newenvironment{table*}{\@dblfloat{table}}{\end@dblfloat}
 \newlength\abovecaptionskip
 \newlength\belowcaptionskip
 \setlength\abovecaptionskip{8\p@}

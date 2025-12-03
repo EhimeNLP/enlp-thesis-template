@@ -61,11 +61,10 @@
     \item \cs{cite\{<key>\}}：(Author, Year) 形式の参考文献の引用
     \item \cs{citeA\{<key>\}}：Author (Year) 形式の参考文献の引用
     \item \cs{allowdisplaybreaks}：数式のページ分割を許可
-    \item \cs{bibsetup\{check-bbl=<mode>\}}：参考文献の略称名チェック設定
+    \item \cs{BibCheckMode\{<mode>\}}：参考文献の略称名チェック設定
     \begin{itemize}
-        \item \texttt{check-bbl=warning}：略称名が見つかった場合, 警告を出力
-        \item \texttt{check-bbl=error}：略称名が見つかった場合, エラーを出力 (\textit{default})
-        \item \texttt{check-bbl=none}：略称名チェックを無効化
+        \item \texttt{warning}：略称名が見つかった場合, 警告を出力
+        \item \texttt{error}：略称名が見つかった場合, エラーを出力 (\textit{default})
     \end{itemize}
 \end{itemize}
 \section{主要環境}
@@ -235,13 +234,12 @@ title = {The impact of "AI" on society},
     参考文献の著者は, 省略形 (例：\texttt{E. Yoneyama}) ではなく, \textbf{Full Name (例：\texttt{Eito Yoneyama})} で記述してください. 
 
     \item \textbf{自動チェック機能} \\
-    コンパイル時に \texttt{.bbl} ファイルを走査し, 省略形と思われる記述が含まれている場合, 警告またはエラーを出力します. 
-    この挙動は, \cs{bibsetup\{check-bbl=<mode>\}} で制御可能です. 
+    コンパイル時に \texttt{.bib} ファイルを走査し, 省略形と思われる記述が含まれている場合, 警告またはエラーを出力します. 
+    この挙動は, \cs{BibCheckMode\{<mode>\}} で制御可能です. 
     
     \begin{itemize}
-        \item \texttt{check-bbl=warning}：省略形が見つかった場合, コンパイルを止めずに警告メッセージを出力します.
-        \item \texttt{check-bbl=error}：省略形が見つかった場合, コンパイルエラーとして停止させます. (\textit{default})
-        \item \texttt{check-bbl=none}：チェックを行いません.
+        \item \texttt{warning}：省略形が見つかった場合, コンパイルを止めずに警告メッセージを出力します.
+        \item \texttt{error}：省略形が見つかった場合, コンパイルエラーとして停止させます. (\textit{default})
     \end{itemize}
     
 \begin{lstlisting}[language=TeX]
@@ -366,6 +364,7 @@ DVIドライバはパッケージオプションではなく, クラスオプシ
         \end{itemize}\\
         \textbf{v0.1.4}&2025-12-01&\pkg{atbegshi}パッケージの読み込みを削除\\
         \textbf{v0.1.5}&2025-12-02&2段組における浮動体に関するマクロを削除\\
+        \textbf{v0.1.6}&2025-12-03&\pkg{enlpbbl}のBibTeXチェックを\pkg{bibcheck}に変更\\
     \end{tabular}
 \end{table}
 \end{document}

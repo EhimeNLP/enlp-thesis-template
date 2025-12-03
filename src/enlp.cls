@@ -4,10 +4,10 @@
 %%
 %% Author: Eito Yoneyama
 %% Created: 2025/11/20
-%% Updated: 2025/12/02
+%% Updated: 2025/12/03
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{enlp}[2025/12/02 v0.1.5 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
+\ProvidesClass{enlp}[2025/12/03 v0.1.6 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
 
 %% ===============================================
 %% Engine detection and font settings
@@ -34,6 +34,7 @@
 \RequirePackage[absolute,overlay]{textpos}
 \RequirePackage{tikz}
 \RequirePackage{enlpbbl}
+\RequirePackage{bibcheck}
 
 %% ===============================================
 %% Option settings
@@ -107,7 +108,7 @@
 %% Size and layout settings
 %% ===============================================
 \renewcommand{\normalsize}{%
-  \@setfontsize\normalsize\@xiipt{22}% 12pt / 22pt
+  \@setfontsize\normalsize\@xiipt{19}% 12pt / 19pt
   \abovedisplayskip 11\p@ \@plus3\p@ \@minus6\p@
   \abovedisplayshortskip \z@ \@plus3\p@
   \belowdisplayshortskip 6.5\p@ \@plus3.5\p@ \@minus3\p@
@@ -169,9 +170,9 @@
 \setlength\headheight{12\p@}
 \setlength\headsep{25\p@}
 \setlength\topskip{1\Cht}
-\setlength\footskip{30\p@}
+\setlength\footskip{48\p@}
 
-\setlength\textheight{29\Cvs}\addtolength\textheight{\topskip}
+\setlength\textheight{32\Cvs}\addtolength\textheight{\topskip}
 \@settopoint\textheight
 \setlength\textwidth{460pt}
 \@settopoint\textwidth
@@ -843,4 +844,45 @@
 \onecolumn
 \@twosidetrue
 \@mparswitchtrue
+
+%% ===============================================
+%% BibTeX check patterns
+%% ===============================================
+% Last, F. / Last, F. M.
+\BibCheckAddPattern{
+  author \s* = \s*
+  (?:
+    \{ [^\{\}]* , \s* 
+    (?: [A-Z] \. \s* )+ 
+    (?: , | and | \} )
+    |
+    " [^"]* , \s* 
+    (?: [A-Z] \. \s* )+ 
+    (?: , | and | " )
+  )
+}
+
+% F. Last
+\BibCheckAddPattern{
+  author \s* = \s*
+  (?:
+    \{
+      (?:
+        \s* (?: [A-Z] \. \s* )+ [A-Z][a-z]+
+        |
+        [^\{\}]* \s+ and \s+ (?: [A-Z] \. \s* )+ [A-Z][a-z]+
+      )
+      [^\{\}]*
+    \}
+    |
+    "
+      (?:
+        \s* (?: [A-Z] \. \s* )+ [A-Z][a-z]+
+        |
+        [^"]* \s+ and \s+ (?: [A-Z] \. \s* )+ [A-Z][a-z]+
+      )
+      [^"]*
+    "
+  )
+}
 \endinput

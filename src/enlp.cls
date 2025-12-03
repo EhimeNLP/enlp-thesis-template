@@ -885,4 +885,6 @@
     "
   )
 }
+
+\BibCheckMode{error}
 \endinput

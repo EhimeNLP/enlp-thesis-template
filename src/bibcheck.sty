@@ -1,0 +1,119 @@
+%%
+%% This is file `bibcheck.sty',
+%% This package provides a mechanism to validate BibTeX entries in .bib files
+%% against user-defined regular expression patterns. It hooks into the
+%% \bibliography command to automatically scan the specified bibliography files.
+%% If an entry matches a forbidden pattern (e.g., incorrect formatting or
+%% discouraged terminology), the package triggers a warning or an error message.
+%%
+%% Author: Eito Yoneyama
+%% Created: 2025/12/03
+%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{bibcheck}[2025/12/03 v0.1.1 A BibTeX entry validator using regular expressions]
+\RequirePackage{expl3}
+
+\ExplSyntaxOn
+
+\seq_new:N \l_bibcheck_patterns_seq
+\bool_new:N \l_bibcheck_error_mode_bool 
+\seq_new:N \l_bibcheck_match_seq
+\tl_new:N \l_matched_content_tl
+
+\NewDocumentCommand{\BibCheckAddPattern}{m}
+  {
+    \seq_put_right:Nn \l_bibcheck_patterns_seq { #1 }
+  }
+
+\NewDocumentCommand{\BibCheckMode}{m}
+  {
+    \str_if_eq:nnTF {#1} {error}
+      { \bool_set_true:N \l_bibcheck_error_mode_bool }
+      { \bool_set_false:N \l_bibcheck_error_mode_bool }
+  }
+
+\tl_new:N \l_entry_tl
+\tl_new:N \l_entry_str_tl
+\tl_new:N \l_entry_key_tl
+\ior_new:N \l_bibcheck_ior
+\bool_new:N \l_in_entry_bool
+\regex_new:N \l_tmp_regex
+
+\cs_new_protected:Npn \bibcheck_log:nnn #1#2#3
+  {
+    \bool_if:NTF \l_bibcheck_error_mode_bool
+      { \msg_error:nnxxx { bibcheck } { pattern-hit } {#1} { \tl_to_str:n {#2} } { \tl_to_str:n {#3} } }
+      { \msg_warning:nnxxx { bibcheck } { pattern-hit } {#1} { \tl_to_str:n {#2} } { \tl_to_str:n {#3} } }
+  }
+
+\cs_generate_variant:Nn \bibcheck_log:nnn { nnV }
+
+\msg_new:nnn { bibcheck } { pattern-hit } 
+  { 
+    Bib~entry~"#1"~matched~pattern:~#2 \\
+    Matched~content:~#3
+  }
+
+\cs_new_protected:Npn \bibcheck_scan_file:n #1
+  {
+    \ior_open:Nn \l_bibcheck_ior { #1 }
+    \bool_set_false:N \l_in_entry_bool
+    \tl_clear:N \l_entry_tl
+
+    \ior_map_inline:Nn \l_bibcheck_ior
+      {
+        \regex_match:nnTF { \A \s* @ comment } {##1}
+          { }
+          {
+            \regex_match:nnTF { \A \s* @ [a-zA-Z]+ \s* \{ \s* ([^\,]+) } {##1}
+              {
+                \bool_set_true:N \l_in_entry_bool
+                \tl_clear:N \l_entry_tl
+                \tl_set:Nn \l_entry_key_tl {##1}
+                \regex_replace_once:nnN { \A \s* @ [a-zA-Z]+ \s* \{ \s* ([^\,]+) .* \Z } { \1 } \l_entry_key_tl
+              }
+              { }
+          }
+
+        \bool_if:NT \l_in_entry_bool
+          {
+            \tl_put_right:Nn \l_entry_tl { ##1 ~ }
+            \regex_match:nnTF { \} \s* \Z } {##1}
+              {
+                \tl_set:Nx \l_entry_str_tl { \tl_to_str:N \l_entry_tl }
+                \seq_map_inline:Nn \l_bibcheck_patterns_seq
+                  {
+                    \regex_set:Nn \l_tmp_regex { ####1 }
+                    
+                    \regex_extract_once:NVNTF \l_tmp_regex \l_entry_str_tl \l_bibcheck_match_seq
+                      {
+                        \seq_get_left:NN \l_bibcheck_match_seq \l_matched_content_tl
+                        \bibcheck_log:nnV { \l_entry_key_tl } { ####1 } \l_matched_content_tl
+                      }
+                      { }
+                  }
+                \bool_set_false:N \l_in_entry_bool
+              }
+              { }
+          }
+      }
+    \ior_close:N \l_bibcheck_ior
+  }
+
+\cs_generate_variant:Nn \regex_extract_once:NnNTF { NV }
+
+\cs_new_eq:NN \orig_bibliography:n \bibliography
+\RenewDocumentCommand{\bibliography}{m}
+  {
+    \orig_bibliography:n {#1}
+    \clist_map_inline:nn {#1}
+      {
+        \file_if_exist:nTF {##1.bib}
+          { \bibcheck_scan_file:n {##1.bib} }
+          { }
+      }
+  }
+
+\ExplSyntaxOff
+
+\endinput

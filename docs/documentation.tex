@@ -78,7 +78,7 @@
 \begin{itemize}
     \item \texttt{@article}：論文誌
     \begin{itemize}
-        \item \texttt{author}：著者名 (\textit{required}) % Full Name必須
+        \item \texttt{author}：著者名 (\textit{required})
         \item \texttt{title}：論文タイトル (\textit{required})
         \item \texttt{journal}：論文誌名 (\textit{required})
         \item \texttt{year}：発行年 (\textit{required})
@@ -87,17 +87,7 @@
         \item \texttt{pages}：ページ範囲
     \end{itemize}
 
-    \item \texttt{@book}：書籍（単行本）
-    \begin{itemize}
-        \item \texttt{author} / \texttt{editor}：著者または編者 (\textit{one of them is required})
-        \item \texttt{title}：書名 (\textit{required})
-        \item \texttt{publisher}：出版社 (\textit{required})
-        \item \texttt{year}：発行年 (\textit{required})
-        \item \texttt{series}：シリーズ名
-        \item \texttt{address}：出版地
-    \end{itemize}
-
-    \item \texttt{@inproceedings} / \texttt{@conference}：会議録 (学会発表論文)
+    \item \texttt{@inproceedings}：会議録 (学会発表論文)
     \begin{itemize}
         \item \texttt{author}：著者名 (\textit{required})
         \item \texttt{title}：論文タイトル (\textit{required})
@@ -107,60 +97,6 @@
         \item \texttt{publisher}：発行元
     \end{itemize}
 
-    \item \texttt{@incollection}：論文集 (編者がいる書籍) 内の論文
-    \begin{itemize}
-        \item \texttt{author}：著者名 (\textit{required})
-        \item \texttt{title}：論文タイトル (\textit{required})
-        \item \texttt{booktitle}：書籍名 (\textit{required})
-        \item \texttt{publisher}：出版社 (\textit{required})
-        \item \texttt{year}：発行年 (\textit{required})
-        \item \texttt{editor}：編者名
-        \item \texttt{pages}：ページ範囲
-    \end{itemize}
-
-    \item \texttt{@phdthesis} / \texttt{@mastersthesis}：学位論文
-    \begin{itemize}
-        \item \texttt{author}：著者名 (\textit{required})
-        \item \texttt{title}：論文題目 (\textit{required})
-        \item \texttt{school}：大学名・授与機関 (\textit{required})
-        \item \texttt{year}：授与年 (\textit{required})
-        \item \texttt{type}：種類 (例：「修士論文」)
-    \end{itemize}
-
-    \item \texttt{@techreport}：技術報告書
-    \begin{itemize}
-        \item \texttt{author}：著者名 (\textit{required})
-        \item \texttt{title}：レポート名 (\textit{required})
-        \item \texttt{institution}：発行機関・組織名 (\textit{required})
-        \item \texttt{year}：発行年 (\textit{required})
-        \item \texttt{number}：レポート番号
-    \end{itemize}
-
-    \item \texttt{@inbook}：書籍内の特定章・ページ
-    \begin{itemize}
-        \item \texttt{author} / \texttt{editor}：著者または編者 (one of them is required)
-        \item \texttt{title}：書名 (\textit{required})
-        \item \texttt{chapter} / \texttt{pages}：章またはページ (one of them is required)
-        \item \texttt{publisher}：出版社 (\textit{required})
-        \item \texttt{year}：発行年 (\textit{required})
-    \end{itemize}
-
-    \item \texttt{@manual}：マニュアル・仕様書
-    \begin{itemize}
-        \item \texttt{title}：タイトル (\textit{required})
-        \item \texttt{year}：発行年 (\textit{required})
-        \item \texttt{organization}：組織名
-    \end{itemize}
-
-    \item \texttt{@webpage}：Webページ
-    \begin{itemize}
-        \item \texttt{title}：ページタイトル (\textit{required})
-        \item \texttt{url}：URLアドレス (\textit{required})
-        \item \texttt{author}：著者・サイト運営者
-        \item \texttt{year}：公開年・更新年
-        \item \texttt{note}：アクセス日など
-    \end{itemize}
-
     \item \texttt{@misc}：汎用
     \begin{itemize}
         \item \texttt{author}：著者名
@@ -168,29 +104,6 @@
         \item \texttt{year}：年 (\textit{required})
         \item \texttt{howpublished}：発表形式や媒体
         \item \texttt{note}：備考
-    \end{itemize}
-
-    \item \texttt{@booklet}：小冊子
-    \begin{itemize}
-        \item \texttt{title}：タイトル (\textit{required})
-        \item \texttt{year}：発行年 (\textit{required})
-        \item \texttt{author}：著者名
-        \item \texttt{howpublished}：発行方法
-    \end{itemize}
-
-    \item \texttt{@proceedings}：会議録全体
-    \begin{itemize}
-        \item \texttt{title}：会議録名 (\textit{required})
-        \item \texttt{year}：発行年 (\textit{required})
-        \item \texttt{editor}：編者
-    \end{itemize}
-
-    \item \texttt{@unpublished}：未出版物
-    \begin{itemize}
-        \item \texttt{author}：著者名 (\textit{required})
-        \item \texttt{title}：タイトル (\textit{required})
-        \item \texttt{note}：状況記述 (例：submitted to ...) (\textit{required})
-        \item \texttt{year}：執筆年 (\textit{required})
     \end{itemize}
 \end{itemize}
 \subsection{入力形式に関する注意事項}
@@ -365,6 +278,7 @@ DVIドライバはパッケージオプションではなく, クラスオプシ
         \textbf{v0.1.4}&2025-12-01&\pkg{atbegshi}パッケージの読み込みを削除\\
         \textbf{v0.1.5}&2025-12-02&2段組における浮動体に関するマクロを削除\\
         \textbf{v0.1.6}&2025-12-03&\pkg{enlpbbl}のBibTeXチェックを\pkg{bibcheck}に変更\\
+        \textbf{v1.0.0}&2025-12-03&正式版リリース\\
     \end{tabular}
 \end{table}
 \end{document}

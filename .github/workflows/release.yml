@@ -22,12 +22,12 @@ jobs:
           rsync -av --exclude='Makefile' --exclude='README.md' sample/ dist/enlp-template/
 
       - name: Compress dist
-        run: cd dist && zip -r ../enlp-template.zip enlp-template
+        run: cd dist && zip -r ../enlp-template-${{ github.ref_name }}.zip enlp-template
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: enlp-template.zip
+          files: enlp-template-${{ github.ref_name }}.zip
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

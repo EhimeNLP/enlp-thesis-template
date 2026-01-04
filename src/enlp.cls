@@ -4,10 +4,10 @@
 %%
 %% Author: Eito Yoneyama
 %% Created: 2025/11/20
-%% Updated: 2025/12/03
+%% Updated: 2026/01/05
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{enlp}[2025/12/03 v1.0.0 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
+\ProvidesClass{enlp}[2026/01/05 v1.0.1 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
 
 %% ===============================================
 %% Engine detection and font settings
@@ -28,11 +28,28 @@
 \fi\fi
 
 %% ===============================================
-%% Required packages
+%% Required packages (Part 1)
 %% ===============================================
 \RequirePackage{enlplogo}
 \RequirePackage[absolute,overlay]{textpos}
 \RequirePackage{tikz}
+
+%% ===============================================
+%% Hyperref Support
+%% ===============================================
+\ifpTeX
+  % pLaTeX / upLaTeX specific settings
+  % setpagesize=false prevents conflict with bxpapersize
+  \RequirePackage[dvipdfmx,setpagesize=false,bookmarks=true,bookmarksnumbered=true,colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
+  \RequirePackage{pxjahyper} % Essential for Japanese bookmarks in pLaTeX
+\else
+  % LuaLaTeX specific settings
+  \RequirePackage[unicode,setpagesize=false,bookmarks=true,bookmarksnumbered=true,colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
+\fi
+
+%% ===============================================
+%% Required packages (Part 2)
+%% ===============================================
 \RequirePackage{enlpbbl}
 \RequirePackage{bibcheck}
 
@@ -317,7 +334,7 @@
 %% ===============================================
 \newlength{\@FMwidth}\setlength{\@FMwidth}{14pt}
 
-\newcommand{\maketitle}{%
+\renewcommand{\maketitle}{%
   \par
   \begingroup
   \def\thefootnote{\ifcase\c@footnote\or *\or ** \or *** \else **** \fi}

@@ -200,8 +200,19 @@ DVIドライバはパッケージオプションではなく, クラスオプシ
 \usepackage{graphicx}
 \end{lstlisting}
 \end{warning}
+\subsection{依存パッケージの読み込み}
+通常の文書クラスと同様に, プリアンブル~\footnote{プリアンブルとは, \cs{documentclass\{...\}} から \cs{begin\{document\}} の間のことです.}で依存パッケージを読み込みます. 
+\begin{lstlisting}[language=TeX]
+% 依存パッケージの例
+\usepackage{float}
+\usepackage{enumitem}
+\end{lstlisting}
+\begin{warning}
+本テンプレートでは, 内部で \pkg{hyperref} を読み込んでいるため, \texttt{.tex} ファイル内で \pkg{hyperref} を読み込まないでください. 
+このような設計にしているのは, マクロ定義の干渉を回避するために \pkg{enlpbbl} より先に \pkg{hyperref} を読み込む必要があるためです.
+\end{warning}
 \subsection{メタデータの設定}
-メタデータはプリアンブル~\footnote{プリアンブルとは, \cs{documentclass\{...\}} から \cs{begin\{document\}} の間のことです.}で以下のように設定します.
+メタデータはプリアンブルで以下のように設定します.
 \begin{lstlisting}[language=TeX]
 \thesis{修士論文}
 \title{論文タイトル}
@@ -242,7 +253,7 @@ DVIドライバはパッケージオプションではなく, クラスオプシ
 \end{lstlisting}
 参考文献の引用は以下のマクロで行います.
 \begin{lstlisting}[language=TeX]
-\cite{key}      % (Author, Year)
+\cite{key} % (Author, Year)
 \end{lstlisting}
 \subsection{謝辞の記述}
 謝辞は以下の環境で記述します.
@@ -279,6 +290,14 @@ DVIドライバはパッケージオプションではなく, クラスオプシ
         \textbf{v0.1.5}&2025-12-02&2段組における浮動体に関するマクロを削除\\
         \textbf{v0.1.6}&2025-12-03&\pkg{enlpbbl}のBibTeXチェックを\pkg{bibcheck}に変更\\
         \textbf{v1.0.0}&2025-12-03&公開版リリース\\
+        \textbf{v1.0.1}&2026-01-05&以下を修正・追加：
+        \begin{itemize}[nosep]
+            \item \pkg{hyperref} との完全互換化 (引用・目次・相互参照のクリック対応)
+            \item dvipdfmx (pLaTeX/upLaTeX) および unicode (LuaLaTeX) ドライバの自動判別を改善
+            \item \cs{maketitle}・\cs{tableofcontents} に関する \pkg{hyperref} 読み込み時の再定義競合を解消
+            \item 参考文献項目にハイパーリンク用アンカーを追加し, ジャンプ位置のずれを修正
+            \item \cs{item} 引数内の入れ子括弧に起因するコンパイルエラーを修正
+        \end{itemize}\\
     \end{tabular}
 \end{table}
 \end{document}

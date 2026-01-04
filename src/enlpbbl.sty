@@ -4,10 +4,10 @@
 %%
 %% Author: Eito Yoneyama
 %% Created: 2025/11/20
-%% Updated: 2025/12/03
+%% Updated: 2026/01/05
 %%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{enlpbbl}[2025/12/03 v0.1.1 Citation support for Ehime Univ. NLP Lab]
+\ProvidesPackage{enlpbbl}[2026/01/05 v0.1.1 Citation support for Ehime Univ. NLP Lab]
 \RequirePackage{ifluatex}
 \ifupTeX
   \def\zw{zw}
@@ -21,6 +21,17 @@
 \fi\fi\fi\fi
 
 \@ifpackageloaded{expl3}{}{\RequirePackage{expl3}}
+
+%%%%%%%%%%%%%%%%%%%%
+%%% HYPERREF SUPPORT
+%%%%%%%%%%%%%%%%%%%%
+\newcommand{\enlp@hylink}[2]{%
+  \ifdefined\hyperlink
+    \hyperlink{cite.#1}{#2}%
+  \else
+    #2%
+  \fi
+}
 
 %%%%%%%%%%%%%%%%%%%%
 %%% APA CITATION %%%
@@ -95,14 +106,18 @@
 \def\NoTitleCaseChange{\def\BUcase##1{##1}}
 
 % citations
+% Definition of bibliography items (Fixed bracket nesting)
 \def\@lbibitem[#1]#2{%
-    \def\BBA{\BBAA}\item[\@biblabel{#1}]
+    \def\BBA{\BBAA}%
+    \refstepcounter{enumiv}%
+    % 修正点: \item の引数全体を {...} で囲んで保護しました
+    \item[{\ifdefined\hypertarget\raisebox{\baselineskip}[0pt][0pt]{\hypertarget{cite.#2}{}}\fi\@biblabel{\theenumiv}}]%
     \if@filesw
     {%
         \def\BBA{\string\BBA}%
         \def\protect##1{\string ##1\space}\immediate
         \write\@auxout{\string\bibcite{#2}{#1}}%
-	    \def\BBA{\BBAA}
+        \def\BBA{\BBAA}
     }%
     \fi
     \ignorespaces
@@ -155,19 +170,19 @@
         \else
             {,\ }
         \fi%
-	    \csname Y@\@citeb\endcsname%
+        \enlp@hylink{\@citeb}{\csname Y@\@citeb\endcsname}%
     \else%
         \if@F@cite
             \@F@citefalse
         \else
             {\BBC}
         \fi%
-	    \edef\@cite@undefined{?}%
-	    \ifx\@cite@undefined\B@my@dummy%
-	        \csname Y@\@citeb\endcsname%
-	    \else%
-	        \def\BBA{\BBAA}%
-	        \csname b@\@citeb\endcsname\BBAY\csname Y@\@citeb\endcsname%
+        \edef\@cite@undefined{?}%
+        \ifx\@cite@undefined\B@my@dummy%
+            \enlp@hylink{\@citeb}{\csname Y@\@citeb\endcsname}%
+        \else%
+            \def\BBA{\BBAA}%
+            \enlp@hylink{\@citeb}{\csname b@\@citeb\endcsname\BBAY\csname Y@\@citeb\endcsname}%
         \fi%
     \fi%
     \edef\@citeP{\csname b@\@citeb\endcsname}}{\@BBN #2}\BBCP%
@@ -217,7 +232,7 @@
         \else
             {,\ }
         \fi%
-	    \csname Y@\@citeb\endcsname%
+        \enlp@hylink{\@citeb}{\csname Y@\@citeb\endcsname}%
     \else%
         \if@F@cite
             \@F@citefalse
@@ -225,7 +240,7 @@
             {\BBCP,\ }
         \fi%
         \def\BBA{\BBAB}%
-	    \csname b@\@citeb\endcsname\ \BBOP\csname Y@\@citeb\endcsname%
+        \enlp@hylink{\@citeb}{\csname b@\@citeb\endcsname}\ \BBOP\enlp@hylink{\@citeb}{\csname Y@\@citeb\endcsname}%
     \fi%
     \edef\@citeP{\csname b@\@citeb\endcsname}}{\@BBN #1}\BBCP%
     \@F@citetrue
@@ -257,7 +272,7 @@
                 {,\ }
             \fi%
         \def\BBA{\BBAB}%
-	    \csname b@\@citeb\endcsname
+        \enlp@hylink{\@citeb}{\csname b@\@citeb\endcsname}%
         \fi%
         \edef\@citeP{\csname b@\@citeb\endcsname}%
     }%
@@ -290,7 +305,7 @@
         \else
             {,\ }
         \fi%
-        \csname Y@\@citeb\endcsname%
+        \enlp@hylink{\@citeb}{\csname Y@\@citeb\endcsname}%
         \edef\@citeP{\csname b@\@citeb\endcsname}%
     }{\@BBN #1}\BBCP%
     \@F@citetrue
@@ -714,17 +729,4 @@
 }
 
 \def\@biblabel#1{[#1]}
-\def\@lbibitem[#1]#2{%
-    \def\BBA{\BBAA}%
-    \item
-    \if@filesw
-        {%
-            \def\BBA{\string\BBA}%
-            \def\protect##1{\string ##1\space}\immediate
-            \write\@auxout{\string\bibcite{#2}{#1}}%
-            \def\BBA{\BBAA}%
-        }%
-    \fi
-    \ignorespaces
-}
 \endinput

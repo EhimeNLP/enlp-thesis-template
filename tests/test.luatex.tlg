@@ -3,7 +3,6 @@ Don't change this file in any respect.
 ============================================================
 TEST 1: Title Page and Abstract
 ============================================================
-\@FMwidth=\skip...
 (load cache: extra_lmroman17-regular.luc)
 LaTeX Font Info:    Font shape `JT3/mc/m/n' will be
 (Font)              scaled to size 19.24438pt on input line ....
@@ -64,6 +63,7 @@ LaTeX Font Info:    Font shape `JY3/gt/m/n' will be
 ============================================================
 TEST 2: Table of Contents
 ============================================================
+warning  (pdf backend): ignoring duplicate destination with the name 'page.1'
 [1
 ] (test.toc)
 \tf@toc=\write...

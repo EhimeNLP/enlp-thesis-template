@@ -16,8 +16,8 @@
 まず, 本リポジトリをローカル環境にクローンしてください.
 
 ```bash
-git clone https://github.com/EhimeNLP/graduation_thesis_tex_template.git
-cd graduation_thesis_tex_template
+git clone https://github.com/EhimeNLP/nlp-lab-thesis-template.git
+cd nlp-lab-thesis-template
 ```
 
 #### Windows / macOS / Linux

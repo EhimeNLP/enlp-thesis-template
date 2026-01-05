@@ -63,6 +63,6 @@ chmod +x install.sh
 
 使用方法については, [ユーザ向けドキュメント](https://github.com/EhimeNLP/graduation_thesis_tex_template/blob/main/docs/documentation.pdf)を参照してください.
 
-## Issue
+## Issues
 
 バグ報告や機能リクエストは[Issues](https://github.com/EhimeNLP/graduation_thesis_tex_template/issues)からお願いします.

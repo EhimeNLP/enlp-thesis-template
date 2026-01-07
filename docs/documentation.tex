@@ -231,7 +231,19 @@ $ENV{'BSTINPUTS'} = './enlp-template//:' . $ENV{'BSTINPUTS'};
 .2 main.tex.
 }
 \subsection{解決策3：パスを直接書き換える (非推奨)}
-\texttt{enlp.cls}の該当部分を修正してください. 
+プロジェクト構造として以下を想定します.
+\dirtree{%
+.1 /.
+.2 enlp-template.
+.3 enlp.cls.
+.3 enlplogo.sty.
+.3 enlpbbl.sty.
+.3 enlpbbl.bst.
+.3 bibcheck.sty.
+.2 main.tex.
+}
+\noindent
+この構造下において, \texttt{enlp.cls}の該当部分を修正してください. 
 ただし, この方法では不適切なパス指定により意図しない動作が起こり得る点に注意してください. 
 \begin{lstlisting}[style=diff]
 @@ -1,3 +1,3 @@

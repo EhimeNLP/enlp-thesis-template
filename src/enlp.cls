@@ -4,10 +4,10 @@
 %%
 %% Author: Eito Yoneyama
 %% Created: 2025/11/20
-%% Updated: 2026/01/05
+%% Updated: 2026/01/08
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{enlp}[2026/01/05 v1.0.1 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
+\ProvidesClass{enlp}[2026/01/08 v1.0.2 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
 
 %% ===============================================
 %% Engine detection and font settings
@@ -460,6 +460,7 @@
   \csection*{\absttitle}%
   \begin{center}%
     \begin{minipage}{0.9\textwidth}%
+      \setlength{\parindent}{1\zw}% 
 }{%
     \end{minipage}%
   \end{center}%

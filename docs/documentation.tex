@@ -397,7 +397,11 @@ DVIドライバはパッケージオプションではなく, クラスオプシ
             \item \texttt{minipage} 環境内で段落字下げが失われる不具合を修正
             \item \texttt{minipage} 内の \cs{parindent} が正しく \texttt{1\textbackslash zw} に設定されるように改善
         \end{itemize}\\
-
+        \textbf{v1.0.3}&2026-01-14&以下を修正：
+        \begin{itemize}[nosep]
+            \item 番号なし章 (謝辞, 対外発表, 参考文献) への目次リンクが不適切な位置にジャンプする不具合を修正
+            \item \texttt{abstract} 環境内の不要な \cs{phantomsection} を削除
+        \end{itemize}\\
     \end{tabular}
 \end{table}
 \end{document}

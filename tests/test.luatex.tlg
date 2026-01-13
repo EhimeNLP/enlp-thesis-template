@@ -109,8 +109,17 @@ TEST 4: Back Matter (Ack, Bib, Pubs)
 [3
 ]
 [4
-]
-No file test.bbl.
+] (test.bbl
 [5
+]
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+l. ...\end{thebibliography}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+)
+[6
 ]
 ============================================================

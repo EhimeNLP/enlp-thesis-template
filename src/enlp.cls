@@ -4,10 +4,10 @@
 %%
 %% Author: Eito Yoneyama
 %% Created: 2025/11/20
-%% Updated: 2026/01/08
+%% Updated: 2026/01/14
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{enlp}[2026/01/08 v1.0.2 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
+\ProvidesClass{enlp}[2026/01/14 v1.0.3 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
 
 %% ===============================================
 %% Engine detection and font settings
@@ -456,7 +456,6 @@
       The structure must be: \string\maketitle -> abstract -> \string\tableofcontents.%
     }%
   \fi
-  \phantomsection
   \csection*{\absttitle}%
   \begin{center}%
     \begin{minipage}{0.9\textwidth}%
@@ -507,6 +506,7 @@
 }
 \def\@ssection[#1]#2{%
   \clearpage
+  \phantomsection
   \global\@topnum\z@
   \begingroup
   \parindent\z@\raggedright
@@ -543,6 +543,7 @@
 }
 \def\@scsection#1{%
   \clearpage
+  \phantomsection
   \global\@topnum\z@
   \begingroup
     \parindent\z@

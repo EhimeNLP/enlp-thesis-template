@@ -134,6 +134,19 @@ BibTeXファイル (\texttt{.bib}) の記述において, 意図通りの出力�
 author = {{Ehime University}},
 \end{lstlisting}
 
+\item \textbf{複数著者のリストを二重中括弧で囲まない} \\
+    著者が複数いる場合, たとえ人数が多くてもリスト全体を \textbf{二重中括弧 \texttt{\{\{...\}\}}} で囲んではいけません. 
+    これを \texttt{author = \{\{Author A and Author B\}\}} のように記述すると, BibTeXは全体を「ひとつの長い名前 (あるいは組織)」として解釈してしまいます. 
+    その結果, 著者名の分解 (姓名の分離) が行われず, スタイルファイルによってはフォーマット処理が破綻して \textbf{Runaway argument エラー} の原因となります.
+
+\begin{lstlisting}[language=TeX]
+% 悪い例 (コンパイルエラーの原因になります)
+author = {{Tom B. Brown and Benjamin Mann and ...}},
+
+% 良い例
+author = {Tom B. Brown and Benjamin Mann and ...},
+\end{lstlisting}    
+
 \item \textbf{フィールドの囲み文字 (中括弧の推奨)} \\
     BibTeXの仕様上, フィールドの値は \texttt{""} (ダブルクォーテーション) または \texttt{\{\}} (中括弧) のどちらで囲んでも構いません. 
     しかし, 以下の理由から本テンプレートでは \textbf{\texttt{\{...\}} (中括弧) の使用を強く推奨}します.

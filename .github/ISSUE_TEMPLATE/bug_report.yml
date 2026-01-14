@@ -83,11 +83,11 @@ body:
     id: compile-command
     attributes:
       label: コンパイルコマンド
-      description: 使用したコンパイルコマンドを記入してください. latexmkを使用している場合は `.latexmkrc` の内容も含めてください.
+      description: 使用したコンパイルコマンドを記入してください. latexmkを使用している場合は `latexmkrc` の内容も含めてください.
       placeholder: |
         例) lualatex main.tex
         
-        または .latexmkrc の内容:
+        または latexmkrc の内容:
         $pdf_mode = 1;
         $pdflatex = 'pdflatex %O %S';
       render: shell

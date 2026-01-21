@@ -580,6 +580,7 @@
   \setcounter{section}{0}%
   \setcounter{subsection}{0}%
   \renewcommand{\thesection}{\@Alph\c@section}%
+  \renewcommand{\theHsection}{Appendix.\thesection}%
   \def\@section[##1]##2{%
     \clearpage
     \global\@topnum\z@

@@ -363,6 +363,12 @@ DVIドライバはパッケージオプションではなく, クラスオプシ
 対外発表の内容
 \end{publication}
 \end{lstlisting}
+\subsection{付録の記述}
+付録は以下のように記述します.
+\begin{lstlisting}[language=TeX]
+\appendix
+\section{付録1}
+\end{lstlisting}
 \section{更新履歴}
 \begin{table}[H]
     \centering
@@ -401,6 +407,11 @@ DVIドライバはパッケージオプションではなく, クラスオプシ
         \begin{itemize}[nosep]
             \item 番号なし章 (謝辞, 対外発表, 参考文献) への目次リンクが不適切な位置にジャンプする不具合を修正
             \item \texttt{abstract} 環境内の不要な \cs{phantomsection} を削除
+        \end{itemize}\\
+        \textbf{v1.0.4}&2026-01-21&付録 (\cs{appendix}) に関する修正：
+        \begin{itemize}[nosep]
+            \item セクション番号を算用数字 (1, 2) からアルファベット (A, B) に変更
+            \item 見出しおよび目次の出力形式を「第A章」から「A [タイトル]」に変更
         \end{itemize}\\
     \end{tabular}
 \end{table}

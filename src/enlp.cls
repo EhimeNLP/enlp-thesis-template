@@ -577,10 +577,29 @@
 
 \newcommand{\appendix}{%
   \par
-  \csection*{付録}
   \setcounter{section}{0}%
   \setcounter{subsection}{0}%
   \renewcommand{\thesection}{\@Alph\c@section}%
+  \def\@section[##1]##2{%
+    \clearpage
+    \global\@topnum\z@
+    \ifnum \c@secnumdepth >\z@
+      \refstepcounter{section}%
+      \addcontentsline{toc}{section}{\protect\numberline{\thesection}##1}%
+    \else
+      \addcontentsline{toc}{section}{##1}%
+    \fi
+    \begingroup
+      \parindent\z@\raggedright
+      \interlinepenalty\@M\reset@font
+      \ifnum \c@secnumdepth >\z@
+        {\fontsize{18pt}{22pt}\selectfont \bfseries \thesection \hspace{1zw}\ignorespaces}
+      \fi
+      \fontsize{18pt}{22pt}\selectfont\bfseries##2\par
+    \endgroup
+    \vskip 14pt
+    \nobreak\vskip0.7\Cvs\@afterheading
+  }%
 }
 
 %% ===============================================

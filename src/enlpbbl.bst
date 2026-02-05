@@ -4,7 +4,7 @@
 %%
 %% Author: Eito Yoneyama
 %% Created: 2025/11/20
-%% Updated: 2025/11/27
+%% Updated: 2026/02/05
 %%
 ENTRY
   { address
@@ -1496,8 +1496,8 @@ FUNCTION {calc.label}
   duplicate$
 
   author empty$
-    { editor format.full.lab.names }
-    { author format.full.lab.names }
+    { editor format.lab.names }
+    { author format.lab.names }
   if$
   "\protect\BCAY{" swap$ * "}{" * swap$ * "}{" *
 %%  year field.or.null purify$ #-1 #4 substring$ *

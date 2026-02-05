@@ -7,7 +7,7 @@
 %% Updated: 2026/02/05
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{enlp}[2026/02/05 v1.0.5 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
+\ProvidesClass{enlp}[2026/02/05 v1.0.6 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
 
 %% ===============================================
 %% Engine detection and font settings

@@ -4,10 +4,10 @@
 %%
 %% Author: Eito Yoneyama
 %% Created: 2025/11/20
-%% Updated: 2026/01/22
+%% Updated: 2026/02/05
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{enlp}[2026/01/22 v1.0.4 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
+\ProvidesClass{enlp}[2026/02/05 v1.0.5 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
 
 %% ===============================================
 %% Engine detection and font settings

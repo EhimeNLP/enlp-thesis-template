@@ -2,6 +2,7 @@
 \usepackage{float}
 \usepackage{enumitem}
 \usepackage{dirtree}
+\usepackage{longtable}
 \usepackage[hidelinks]{hyperref}
 \usepackage{listings,showexpl,enumitem}
 \lstdefinelanguage{diff}{
@@ -370,49 +371,59 @@ DVIドライバはパッケージオプションではなく, クラスオプシ
 \section{付録1}
 \end{lstlisting}
 \section{更新履歴}
-\begin{table}[H]
-    \centering
-    \begin{tabular}{llp{11cm}}
-        \textbf{v0.1.0}&2025-11-27&開発版リリース\\
-        \textbf{v0.1.1}&2025-11-28&\cs{maketitle} $\to$ \texttt{abstract} (\textit{env.}) $\to$ \cs{tableofcontents} の順序チェックを追加\\
-        \textbf{v0.1.2}&2025-11-28&以下を追加：
-        \begin{itemize}[nosep]
-            \item DVIドライバオプションのグローバル化
-            \item \pkg{bxpapersize} による厳密なPDFサイズ制御
-            \item pTeX系互換性のための \pkg{plautopatch} 自動読み込み
-        \end{itemize}\\
-        \textbf{v0.1.3}&2025-11-30&以下を修正：
-        \begin{itemize}[nosep]
-            \item pTeX系で発生する \cs{reDeclareMathAlphabet} 起因のコンパイルエラー
-            \item 未使用のレガシーコード (時刻計算, 索引定義など) および不要なエイリアスを削除
-        \end{itemize}\\
-        \textbf{v0.1.4}&2025-12-01&\pkg{atbegshi}パッケージの読み込みを削除\\
-        \textbf{v0.1.5}&2025-12-02&2段組における浮動体に関するマクロを削除\\
-        \textbf{v0.1.6}&2025-12-03&\pkg{enlpbbl}のBibTeXチェックを\pkg{bibcheck}に変更\\
-        \textbf{v1.0.0}&2025-12-03&公開版リリース\\
-        \textbf{v1.0.1}&2026-01-05&以下を修正・追加：
-        \begin{itemize}[nosep]
-            \item \pkg{hyperref} との完全互換化 (引用・目次・相互参照のクリック対応)
-            \item dvipdfmx (pLaTeX/upLaTeX) および unicode (LuaLaTeX) ドライバの自動判別を改善
-            \item \cs{maketitle}・\cs{tableofcontents} に関する \pkg{hyperref} 読み込み時の再定義競合を解消
-            \item 参考文献項目にハイパーリンク用アンカーを追加し, ジャンプ位置のずれを修正
-            \item \cs{item} 引数内の入れ子括弧に起因するコンパイルエラーを修正
-        \end{itemize}\\
-        \textbf{v1.0.2}&2026-01-08&以下を修正・追加：
-        \begin{itemize}[nosep]
-            \item \texttt{minipage} 環境内で段落字下げが失われる不具合を修正
-            \item \texttt{minipage} 内の \cs{parindent} が正しく \texttt{1\textbackslash zw} に設定されるように改善
-        \end{itemize}\\
-        \textbf{v1.0.3}&2026-01-14&以下を修正：
-        \begin{itemize}[nosep]
-            \item 番号なし章 (謝辞, 対外発表, 参考文献) への目次リンクが不適切な位置にジャンプする不具合を修正
-            \item \texttt{abstract} 環境内の不要な \cs{phantomsection} を削除
-        \end{itemize}\\
-        \textbf{v1.0.4}&2026-01-22&付録 (\cs{appendix}) に関する修正：
-        \begin{itemize}[nosep]
-            \item セクション番号を算用数字 (1, 2) からアルファベット (A, B) に変更
-            \item 見出しおよび目次の出力形式を「第A章」から「A [タイトル]」に変更
-        \end{itemize}\\
-    \end{tabular}
-\end{table}
+\begin{longtable}{llp{11cm}}
+    \endfirsthead
+    \multicolumn{3}{l}{\small \textit{(Continued from previous page)}} \\
+    \noalign{\smallskip}
+    \endhead
+    \noalign{\smallskip}
+    \multicolumn{3}{r}{\small \textit{(Continued on next page)}} \\
+    \endfoot
+    \endlastfoot
+    \textbf{v0.1.0}&2025-11-27&開発版リリース\\
+    \textbf{v0.1.1}&2025-11-28&\cs{maketitle} $\to$ \texttt{abstract} (\textit{env.}) $\to$ \cs{tableofcontents} の順序チェックを追加\\
+    \textbf{v0.1.2}&2025-11-28&以下を追加：
+    \begin{itemize}[nosep]
+        \item DVIドライバオプションのグローバル化
+        \item \pkg{bxpapersize} による厳密なPDFサイズ制御
+        \item pTeX系互換性のための \pkg{plautopatch} 自動読み込み
+    \end{itemize}\\
+    \textbf{v0.1.3}&2025-11-30&以下を修正：
+    \begin{itemize}[nosep]
+        \item pTeX系で発生する \cs{reDeclareMathAlphabet} 起因のコンパイルエラー
+        \item 未使用のレガシーコード (時刻計算, 索引定義など) および不要なエイリアスを削除
+    \end{itemize}\\
+    \textbf{v0.1.4}&2025-12-01&\pkg{atbegshi}パッケージの読み込みを削除\\
+    \textbf{v0.1.5}&2025-12-02&2段組における浮動体に関するマクロを削除\\
+    \textbf{v0.1.6}&2025-12-03&\pkg{enlpbbl}のBibTeXチェックを\pkg{bibcheck}に変更\\
+    \textbf{v1.0.0}&2025-12-03&公開版リリース\\
+    \textbf{v1.0.1}&2026-01-05&以下を修正・追加：
+    \begin{itemize}[nosep]
+        \item \pkg{hyperref} との完全互換化 (引用・目次・相互参照のクリック対応)
+        \item dvipdfmx (pLaTeX/upLaTeX) および unicode (LuaLaTeX) ドライバの自動判別を改善
+        \item \cs{maketitle}・\cs{tableofcontents} に関する \pkg{hyperref} 読み込み時の再定義競合を解消
+        \item 参考文献項目にハイパーリンク用アンカーを追加し, ジャンプ位置のずれを修正
+        \item \cs{item} 引数内の入れ子括弧に起因するコンパイルエラーを修正
+    \end{itemize}\\
+    \textbf{v1.0.2}&2026-01-08&以下を修正・追加：
+    \begin{itemize}[nosep]
+        \item \texttt{minipage} 環境内で段落字下げが失われる不具合を修正
+        \item \texttt{minipage} 内の \cs{parindent} が正しく \texttt{1\textbackslash zw} に設定されるように改善
+    \end{itemize}\\
+    \textbf{v1.0.3}&2026-01-14&以下を修正：
+    \begin{itemize}[nosep]
+        \item 番号なし章 (謝辞, 対外発表, 参考文献) への目次リンクが不適切な位置にジャンプする不具合を修正
+        \item \texttt{abstract} 環境内の不要な \cs{phantomsection} を削除
+    \end{itemize}\\
+    \textbf{v1.0.4}&2026-01-22&付録 (\cs{appendix}) に関する修正：
+    \begin{itemize}[nosep]
+        \item セクション番号を算用数字 (1, 2) からアルファベット (A, B) に変更
+        \item 見出しおよび目次の出力形式を「第A章」から「A [タイトル]」に変更
+    \end{itemize}\\
+    \textbf{v1.0.5}&2026-02-05&\pkg{enlpbbl} の修正：
+    \begin{itemize}[nosep]
+        \item 著者が多数存在する文献を引用した際にBibTeXエラーが発生する不具合を修正
+        \item 引用ラベル生成時の著者リストを全員列挙から短縮形 (et al.) に変更
+    \end{itemize}\\
+\end{longtable}
 \end{document}

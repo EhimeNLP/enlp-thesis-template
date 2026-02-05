@@ -124,9 +124,9 @@ FUNCTION {output.atitle.check}
 FUNCTION {output.year.check}
 { year empty$
      { "empty year in " cite$ * warning$ }
-     { write$
-  " \BBOP " year * extra.label * "\BBCP" *
-  mid.sentence 'output.state :=
+     { add.period$ write$ 
+       " " year * extra.label *
+       mid.sentence 'output.state := 
      }
   if$
 }

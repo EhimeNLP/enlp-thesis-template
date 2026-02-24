@@ -429,5 +429,10 @@ DVIドライバはパッケージオプションではなく, クラスオプシ
     \begin{itemize}[nosep]
         \item 参考文献リストにおける年号の括弧を削除し, 「著者名. 年.」の形式に変更
     \end{itemize}\\
+    \textbf{v1.0.7}&2026-02-24&LuaLaTeX使用時のリスト環境に関する修正：
+    \begin{itemize}[nosep]
+        \item LuaTeX-jaが \cs{iftdir} を提供しないため，\texttt{enumerate}・\texttt{itemize}・\texttt{description} 環境でエラーが発生する不具合を修正
+        \item LuaLaTeX使用時は \cs{iftdir} を常に偽として定義することで対応
+    \end{itemize}\\
 \end{longtable}
 \end{document}

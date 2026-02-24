@@ -4,10 +4,10 @@
 %%
 %% Author: Eito Yoneyama
 %% Created: 2025/11/20
-%% Updated: 2026/02/05
+%% Updated: 2026/02/24
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{enlp}[2026/02/05 v1.0.6 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
+\ProvidesClass{enlp}[2026/02/24 v1.0.7 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
 
 %% ===============================================
 %% Engine detection and font settings
@@ -23,6 +23,7 @@
   \RequirePackage{plautopatch}
 \else\ifLuaTeX
   \RequirePackage{luatexja}
+  \newif\iftdir\tdirfalse % Since this template does not use vertical writing, it should always be false.
 \else
   \ClassError{\clsname}{This class supports only upLaTeX, pLaTeX, or LuaLaTeX}{Use upLaTeX, pLaTeX, or LuaLaTeX to compile this document.}
 \fi\fi

@@ -16,8 +16,8 @@
 まず, 本リポジトリをローカル環境にクローンしてください.
 
 ```bash
-git clone https://github.com/EhimeNLP/nlp-lab-thesis-template.git
-cd nlp-lab-thesis-template
+git clone https://github.com/EhimeNLP/enlp-thesis-template.git
+cd enlp-thesis-template
 ```
 
 #### Windows / macOS / Linux
@@ -54,12 +54,14 @@ chmod +x install.sh
 
 ### Overleaf
 
-[Releases](https://github.com/EhimeNLP/graduation_thesis_tex_template/releases)から最新バージョンの `enlp-template-v*.zip` を取得して, Overleafのプロジェクトに配置してください.
+[Releases](https://github.com/EhimeNLP/enlp-thesis-template/releases)から最新バージョンの `enlp-template-v*.zip` を取得して, Overleafのプロジェクトに配置してください.
 
 ## 使用方法
 
-使用方法については, [ユーザ向けドキュメント](https://github.com/EhimeNLP/graduation_thesis_tex_template/blob/main/docs/documentation.pdf)を参照してください.
+使用方法については, [ユーザ向けドキュメント](https://github.com/EhimeNLP/enlp-thesis-template/blob/main/docs/documentation.pdf)を参照してください.
+
+テンプレートの内部実装や保守方法については, `docs/documentation-dev.tex` を参照してください.
 
 ## Issues
 
-バグ報告や機能リクエストは[Issues](https://github.com/EhimeNLP/graduation_thesis_tex_template/issues)からお願いします.
+バグ報告や機能リクエストは[Issues](https://github.com/EhimeNLP/enlp-thesis-template/issues)からお願いします.

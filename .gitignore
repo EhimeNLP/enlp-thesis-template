@@ -327,3 +327,7 @@ TSWLatexianTemp*
 
 build
 dev
+
+docs/enlp*
+docs/bibcheck-sty.tex
+docs/*-dev.*

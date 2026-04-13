@@ -17,18 +17,18 @@ jobs:
 
       - name: Create distribution folder
         run: |
-          mkdir -p dist/enlp-template
-          cp -r src/* dist/enlp-template/
-          rsync -av --exclude='Makefile' --exclude='README.md' sample/ dist/enlp-template/
-          cp docs/documentation.pdf dist/enlp-template/
+          mkdir -p dist/enlp-thesis-template
+          cp -r src/* dist/enlp-thesis-template/
+          rsync -av --exclude='Makefile' --exclude='README.md' sample/ dist/enlp-thesis-template/
+          cp docs/documentation.pdf dist/enlp-thesis-template/
 
       - name: Compress dist
-        run: cd dist && zip -r ../enlp-template-${{ github.ref_name }}.zip enlp-template
+        run: cd dist && zip -r ../enlp-thesis-template-${{ github.ref_name }}.zip enlp-thesis-template
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: enlp-template-${{ github.ref_name }}.zip
+          files: enlp-thesis-template-${{ github.ref_name }}.zip
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

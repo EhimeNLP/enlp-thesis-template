@@ -54,7 +54,7 @@ chmod +x install.sh
 
 ### Overleaf
 
-[Releases](https://github.com/EhimeNLP/enlp-thesis-template/releases)から最新バージョンの `enlp-template-v*.zip` を取得して, Overleafのプロジェクトに配置してください.
+[Releases](https://github.com/EhimeNLP/enlp-thesis-template/releases)から最新バージョンの `enlp-thesis-template-v*.zip` を取得して, Overleafのプロジェクトに配置してください.
 
 ## 使用方法
 

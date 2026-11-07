@@ -37,6 +37,7 @@
 \fi
 \let\enlp@tabular\tabular
 \let\enlp@endtabular\endtabular
+\NewCommandCopy\enlp@kernel@fnmark\@makefnmark
 \LoadClass[article,paper=a4paper,twoside,fontsize=12pt,baselineskip=19pt,
   open_bracket_pos=zenkakunibu_nibu]{jlreq}
 
@@ -113,46 +114,37 @@
 %% ===============================================
 %% Size and layout settings
 %% ===============================================
+% Display skips are part of the thesis typography at each text size.
+\newcommand*{\enlp@displayskips}[3]{%
+  \setlength{\abovedisplayskip}{#1}%
+  \setlength{\belowdisplayskip}{#1}%
+  \setlength{\abovedisplayshortskip}{#2}%
+  \setlength{\belowdisplayshortskip}{#3}}
 \renewcommand{\normalsize}{%
-  \@setfontsize\normalsize\@xiipt{19}% 12pt / 19pt
-  \abovedisplayskip 11\p@ \@plus3\p@ \@minus6\p@
-  \abovedisplayshortskip \z@ \@plus3\p@
-  \belowdisplayshortskip 6.5\p@ \@plus3.5\p@ \@minus3\p@
-  \belowdisplayskip \abovedisplayskip
-  \let\@listi\@listI
-}
-\normalsize
-\setbox\@tempboxa\hbox{　}
-\setlength\Cht{\ht\@tempboxa}
-\setlength\Cdp{\dp\@tempboxa}
-\setlength\Cwd{\wd\@tempboxa}
-\setlength\Chs{\Cwd}
-\setlength\Cvs{\baselineskip}
-\renewcommand{\jlreqparindent}{\Cwd}
-
+  \@setfontsize\normalsize{12pt}{19pt}%
+  \enlp@displayskips{11pt plus 3pt minus 6pt}{0pt plus 3pt}{6.5pt plus 3.5pt minus 3pt}%
+  \let\@listi\@listI}
 \renewcommand{\small}{%
-  \@setfontsize\small\@xipt{17}% 11pt / 17pt
-  \abovedisplayskip 9\p@ \@plus3\p@ \@minus4\p@
-  \abovedisplayshortskip \z@ \@plus2\p@
-  \belowdisplayskip \abovedisplayskip
-  \belowdisplayshortskip 5\p@ \@plus2\p@ \@minus2\p@
-  \def\@listi{\leftmargin\leftmargini
-              \topsep 5\p@ \@plus2\p@ \@minus2\p@
-              \parsep 2\p@ \@plus\p@ \@minus\p@
-              \itemsep \parsep}%
-}
-
+  \@setfontsize\small\@xipt{17pt}%
+  \enlp@displayskips{9pt plus 3pt minus 4pt}{0pt plus 2pt}{5pt plus 2pt minus 2pt}%
+  \def\@listi{\enlp@compactlist{5pt plus 2pt minus 2pt}}}
 \renewcommand{\footnotesize}{%
-  \@setfontsize\footnotesize\@xpt{15}% 10pt / 15pt
-  \abovedisplayskip 6\p@ \@plus2\p@ \@minus2\p@
-  \abovedisplayshortskip \z@ \@plus1\p@
-  \belowdisplayskip \abovedisplayskip
-  \belowdisplayshortskip 3\p@ \@plus\p@ \@minus\p@
-  \def\@listi{\leftmargin\leftmargini
-              \topsep 3\p@ \@plus\p@ \@minus\p@
-              \parsep 2\p@ \@plus\p@ \@minus\p@
-              \itemsep \parsep}%
-}
+  \@setfontsize\footnotesize{10pt}{15pt}%
+  \enlp@displayskips{6pt plus 2pt minus 2pt}{0pt plus 1pt}{3pt plus 1pt minus 1pt}%
+  \def\@listi{\enlp@compactlist{3pt plus 2pt minus 2pt}}}
+\newcommand*{\enlp@compactlist}[1]{%
+  \@listI
+  \setlength{\topsep}{#1}%
+  \setlength{\parsep}{2pt plus 1pt minus 1pt}%
+  \setlength{\itemsep}{\parsep}}
+
+\normalsize
+\settowidth{\Cwd}{　}
+\settoheight{\Cht}{　}
+\settodepth{\Cdp}{　}
+\setlength{\Chs}{\Cwd}
+\setlength{\Cvs}{\baselineskip}
+\renewcommand{\jlreqparindent}{\Cwd}
 
 \renewcommand{\tiny}{\@setfontsize\tiny\@vipt{7}} % 6pt / 7pt
 \renewcommand{\scriptsize}{\@setfontsize\scriptsize\@viiipt{10}} % 8pt / 10pt
@@ -181,102 +173,41 @@
 \setlength\marginparsep{0pt}
 \setlength\marginparpush{0pt}
 
-\setlength\footnotesep{7\p@}
-\setlength\@tempdima{1\Cvs}\addtolength\@tempdima{-1\Cht}\addtolength\@tempdima{7\p@}
-\setlength{\skip\footins}{\@tempdima \@plus 1\Cvs \@minus \z@}
-\setlength\floatsep{17\p@}
-\setlength\textfloatsep{2\@tempdima \@plus \@tempdima \@minus \@tempdima}
-\setlength\intextsep{2\@tempdima \@plus \@tempdima \@minus \@tempdima}
-\setlength\@fptop{0\p@}
-\setlength\@fpsep{17\p@}
-\setlength\@fpbot{0\p@ \@plus 1fil}
-
-\setlength\partopsep{\z@}
-\def\@listi{
-  \leftmargin\leftmargini
-  \parsep \z@
-  \topsep \z@
-  \itemsep \z@
-}
-\let\@listI\@listi
-\@listi
-\def\@listii{
-  \leftmargin\leftmarginii
-  \labelwidth\leftmarginii \advance\labelwidth-\labelsep
-  \topsep  \z@
-  \parsep  \z@
-  \itemsep\parsep
-}
-\def\@listiii{
-  \leftmargin\leftmarginiii
-  \labelwidth\leftmarginiii \advance\labelwidth-\labelsep
-  \topsep \z@
-  \parsep\z@
-  \partopsep \z@
-  \itemsep\topsep
-}
-\def\@listiv{
-  \leftmargin\leftmarginiv
-  \labelwidth\leftmarginiv\advance\labelwidth-\labelsep
-}
-\def\@listv{
-  \leftmargin\leftmarginv
-  \labelwidth\leftmarginv\advance\labelwidth-\labelsep
-}
-\def\@listvi{
-  \leftmargin\leftmarginvi
-  \labelwidth\leftmarginvi\advance\labelwidth-\labelsep
-}
-
-\setlength\columnsep{20\p@}
-\setlength\columnseprule{0\p@}
-\setlength\lineskip{1\p@}
-\setlength\normallineskip{1\p@}
-\renewcommand{\baselinestretch}{}
-\setlength\parskip{0\p@ \@plus \p@}
-\setlength\parindent{1\Cwd}
-
-\@lowpenalty 51
-\@medpenalty 151
-\@highpenalty 301
+% Set the footnote gap and float spacing from the body grid.
+\setlength{\footnotesep}{7pt}
+\newdimen\enlp@insertgap
+\setlength{\enlp@insertgap}{\dimexpr\Cvs-\Cht+\footnotesep\relax}
+\setlength{\skip\footins}{\enlp@insertgap plus \Cvs}
+\setlength{\floatsep}{17pt}
+\setlength{\textfloatsep}{2\enlp@insertgap plus \enlp@insertgap minus \enlp@insertgap}
+\setlength{\intextsep}{\textfloatsep}
+\setlength{\@fptop}{0pt}
+\setlength{\@fpsep}{\floatsep}
+\setlength{\@fpbot}{0pt plus 1fil}
+\setcounter{totalnumber}{5}
 \setcounter{topnumber}{4}
 \setcounter{bottomnumber}{4}
-\setcounter{totalnumber}{5}
-\renewcommand{\topfraction}{.9}
-\renewcommand{\bottomfraction}{.9}
-\renewcommand{\textfraction}{.1}
-\renewcommand{\floatpagefraction}{.5}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.5}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.9}
 
-%% ===============================================
-%% Headers and Footers
-%% ===============================================
-\def\ps@mainpage{%
-  \let\@mkboth\markboth
-  \def\@oddhead{}
-  \def\@oddfoot{\hfil{\mdseries\thepage}\hfil}
-  \def\@evenhead{}
-  \def\@evenfoot{\hfil{\mdseries\thepage}\hfil}
-}
+\setlength{\parindent}{\Cwd}
+\setlength{\parskip}{0pt plus 1pt}
+\setlength{\columnsep}{20pt}
+\setlength{\columnseprule}{0pt}
+\setlength{\lineskip}{1pt}
+\setlength{\normallineskip}{\lineskip}
+\linespread{1}
+\@lowpenalty=51
+\@medpenalty=151
+\@highpenalty=301
 
-\def\ps@frontpage{%
-  \let\@mkboth\markboth
-  \def\@oddhead{}
-  \def\@oddfoot{}%
-  \def\@evenhead{}
-  \def\@evenfoot{}%
-}
+\NewPageStyle{mainpage}{nombre_position=bottom-center,nombre_font=\mdseries}
 
 %% ===============================================
 %% Metadata definitions (Standard commands + Custom)
 %% ===============================================
-\def\p@thanks#1{%
-  \footnotemark
-  \protected@xdef\@thanks{%
-    \@thanks
-    \protect{\noindent$\m@th^\thefootnote$~#1\protect\par}
-  }%
-}
-
 % Thesis metadata and front matter order.
 \ExplSyntaxOn
 \bool_new:N \g__enlp_title_done_bool
@@ -335,35 +266,36 @@
 
 \cs_new_protected:Npn \enlp@finishabstract
   { \bool_gset_true:N \g__enlp_abstract_done_bool }
+\cs_new:Npn \enlp@coverfnnumber
+  { \prg_replicate:nn { \int_min:nn { \value{footnote} } {4} } {*} }
 \ExplSyntaxOff
 
-\newlength{\@FMwidth}\setlength{\@FMwidth}{14pt}
+\newcommand{\enlp@footnotebody}[2]{%
+  \setlength{\leftskip}{\glueexpr\leftskip+14pt\relax}%
+  \setlength{\parindent}{\Cwd}%
+  \noindent\makebox[0pt][r]{#1\nobreakspace}#2}
 
-\def\enlp@maketitlepage{%
-  \par
+\newcommand*{\enlp@maketitlepage}{%
+  \clearpage
   \begingroup
-  \def\thefootnote{\ifcase\c@footnote\or *\or ** \or *** \else **** \fi}
-  \def\@makefnmark{\kern0pt\raisebox{0.3ex}{\@textsuperscript{\normalfont \@thefnmark}}}%
+    \let\thefootnote\enlp@coverfnnumber
     \renewcommand\@makefntext[1]{%
-      \advance\leftskip\@FMwidth
-      \parindent 1\Cwd\noindent\llap{\@textsuperscript{\normalfont \@thefnmark}~}##1
-    }
-    \clearpage
-    \global\@topnum\z@
-    \thispagestyle{frontpage}\@thanks
-    \@maketitle
+      \enlp@footnotebody{\textsuperscript{\normalfont\@thefnmark}}{##1}}%
+    \thispagestyle{empty}%
+    \global\@topnum=0\relax
+    \@thanks
+    \enlp@covercontent
   \endgroup
   \setcounter{footnote}{0}%
-  \global\let\thanks\relax
   \global\let\@thanks\@empty
-  \global\let\p@thanks\@empty
+  \global\let\thanks\relax
 }
 
-\def\@maketitle{%
-  \clearpage
-  \parindent\z@
-  \vskip 8pt
-  \setlength{\leftskip}{25pt}\setlength{\rightskip}{25pt}
+\newcommand*{\enlp@covercontent}{%
+  \setlength{\leftskip}{25pt}%
+  \setlength{\rightskip}{\leftskip}%
+  \setlength{\parindent}{0pt}%
+  \vspace{8pt}%
   \begin{center}
     \let\footnote\thanks
     \vspace*{40pt}
@@ -414,7 +346,7 @@
 
 \renewcommand{\thefootnote}{\arabic{footnote}}
 \renewcommand{\@makefnmark}{%
-  \kern0pt\raisebox{0.3ex}{\@textsuperscript{\normalfont\@thefnmark}}%
+  \kern0pt\raisebox{0.3ex}{\enlp@kernel@fnmark}%
 }
 
 %% ===============================================
@@ -445,81 +377,52 @@
 \setcounter{secnumdepth}{3}
 \renewcommand*{\@seccntformat}[1]{\csname the#1\endcsname\quad}
 
-\renewcommand{\section}{%
+% Chapters start a fresh page. A separate renderer keeps the centered
+% front-matter headings on the same typographic grid.
+\newcommand*{\enlp@chapterlabel}{第 \thesection\hspace{1pt} 章 \hspace{7pt}}
+\newcommand*{\enlp@chaptertoclabel}{第\thesection 章}
+\newcommand*{\enlp@sectionlabel}{\enlp@chapterlabel}
+\newcommand*{\enlp@sectiontoclabel}{\enlp@chaptertoclabel}
+\newcommand*{\enlp@startheading}{%
   \par\addvspace{1.3\Cvs}%
   \@afterindenttrue
-  \secdef\@section\@ssection
-}
-\def\@section[#1]#2{%
   \clearpage
-  \global\@topnum\z@
-  \ifnum \c@secnumdepth >\z@
+  \global\@topnum=0\relax}
+\newcommand*{\enlp@headingfont}{\fontsize{18pt}{22pt}\selectfont\bfseries}
+\newcommand*{\enlp@printheading}[4]{%
+  \begingroup
+    \setlength{\parindent}{0pt}%
+    #1%
+    \interlinepenalty=10000
+    \reset@font
+    \IfBlankF{#2}{{\enlp@headingfont#2}\space}%
+    \enlp@headingfont#3\par
+  \endgroup
+  \vskip#4\relax
+  \nobreak\vskip0.7\Cvs\@afterheading}
+\newcommand*{\enlp@numberedheading}[5]{%
+  \ifnum\value{secnumdepth}>0
     \refstepcounter{section}%
-    \addcontentsline{toc}{section}{\protect\numberline{第\thesection 章}#1}
+    \addcontentsline{toc}{section}{\protect\numberline{#3}#4}%
+    \enlp@printheading{#1}{#2}{#5}{14pt}%
   \else
-    \addcontentsline{toc}{section}{#1}%
-  \fi
-  \begingroup
-  \parindent\z@\raggedright
-  \interlinepenalty\@M\reset@font
-  \ifnum \c@secnumdepth >\z@
-    {\fontsize{18pt}{22pt}\selectfont \bfseries 第 \thesection\hspace{1pt} 章 \hspace{7pt}\ignorespaces}
-  \fi
-  \fontsize{18pt}{22pt}\selectfont\bfseries#2\par
-  \endgroup
-  \vskip 14pt
-  \nobreak\vskip0.7\Cvs\@afterheading
-}
-\def\@ssection[#1]#2{%
-  \clearpage
-  \phantomsection
-  \global\@topnum\z@
-  \begingroup
-  \parindent\z@\raggedright
-  \interlinepenalty\@M\reset@font
-  \fontsize{18pt}{22pt}\selectfont\bfseries#1\par
-  \endgroup
-  \nobreak\vskip0.7\Cvs\@afterheading
-}
-\newcommand{\csection}{%
-  \par\addvspace{1.3\Cvs}%
-  \@afterindenttrue
-  \secdef\@csection\@scsection
-}
-\def\@csection[#1]#2{%
-  \clearpage
-  \global\@topnum\z@
-  \ifnum \c@secnumdepth >\z@
-    \refstepcounter{section}%
-    \addcontentsline{toc}{section}{\protect\numberline{第\thesection 章}#1}%
-  \else
-    \addcontentsline{toc}{section}{#1}%
-  \fi
-  \begingroup
-    \parindent\z@
-    \centering
-    \interlinepenalty\@M\reset@font
-    \ifnum \c@secnumdepth >\z@
-      {\fontsize{18pt}{22pt}\selectfont \bfseries 第 \thesection\hspace{1pt} 章 \hspace{7pt}\ignorespaces}
-    \fi
-    \fontsize{18pt}{22pt}\selectfont\bfseries#2\par
-  \endgroup
-  \vskip 14pt
-  \nobreak\vskip0.7\Cvs\@afterheading
-}
-\def\@scsection#1{%
-  \clearpage
-  \phantomsection
-  \global\@topnum\z@
-  \begingroup
-    \parindent\z@
-    \centering
-    \interlinepenalty\@M\reset@font
-    \fontsize{18pt}{22pt}\selectfont\bfseries#1\par
-  \endgroup
-  \vskip 14pt
-  \nobreak\vskip0.7\Cvs\@afterheading
-}
+    \addcontentsline{toc}{section}{#4}%
+    \enlp@printheading{#1}{}{#5}{14pt}%
+  \fi}
+\RenewDocumentCommand\section{s o m}{%
+  \enlp@startheading
+  \IfBooleanTF{#1}
+    {\phantomsection\enlp@printheading{\raggedright}{}{#3}{0pt}}%
+    {\IfNoValueTF{#2}
+      {\enlp@numberedheading{\raggedright}{\enlp@sectionlabel}{\enlp@sectiontoclabel}{#3}{#3}}%
+      {\enlp@numberedheading{\raggedright}{\enlp@sectionlabel}{\enlp@sectiontoclabel}{#2}{#3}}}}
+\NewDocumentCommand\csection{s o m}{%
+  \enlp@startheading
+  \IfBooleanTF{#1}
+    {\phantomsection\enlp@printheading{\centering}{}{#3}{14pt}}%
+    {\IfNoValueTF{#2}
+      {\enlp@numberedheading{\centering}{\enlp@chapterlabel}{\enlp@chaptertoclabel}{#3}{#3}}%
+      {\enlp@numberedheading{\centering}{\enlp@chapterlabel}{\enlp@chaptertoclabel}{#2}{#3}}}}
 \renewcommand{\subsection}{%
   \@startsection{subsection}{2}{\z@}%
     {.9\Cvs \@plus.4\Cvs \@minus.2\Cvs}%
@@ -545,94 +448,57 @@
   \par
   \setcounter{section}{0}%
   \setcounter{subsection}{0}%
-  \renewcommand{\thesection}{\@Alph\c@section}%
+  \renewcommand{\thesection}{\Alph{section}}%
   \renewcommand{\theHsection}{Appendix.\thesection}%
-  \def\@section[##1]##2{%
-    \clearpage
-    \global\@topnum\z@
-    \ifnum \c@secnumdepth >\z@
-      \refstepcounter{section}%
-      \addcontentsline{toc}{section}{\protect\numberline{\thesection}##1}%
-    \else
-      \addcontentsline{toc}{section}{##1}%
-    \fi
-    \begingroup
-      \parindent\z@\raggedright
-      \interlinepenalty\@M\reset@font
-      \ifnum \c@secnumdepth >\z@
-        {\fontsize{18pt}{22pt}\selectfont \bfseries \thesection \hspace{1\zw}\ignorespaces}
-      \fi
-      \fontsize{18pt}{22pt}\selectfont\bfseries##2\par
-    \endgroup
-    \vskip 14pt
-    \nobreak\vskip0.7\Cvs\@afterheading
-  }%
-}
+  \renewcommand*{\enlp@sectionlabel}{\thesection\hspace{1\zw}}%
+  \renewcommand*{\enlp@sectiontoclabel}{\thesection}}
 
 %% ===============================================
 %% List and Figure/Table settings
 %% ===============================================
 \setlength{\emergencystretch}{3\zw}
-\setlength\leftmargini{3\Cwd}
-\setlength\leftmarginii{3\Cwd}
-\setlength\leftmarginiii{3\Cwd}
-\setlength\leftmarginiv{3\Cwd}
-\setlength\leftmarginv{3\Cwd}
-\setlength\leftmarginvi{3\Cwd}
-\setlength\labelsep{1\Cwd}
-\setlength\labelwidth{\leftmargini}
-\addtolength\labelwidth{-\labelsep}
-\@beginparpenalty-\@lowpenalty
-\@endparpenalty-\@lowpenalty
-\@itempenalty-\@lowpenalty
-\renewcommand{\labelenumi}{(\theenumi)}
-\renewcommand{\labelenumii}{(\theenumii)}
-\renewcommand{\labelenumiii}{(\theenumiii)}
-\renewcommand{\labelenumiv}{(\theenumiv)}
+\ExplSyntaxOn
+\clist_map_inline:nn { i, ii, iii, iv, v, vi }
+  { \setlength{\use:c {leftmargin#1}}{3\Cwd} }
+\clist_map_inline:nn { i, ii, iii, iv }
+  { \cs_set:cpn {labelenum#1} {(\use:c {theenum#1})} }
+\ExplSyntaxOff
+\jlreqsetup{
+  itemization_beforeafter_space=0pt,
+  itemization_itemsep=0pt,
+  itemization_labelsep=\Cwd,
+  itemization_label_length=2\Cwd,
+}
+\@beginparpenalty=-\@lowpenalty
+\@endparpenalty=-\@lowpenalty
+\@itempenalty=-\@lowpenalty
 \renewcommand{\labelitemi}{\textbullet}
 \renewcommand{\labelitemii}{\normalfont\bfseries\textendash}
 \renewcommand{\labelitemiii}{\textasteriskcentered}
 \renewcommand{\labelitemiv}{\textperiodcentered}
 
-% Figure and table captions.
-\def\fnum@figure{\textbf{\figurename~\thefigure}}
-\def\fnum@table{\textbf{\tablename~\thetable}}
-\def\fps@figure{tbp}
-\def\fps@table{tbp}
-\setlength\abovecaptionskip{8\p@}
-\setlength\belowcaptionskip{0\p@}
-\long\def\@makecaption#1#2{%
-  \small
-  \vskip\abovecaptionskip
-  \sbox\@tempboxa{#1\hskip1\Cwd#2}%
-  \ifdim \wd\@tempboxa >\hsize
-    #1\hskip1\Cwd#2\relax\par
-  \else
-    \global \@minipagefalse
-    \hbox to\hsize{\hfil\box\@tempboxa\hfil}%
-  \fi
-  \vskip\belowcaptionskip
+% Keep the label styling when the manuscript supplies its own caption package.
+\renewcommand{\fnum@figure}{\textbf{\figurename~\thefigure}}
+\renewcommand{\fnum@table}{\textbf{\tablename~\thetable}}
+\renewcommand{\fps@figure}{tbp}
+\renewcommand{\fps@table}{tbp}
+\jlreqsetup{
+  caption_font=\small,
+  caption_label_font=\bfseries,
+  caption_after_label_space=\Cwd,
+  caption_align={center,*left},
 }
-\def\@floatboxreset{\reset@font\small\@setminipage}
-
-\setlength\arraycolsep{0.5\Cwd}
-\setlength\tabcolsep{0.5\Cwd}
-\setlength\arrayrulewidth{0.25\p@}
-\setlength\doublerulesep{2\p@}
-\setlength\tabbingsep{\labelsep}
-\skip\@mpfootins = \skip\footins
-\setlength\fboxsep{0.5\Cwd}
-\setlength\fboxrule{0.25\p@}
-
-\DeclareOldFontCommand{\rm}{\normalfont\rmfamily}{\mathrm}
-\DeclareOldFontCommand{\sf}{\normalfont\sffamily}{\mathsf}
-\DeclareOldFontCommand{\tt}{\normalfont\ttfamily}{\mathtt}
-\DeclareOldFontCommand{\bf}{\normalfont\bfseries}{\mathbf}
-\DeclareOldFontCommand{\it}{\normalfont\itshape}{\mathit}
-\DeclareOldFontCommand{\sl}{\normalfont\slshape}{\@nomath\sl}
-\DeclareOldFontCommand{\sc}{\normalfont\scshape}{\@nomath\sc}
-\DeclareRobustCommand*{\cal}{\@fontswitch\relax\mathcal}
-\DeclareRobustCommand*{\mit}{\@fontswitch\relax\mathnormal}
+\setlength{\abovecaptionskip}{8pt}
+\setlength{\belowcaptionskip}{0pt}
+\g@addto@macro\@floatboxreset{\small}
+\setlength{\arraycolsep}{0.5\Cwd}
+\setlength{\tabcolsep}{\arraycolsep}
+\setlength{\fboxsep}{\arraycolsep}
+\setlength{\arrayrulewidth}{0.25pt}
+\setlength{\fboxrule}{\arrayrulewidth}
+\setlength{\doublerulesep}{2pt}
+\setlength{\tabbingsep}{\Cwd}
+\setlength{\skip\@mpfootins}{\skip\footins}
 
 %% ===============================================
 %% Table of Contents format
@@ -641,67 +507,49 @@
 \renewcommand{\@pnumwidth}{2\Cwd}
 \renewcommand{\@tocrmarg}{3\Cwd}
 \renewcommand{\@dotsep}{4.5}
-\setlength\toclineskip{0pt plus .2pt}
-\newlength{\tocsectionsep}
-\setlength{\tocsectionsep}{0.5\baselineskip}
-\def\@dottedtocline#1#2#3#4#5{%
-  \ifnum #1>\c@tocdepth
-  \else
-    \vskip\toclineskip
-    \begingroup
-    \leftskip #2\relax \rightskip \@tocrmarg \parfillskip -\rightskip
-    \parindent #2\relax\@afterindenttrue
-    \interlinepenalty\@M
-    \leavevmode
-    \@lnumwidth #3\relax
-    \advance\leftskip \@lnumwidth \hbox{}\hskip -\leftskip
-    {#4}\nobreak
-    \leaders\hbox{$\m@th \mkern \@dotsep mu.\mkern \@dotsep mu$}%
-    \hfill\nobreak
-    \hb@xt@\@pnumwidth{\hss\normalfont \normalcolor #5}%
-    \par
-    \endgroup
-  \fi
-}
+\newcommand*{\enlp@tocpagefont}{\normalfont\normalcolor}
+\newcommand*{\enlp@tocrow}[4]{%
+  \begingroup
+    \setlength{\@lnumwidth}{#2}%
+    \setlength{\leftskip}{\dimexpr#1+#2\relax}%
+    \setlength{\rightskip}{\@tocrmarg}%
+    \setlength{\parfillskip}{-\rightskip}%
+    \interlinepenalty=10000
+    \noindent\hspace*{-#2}#3\nobreak
+    \leaders\hbox{$\m@th\mkern\@dotsep mu.\mkern\@dotsep mu$}\hfill\nobreak
+    \makebox[\@pnumwidth][r]{\enlp@tocpagefont#4}\par
+  \endgroup}
+\newcommand*{\enlp@tocline}[5]{%
+  \ifnum#1>\value{tocdepth}\else
+    \vskip 0pt plus .2pt
+    \enlp@tocrow{#2}{#3}{#4}{#5}%
+  \fi}
 \renewcommand*{\l@section}[2]{%
-  \ifnum \c@tocdepth >\z@
+  \ifnum\value{tocdepth}>0
     \addpenalty{\@secpenalty}%
-    \addvspace{\tocsectionsep}%
-    \setlength\@tempdima{5.5\Cwd}%
+    \addvspace{0.5\Cvs}%
     \begingroup
-    \parindent\z@ \rightskip\@pnumwidth \parfillskip-\rightskip
-    \leavevmode\bfseries
-    \setlength\@lnumwidth{\@tempdima}%
-    \advance\leftskip\@lnumwidth \hskip-\leftskip
-    \textbf{#1}\nobreak
-    \hspace{1\zw}%
-    \leaders\hbox{$\m@th \mkern \@dotsep mu.\mkern \@dotsep mu$}%
-    \hfill
-    \nobreak
-    \hb@xt@\@pnumwidth{\hss #2}\par
+      \bfseries
+      \let\enlp@tocpagefont\relax
+      \let\@tocrmarg\@pnumwidth
+      \enlp@tocrow{0pt}{5.5\Cwd}{#1\hspace{1\zw}}{#2}%
     \endgroup
-  \fi
-}
-\renewcommand*{\l@subsection}{\@dottedtocline{2}{1\Cwd}{2\Cwd}}
-\renewcommand*{\l@subsubsection}{\@dottedtocline{3}{3\Cwd}{3\Cwd}}
-\renewcommand*{\l@paragraph}{\@dottedtocline{4}{6\Cwd}{4\Cwd}}
-\renewcommand*{\l@subparagraph}{\@dottedtocline{5}{6\Cwd}{4\Cwd}}
-\renewcommand{\listoffigures}{\section*{\listfigurename}\@starttoc{lof}}
-\renewcommand*{\l@figure}{\@dottedtocline{1}{1.5em}{2.3em}}
-\renewcommand{\listoftables}{\section*{\listtablename}\@starttoc{lot}}
+  \fi}
+\renewcommand*{\l@subsection}{\enlp@tocline{2}{\Cwd}{2\Cwd}}
+\renewcommand*{\l@subsubsection}{\enlp@tocline{3}{3\Cwd}{3\Cwd}}
+\renewcommand*{\l@paragraph}{\enlp@tocline{4}{6\Cwd}{4\Cwd}}
+\renewcommand*{\l@subparagraph}{\enlp@tocline{5}{6\Cwd}{4\Cwd}}
+\renewcommand*{\l@figure}{\enlp@tocline{1}{1.5em}{2.3em}}
 \let\l@table\l@figure
 
 %% ===============================================
 %% Other environments (Acknowledgments, Publications, etc.)
 %% ===============================================
-\renewcommand{\footnoterule}{\kern-3\p@\hrule width .4\columnwidth\kern 2.6\p@}
+\renewcommand{\footnoterule}{%
+  \vbox to 0pt{\vss\hrule width .4\columnwidth height .4pt\kern 2.6pt}}
 \renewcommand\@makefntext[1]{%
   \samepage
-  \advance\leftskip 14pt
-  \parindent 1\Cwd
-  \noindent
-  \llap{\@makefnmark~}#1
-}
+  \enlp@footnotebody{\@makefnmark}{#1}}
 
 \newenvironment{acknowledgment}{%
   \clearpage

@@ -1,8 +1,8 @@
 module = "enlp"
 
 sourcefiledir = "src"
-sourcefiles = {"enlp.cls", "enlpbbl.sty", "enlpbbl.bst", "enlplogo.sty", "bibcheck.sty"}
-installfiles = {"enlp.cls", "enlpbbl.sty", "enlpbbl.bst", "enlplogo.sty", "bibcheck.sty"}
+sourcefiles = {"enlp.cls", "enlpbbl.sty", "enlpbbl.bst", "enlp-logo.sty", "bibcheck.sty"}
+installfiles = {"enlp.cls", "enlpbbl.sty", "enlpbbl.bst", "enlp-logo.sty", "bibcheck.sty"}
 testfiledir = "tests"
 docfiledir = "docs"
 typesetfiles = {"documentation.tex"}

@@ -87,7 +87,6 @@
 
 
 \enlp@loadbibliography
-\RequirePackage{bibcheck}
 \if@ldebug
   \ifLuaTeX
     \RequirePackage{lua-visual-debug}
@@ -699,46 +698,4 @@
 \raggedbottom
 \onecolumn
 
-%% ===============================================
-%% BibTeX check patterns
-%% ===============================================
-% Last, F. / Last, F. M.
-\BibCheckAddPattern{
-  author \s* = \s*
-  (?:
-    \{ [^\{\}]* , \s* 
-    (?: [A-Z] \. \s* )+ 
-    (?: , | and | \} )
-    |
-    " [^"]* , \s* 
-    (?: [A-Z] \. \s* )+ 
-    (?: , | and | " )
-  )
-}
-
-% F. Last
-\BibCheckAddPattern{
-  author \s* = \s*
-  (?:
-    \{
-      (?:
-        \s* (?: [A-Z] \. \s* )+ [A-Z][a-z]+
-        |
-        [^\{\}]* \s+ and \s+ (?: [A-Z] \. \s* )+ [A-Z][a-z]+
-      )
-      [^\{\}]*
-    \}
-    |
-    "
-      (?:
-        \s* (?: [A-Z] \. \s* )+ [A-Z][a-z]+
-        |
-        [^"]* \s+ and \s+ (?: [A-Z] \. \s* )+ [A-Z][a-z]+
-      )
-      [^"]*
-    "
-  )
-}
-
-\BibCheckMode{error}
 \endinput

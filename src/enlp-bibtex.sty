@@ -94,13 +94,18 @@
 \def\BUcase#1{\lowercase{\@Ucase #1}}
 \def\NoTitleCaseChange{\def\BUcase##1{##1}}
 
-% citations
-% Definition of bibliography items (Fixed bracket nesting)
+% Older jlreq versions forward \@item's label without its outer braces.
+% Keep the optional \raisebox dimensions out of the label's token list.
+\newcommand*{\enlp@bibanchor}[1]{%
+    \ifdefined\hypertarget
+        \raisebox{\baselineskip}[0pt][0pt]{\hypertarget{cite.#1}{}}%
+    \fi
+}
+
 \def\@lbibitem[#1]#2{%
     \def\BBA{\BBAA}%
     \refstepcounter{enumiv}%
-    % 修正点: \item の引数全体を {...} で囲んで保護しました
-    \item[{\ifdefined\hypertarget\raisebox{\baselineskip}[0pt][0pt]{\hypertarget{cite.#2}{}}\fi\@biblabel{\theenumiv}}]%
+    \item[{\enlp@bibanchor{#2}\@biblabel{\theenumiv}}]%
     \if@filesw
     {%
         \def\BBA{\string\BBA}%

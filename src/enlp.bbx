@@ -1,0 +1,172 @@
+%%
+%% This is file `enlp.bbx',
+%% Biblatex bibliography style for Ehime University NLP Lab theses
+%%
+%% Author: Eito Yoneyama
+%% Created: 2026/11/08
+%%
+\ProvidesFile{enlp.bbx}[2026/11/08 ENLP bibliography style for biblatex]
+\RequireBibliographyStyle{authoryear}
+
+\ExecuteBibliographyOptions{
+  sorting=none,labelnumber=true,dashed=false,maxbibnames=999,
+  giveninits=false,isbn=false,doi=false,eprint=false,url=false
+}
+
+% The template's existing .bib files use Japanese names in surname-first
+% order, separated by spaces. Mark them before Biber parses the names.
+\DeclareStyleSourcemap{
+  \maps[datatype=bibtex]{
+    \map{
+      \step[fieldsource=author,match=\regexp{\p{Han}|\p{Hiragana}|\p{Katakana}},final]
+      \step[fieldset=langid,fieldvalue={japanese}]
+    }
+    \map{
+      \step[notfield=author,final]
+      \step[fieldsource=editor,match=\regexp{\p{Han}|\p{Hiragana}|\p{Katakana}},final]
+      \step[fieldset=langid,fieldvalue={japanese}]
+    }
+    \map{
+      \step[fieldsource=author,
+        match=\regexp{(^|\s+and\s+)([\p{Han}\p{Hiragana}\p{Katakana}]+)\s+([\p{Han}\p{Hiragana}\p{Katakana}]+)(?=\s+and\s+|$)},
+        replace=\regexp{$1$2, $3}]
+      \step[fieldsource=editor,
+        match=\regexp{(^|\s+and\s+)([\p{Han}\p{Hiragana}\p{Katakana}]+)\s+([\p{Han}\p{Hiragana}\p{Katakana}]+)(?=\s+and\s+|$)},
+        replace=\regexp{$1$2, $3}]
+    }
+    \map{
+      \step[typesource=webpage,typetarget=online]
+    }
+    \map{
+      \step[typesource=mastersreport,typetarget=thesis,final]
+      \step[fieldset=type,fieldvalue={Master's report}]
+    }
+    \map{
+      \step[typesource=dbathesis,typetarget=thesis,final]
+      \step[fieldset=type,fieldvalue={DBA thesis}]
+    }
+    \map{
+      \step[typesource=eddthesis,typetarget=thesis,final]
+      \step[fieldset=type,fieldvalue={Ed.D.\ thesis}]
+    }
+    \map{
+      \step[fieldsource=key,fieldtarget=label]
+    }
+  }
+}
+
+\newcommand*{\ifenlpjapanese}{\iffieldequalstr{langid}{japanese}}
+\DeclareDelimFormat{multinamedelim}{\ifenlpjapanese{，}{\addcomma\space}}
+\DeclareDelimFormat{finalnamedelim}{%
+  \ifenlpjapanese{，}{%
+    \ifnumgreater{\value{liststop}}{2}{\addcomma}{}%
+    \addspace\bibstring{and}\space}}
+\renewbibmacro*{name:andothers}{%
+  \ifboolexpr{test {\ifnumequal{\value{listcount}}{\value{liststop}}}
+               and test \ifmorenames}
+    {\printdelim{andothersdelim}%
+     \ifenlpjapanese{他}{\bibstring{andothers}}}
+    {}}
+
+\DeclareNameFormat{enlp:full}{%
+  \ifenlpjapanese
+    {\begingroup
+     \let\revsdnamepunct\relax
+     \usebibmacro{name:family-given}
+       {\namepartfamily}{\namepartgiven}{\namepartprefix}{\namepartsuffix}%
+     \endgroup}
+    {\usebibmacro{name:given-family}
+       {\namepartfamily}{\namepartgiven}{\namepartprefix}{\namepartsuffix}}%
+  \usebibmacro{name:andothers}}
+\DeclareNameAlias{sortname}{enlp:full}
+
+\DeclareDelimFormat[bib,biblist]{nameyeardelim}{\addperiod\space}
+\DeclareDelimFormat[bib,biblist]{nonameyeardelim}{\addperiod\space}
+\renewbibmacro*{date+extradate}{\printlabeldateextra}
+\renewbibmacro*{date}{}
+
+\DeclareFieldFormat{title}{\ifenlpjapanese{#1}{\mkbibemph{#1}}}
+\DeclareFieldFormat[article,inbook,incollection,inproceedings,misc,online,report,thesis,unpublished]
+  {title}{\ifenlpjapanese{#1}{\mkbibquote{#1\addperiod}}}
+\DeclareFieldFormat{booktitle}{\ifenlpjapanese{#1}{\mkbibemph{#1}}}
+\DeclareFieldFormat{journaltitle}{\ifenlpjapanese{#1}{\mkbibemph{#1}}}
+\DeclareFieldFormat[article,periodical]{volume}{\mkbibbold{#1}}
+\DeclareFieldFormat[article,periodical]{number}{\mkbibparens{#1}}
+\DeclareFieldFormat{pages}{\mbox{\mkpageprefix[bookpagination]{#1}}}
+
+\renewbibmacro*{in:}{%
+  \ifentrytype{article}{}{\ifenlpjapanese{}{\bibstring{in}\addspace}}}
+\renewbibmacro*{journal+issuetitle}{%
+  \usebibmacro{journal}%
+  \setunit{\addcomma\space}%
+  \printfield{series}%
+  \setunit{\addcomma\space}%
+  \usebibmacro{volume+number+eid}%
+  \setunit{\addspace}%
+  \printfield[parens]{issue}%
+  \newunit}
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+  \setunit*{\addspace}%
+  \printfield{number}%
+  \setunit{\bibeidpunct}%
+  \printfield{eid}}
+\renewcommand*{\bibpagespunct}{\addcomma\space}
+\renewbibmacro*{publisher+location+date}{%
+  \printlist{publisher}%
+  \setunit*{\addcomma\space}%
+  \printlist{location}%
+  \newunit}
+
+% The standard driver puts publisher and location before pages. ENLP
+% treats the proceedings title, volume, and pages as a single group.
+\DeclareBibliographyDriver{inproceedings}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \newunit\newblock
+  \usebibmacro{title}%
+  \newunit\newblock
+  \usebibmacro{in:}%
+  \ifnameundef{editor}
+    {}
+    {\printnames[enlp:full]{editor}%
+     \ifenlpjapanese
+       {\printtext{（編）}}
+       {\setunit{\addspace}%
+        \printtext[parens]{\ifnumgreater{\value{editor}}{1}{Eds.}{Ed.}}}%
+     \setunit{\addcomma\space}}%
+  \usebibmacro{maintitle+booktitle}%
+  \setunit{\addcomma\space}%
+  \printfield{volume}%
+  \setunit{\addcomma\space}%
+  \usebibmacro{series+number}%
+  \usebibmacro{chapter+pages}%
+  \setunit{\addcomma\space}%
+  \printlist{location}%
+  \newunit
+  \printlist{organization}%
+  \setunit{\addcomma\space}%
+  \printlist{publisher}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \usebibmacro{finentry}}
+
+\defbibheading{bibliography}[\enlp@bibliographytitle]{%
+  \enlp@bibliographyheading{#1}}
+
+\DeclareFieldFormat{labelnumberwidth}{\mkbibbrackets{#1}}
+\defbibenvironment{bibliography}
+  {\list{\printtext[labelnumberwidth]{\printfield{labelnumber}}}
+     {\enlp@bibliographylist{[]}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}}%
+   \enlp@bibliographyparagraphs}
+  {\endlist}
+  {\item}
+
+\endinput

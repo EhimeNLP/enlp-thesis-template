@@ -1,0 +1,45 @@
+%%
+%% This is file `enlp.cbx',
+%% Biblatex citation style for Ehime University NLP Lab theses
+%%
+%% Author: Eito Yoneyama
+%% Created: 2026/11/08
+%%
+\ProvidesFile{enlp.cbx}[2026/11/08 ENLP citation style for biblatex]
+\RequireCitationStyle{authoryear-comp}
+
+\ExecuteBibliographyOptions{
+  maxcitenames=2,mincitenames=1,uniquename=false,uniquelist=false,sortcites=false
+}
+
+\DeclareNameFormat{labelname}{%
+  \usebibmacro{name:family}{\namepartfamily}{}{\namepartprefix}{\namepartsuffix}%
+  \usebibmacro{name:andothers}}
+\DeclareNameWrapperFormat{labelname}{\bibhyperref{#1}}
+
+\DeclareDelimFormat{nameyeardelim}{\addspace}
+\DeclareDelimFormat{nonameyeardelim}{\addspace}
+\renewcommand*{\multicitedelim}{\addsemicolon\space\allowbreak\space}
+\renewcommand*{\compcitedelim}{\addcomma\ \space}
+\renewcommand*{\textcitedelim}{\addcomma\space}
+
+% Keep the year in each label, even when the previous year is identical.
+\renewbibmacro*{cite:extradate}{%
+  \setunit{\compcitedelim}%
+  \usebibmacro{cite:labeldate+extradate}}
+
+\DeclareCiteCommand{\cite}[\mkbibparens]
+  {\usebibmacro{cite:init}\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}\usebibmacro{cite}}
+  {}
+  {\usebibmacro{postnote}}
+
+\let\citeA\textcite
+
+\DeclareCiteCommand{\citeyear}[\mkbibparens]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{cite:labeldate+extradate}}
+  {\compcitedelim}
+  {\usebibmacro{postnote}}
+
+\endinput

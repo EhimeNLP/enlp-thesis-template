@@ -17,6 +17,8 @@
 \newif\if@ldebug
 \newcommand*{\enlp@loadbibliography}{\RequirePackage{enlp-bibtex}}
 \DeclareOption{ldebug}{\@ldebugtrue}
+\DeclareOption{biblatex}{%
+  \renewcommand*{\enlp@loadbibliography}{\RequirePackage[backend=biber,style=enlp]{biblatex}}}
 \DeclareOption{leqno}{\PassOptionsToClass{leqno}{jlreq}}
 \DeclareOption{fleqn}{\PassOptionsToClass{fleqn}{jlreq}}
 \DeclareOption{disablejfam}{\PassOptionsToClass{disablejfam}{jlreq}}

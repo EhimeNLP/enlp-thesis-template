@@ -1,8 +1,8 @@
 module = "enlp"
 
 sourcefiledir = "src"
-sourcefiles = {"*.cls", "*.sty", "*.bst"}
-installfiles = {"*.cls", "*.sty"}
+sourcefiles = {"*.cls", "*.sty", "*.bst", "*.bbx", "*.cbx"}
+installfiles = {"*.cls", "*.sty", "*.bbx", "*.cbx"}
 bstfiles = {"*.bst"}
 checkfiles = bstfiles
 testfiledir = "tests"

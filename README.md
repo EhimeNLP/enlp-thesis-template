@@ -1,6 +1,6 @@
 # 学位論文LaTeXテンプレート
 
-本テンプレートは[jlreq](https://github.com/abenori/jlreq)をベースとする, 愛媛大学自然言語処理研究室の学位論文テンプレートです.
+本テンプレートは, [jlreq](https://github.com/abenori/jlreq)をベースとする愛媛大学自然言語処理研究室の学位論文テンプレートです.
 
 ## インストール
 

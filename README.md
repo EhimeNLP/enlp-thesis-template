@@ -56,3 +56,7 @@ chmod +x install.sh
 ## Issues
 
 バグ報告や機能リクエストは[Issues](https://github.com/EhimeNLP/enlp-thesis-template/issues)からお願いします.
+
+## License
+
+See [LICENSE](LICENSE) for the BSD 2-Clause license and [Third-Party Notices](THIRD_PARTY_NOTICES.md) for third-party attribution and license terms.

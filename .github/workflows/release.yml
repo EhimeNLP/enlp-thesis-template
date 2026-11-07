@@ -20,7 +20,7 @@ jobs:
           mkdir -p dist/enlp-thesis-template
           cp -r src/* dist/enlp-thesis-template/
           rsync -av --exclude='Makefile' --exclude='README.md' sample/ dist/enlp-thesis-template/
-          cp docs/documentation.pdf dist/enlp-thesis-template/
+          cp LICENSE THIRD_PARTY_NOTICES.md docs/documentation.pdf dist/enlp-thesis-template/
 
       - name: Compress dist
         run: cd dist && zip -r ../enlp-thesis-template-${{ github.ref_name }}.zip enlp-thesis-template

@@ -80,12 +80,12 @@ FUNCTION {family.label}
     { "" }
     { family.name
       name.count #2 >
-        { japanese { " \Jetal " } { " et~al." } if$ * }
+        { japanese { " 他" } { " et~al." } if$ * }
         { name.count #2 =
             { #2 'name.index :=
               names #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
-                { japanese { "\Jetal " } { " et~al.{}" } if$ * }
-                { japanese { "\JBA " } { " \BBA\ " } if$ * family.name * }
+                { japanese { "他" } { " et~al.{}" } if$ * }
+                { japanese { "，" } { " and\ " } if$ * family.name * }
               if$
             }
             'skip$
@@ -108,15 +108,15 @@ FUNCTION {display.names}
       { formatted.names
         person "others" =
           { japanese
-              { " \Jetal " }
+              { " 他" }
               { name.count #2 > { ", et~al." } { " et~al." } if$ }
             if$
             *
           }
           { japanese
-              { "\JBA " }
+              { "，" }
               { name.index name.count =
-                  { name.count #2 = { "\BBACOMMA\ \BBA\ " } { ", \BBA\ " } if$ }
+                  { name.count #2 = { "\ and\ " } { ", and\ " } if$ }
                   { ", " }
                 if$
               }
@@ -139,8 +139,8 @@ FUNCTION {editors}
     { "" }
     { editor display.names
       japanese
-        { "\JED" }
-        { name.count #1 > { "\BEDS" } { "\BED" } if$ }
+        { "（編）\inhibitglue{}" }
+        { name.count #1 > { " (Eds.)" } { " (Ed.)" } if$ }
       if$
       *
     }
@@ -221,8 +221,8 @@ FUNCTION {emphasis.with}
   duplicate$ empty$
     'skip$
     { duplicate$ is.kanji.str$
-        { "\Jem{" swap$ * "}" * }
-        { "{\Bem " swap$ * emphasis.tail * "}" * }
+        { "{" swap$ * "}" * }
+        { "{\em " swap$ * emphasis.tail * "}" * }
       if$
     }
   if$
@@ -239,7 +239,7 @@ FUNCTION {quoted.title}
     'skip$
     { add.period$ duplicate$ is.kanji.str$
         'skip$
-        { "\BBOQ " swap$ * "\BBCQ" * }
+        { "``" swap$ * "''" * }
       if$
     }
   if$
@@ -249,8 +249,8 @@ FUNCTION {with.edition}
 { duplicate$ empty$ edition empty$ either
     'emphasis
     { duplicate$ is.kanji.str$
-        { emphasis " (" * edition * " \JEd)." * }
-        { crossref.emphasis " (" * edition * " \BEd)." * }
+        { emphasis " (" * edition * " 版)." * }
+        { crossref.emphasis " (" * edition * " edition)." * }
       if$
     }
   if$
@@ -286,7 +286,7 @@ FUNCTION {page.range}
     if$
   }
   while$
-  { "\mbox{\BPGS" } { "\mbox{\BPG" } if$
+  { "\mbox{pp." } { "\mbox{p." } if$
   swap$ with.number "}" *
 }
 
@@ -304,7 +304,7 @@ FUNCTION {comma.join}
 FUNCTION {article.location}
 { volume empty$
     { "" }
-    { "{\Bbf " volume * "}" * }
+    { "\textbf{" volume * "}" * }
   if$
   number empty$
     'skip$
@@ -322,8 +322,8 @@ FUNCTION {book.volume}
 { volume empty$
     { "" }
     { title is.kanji.str$
-        { volume "\JVOL" * series present emphasis comma.join }
-        { "\lowercase{\BVOL}" volume with.number
+        { volume "巻" * series present emphasis comma.join }
+        { "Vol." volume with.number
           series empty$ 'skip$ { " of " * series emphasis * } if$
         }
       if$
@@ -336,10 +336,10 @@ FUNCTION {book.series}
     { number empty$
         { series present }
         { title is.kanji.str$
-            { series present number "\JNUM" * comma.join }
+            { series present number "号" * comma.join }
             { separator #1 =
-                { "\lowercase{\BNUM}" }
-                { "\BNUM" }
+                { "No." }
+                { "No." }
               if$
               number with.number
               series empty$ 'skip$ { " in " * series * } if$
@@ -356,8 +356,8 @@ FUNCTION {chapter.pages}
 { chapter empty$
     { "" }
     { title is.kanji.str$
-        { type empty$ { chapter " \JCH" * } { type "l" change.case$ } if$ }
-        { type present "l" change.case$ "\BCH" fallback chapter with.number }
+        { type empty$ { chapter " 章" * } { type "l" change.case$ } if$ }
+        { type present "l" change.case$ "Chap." fallback chapter with.number }
       if$
     }
   if$
@@ -401,8 +401,8 @@ FUNCTION {article.container}
 
 FUNCTION {book.crossref}
 { title is.kanji.str$
-    { volume empty$ { "" } { volume "\JVOL" * } if$ }
-    { volume empty$ { "In " } { "\BVOL" volume with.number " of " * } if$ }
+    { volume empty$ { "" } { volume "巻" * } if$ }
+    { volume empty$ { "In " } { "Vol." volume with.number " of " * } if$ }
   if$
   series present crossref.emphasis crossref.label * crossref.year
 }
@@ -469,9 +469,9 @@ FUNCTION {space.field}
 
 FUNCTION {begin.item}
 { newline$
-  "\bibitem[\protect\BCAY{" cite.name * "}{" *
+  "\bibitem[{{" cite.name * "}{" *
   author editor fallback family.label cite.name fallback *
-  "}{" * cite.year * year.suffix * "}]{" * cite$ * "}" * write$ newline$
+  "}{" * cite.year * year.suffix * "}}]{" * cite$ * "}" * write$ newline$
   "" 'result :=
   #1 'separator :=
 }
@@ -611,7 +611,7 @@ FUNCTION {eddthesis} { "Ed.D.\ thesis" thesis.item }
 
 FUNCTION {report.number}
 { type present "t" change.case$
-  title is.kanji.str$ { "\JTR" } { "\BTR" } if$
+  title is.kanji.str$ { "テクニカル・レポート" } { "Tech.\ rep." } if$
   fallback
   number empty$ 'skip$ { number with.number } if$
 }
@@ -651,43 +651,79 @@ FUNCTION {webpage}
   quoted.title field
   url empty$ 'skip$ 'block if$
   url present "url" required
-  duplicate$ empty$ 'skip$ { "\Turl{" swap$ * "}" * } if$
+  duplicate$ empty$ 'skip$ { "\texttt{" swap$ * "}" * } if$
   space.field finish.with.note
 }
 
 FUNCTION {default.type} { misc }
 
+% Standard aliases from BibTeX's plain.bst, version 0.99b.
+% Copyright (C) 1984, 1985, 1988, 2010 Howard Trickey and Oren Patashnik.
+% Modified redistribution is permitted under a different filename.
+% See THIRD_PARTY_NOTICES.md for the original source and terms.
 MACRO {jan} {"January"}
+
 MACRO {feb} {"February"}
+
 MACRO {mar} {"March"}
+
 MACRO {apr} {"April"}
+
 MACRO {may} {"May"}
+
 MACRO {jun} {"June"}
+
 MACRO {jul} {"July"}
+
 MACRO {aug} {"August"}
+
 MACRO {sep} {"September"}
+
 MACRO {oct} {"October"}
+
 MACRO {nov} {"November"}
+
 MACRO {dec} {"December"}
+
 MACRO {acmcs} {"ACM Computing Surveys"}
+
 MACRO {acta} {"Acta Informatica"}
+
 MACRO {cacm} {"Communications of the ACM"}
+
 MACRO {ibmjrd} {"IBM Journal of Research and Development"}
+
 MACRO {ibmsj} {"IBM Systems Journal"}
+
 MACRO {ieeese} {"IEEE Transactions on Software Engineering"}
+
 MACRO {ieeetc} {"IEEE Transactions on Computers"}
-MACRO {ieeetcad} {"IEEE Transactions on Computer-Aided Design of Integrated Circuits"}
+
+MACRO {ieeetcad}
+ {"IEEE Transactions on Computer-Aided Design of Integrated Circuits"}
+
 MACRO {ipl} {"Information Processing Letters"}
+
 MACRO {jacm} {"Journal of the ACM"}
+
 MACRO {jcss} {"Journal of Computer and System Sciences"}
+
 MACRO {scp} {"Science of Computer Programming"}
+
 MACRO {sicomp} {"SIAM Journal on Computing"}
+
 MACRO {tocs} {"ACM Transactions on Computer Systems"}
+
 MACRO {tods} {"ACM Transactions on Database Systems"}
+
 MACRO {tog} {"ACM Transactions on Graphics"}
+
 MACRO {toms} {"ACM Transactions on Mathematical Software"}
+
 MACRO {toois} {"ACM Transactions on Office Information Systems"}
+
 MACRO {toplas} {"ACM Transactions on Programming Languages and Systems"}
+
 MACRO {tcs} {"Theoretical Computer Science"}
 
 READ

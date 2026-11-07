@@ -14,7 +14,6 @@
 \RequirePackage{ifptex}
 \RequirePackage{iftex}
 
-\def\clsname{ENLP}
 \newif\if@ldebug
 \newcommand*{\enlp@loadbibliography}{\RequirePackage{enlpbbl}}
 \DeclareOption{ldebug}{\@ldebugtrue}
@@ -260,22 +259,69 @@
   }%
 }
 
-% Additional metadata
-\def\thesis#1{\gdef\@thesis{#1}}        % Example: Graduation Thesis, Master's Thesis
-\def\teacher#1{\gdef\@teacher{#1}}      % Supervisor
-\def\institute#1{\gdef\@institute{#1}}  % Affiliation (Faculty/Department, etc.)
+% Thesis metadata and front matter order.
+\ExplSyntaxOn
+\bool_new:N \g__enlp_title_done_bool
+\bool_new:N \g__enlp_abstract_done_bool
+\tl_new:N \g__enlp_thesis_tl
+\tl_new:N \g__enlp_teacher_tl
+\tl_new:N \g__enlp_institute_tl
 
-% Warnings for undefined variables
-\def\@thesis{\GenericWarning{}{\clsname\space Warning: No \noexpand\thesis given}}
-\def\@teacher{\GenericWarning{}{\clsname\space Warning: No \noexpand\teacher given}}
-\def\@institute{\GenericWarning{}{\clsname\space Warning: No \noexpand\institute given}}
+\msg_new:nnn { enlp } { missing-metadata } { No~#1~given. }
+\msg_new:nnnn { enlp } { front-matter-order }
+  { #1~must~be~used~after~#2. }
+  { Use~\token_to_str:N \maketitle,~the~abstract~environment,~
+    and~\token_to_str:N \tableofcontents~in~that~order. }
 
-%% ===============================================
-%% Title page creation
-%% ===============================================
+\tl_gset:Nn \g__enlp_thesis_tl
+  { \msg_warning:nne { enlp } { missing-metadata } { \token_to_str:N \thesis } }
+\tl_gset:Nn \g__enlp_teacher_tl
+  { \msg_warning:nne { enlp } { missing-metadata } { \token_to_str:N \teacher } }
+\tl_gset:Nn \g__enlp_institute_tl
+  { \msg_warning:nne { enlp } { missing-metadata } { \token_to_str:N \institute } }
+
+\NewDocumentCommand \thesis { m } { \tl_gset:Nn \g__enlp_thesis_tl {#1} }
+\NewDocumentCommand \teacher { m } { \tl_gset:Nn \g__enlp_teacher_tl {#1} }
+\NewDocumentCommand \institute { m } { \tl_gset:Nn \g__enlp_institute_tl {#1} }
+
+\cs_new:Npn \enlp@thesis { \tl_use:N \g__enlp_thesis_tl }
+\cs_new:Npn \enlp@teacher { \tl_use:N \g__enlp_teacher_tl }
+\cs_new:Npn \enlp@institute { \tl_use:N \g__enlp_institute_tl }
+
+\RenewDocumentCommand \maketitle { }
+  {
+    \bool_if:NF \g__enlp_title_done_bool
+      {
+        \enlp@maketitlepage
+        \bool_gset_true:N \g__enlp_title_done_bool
+      }
+  }
+
+\cs_new_protected:Npn \enlp@checktitle
+  {
+    \bool_if:NF \g__enlp_title_done_bool
+      {
+        \msg_error:nnee { enlp } { front-matter-order }
+          { The~abstract~environment } { \token_to_str:N \maketitle }
+      }
+  }
+
+\cs_new_protected:Npn \enlp@checkabstract
+  {
+    \bool_if:NF \g__enlp_abstract_done_bool
+      {
+        \msg_error:nnee { enlp } { front-matter-order }
+          { \token_to_str:N \tableofcontents } { the~abstract~environment }
+      }
+  }
+
+\cs_new_protected:Npn \enlp@finishabstract
+  { \bool_gset_true:N \g__enlp_abstract_done_bool }
+\ExplSyntaxOff
+
 \newlength{\@FMwidth}\setlength{\@FMwidth}{14pt}
 
-\renewcommand{\maketitle}{%
+\def\enlp@maketitlepage{%
   \par
   \begingroup
   \def\thefootnote{\ifcase\c@footnote\or *\or ** \or *** \else **** \fi}
@@ -291,27 +337,10 @@
   \endgroup
   \setcounter{footnote}{0}%
   \global\let\thanks\relax
-  \global\@enlp@titleproducedtrue
-  \global\let\maketitle\relax
-  \global\let\thesis\relax
-  \global\let\teacher\relax
-  \global\let\institute\relax
   \global\let\@thanks\@empty
   \global\let\p@thanks\@empty
-  \global\let\@thesis\@empty
-  \global\let\@teacher\@empty
-  \global\let\@institute\@empty
 }
 
-%% ===============================================
-%% Order enforcement flags
-%% ===============================================
-\newif\if@enlp@titleproduced \@enlp@titleproducedfalse
-\newif\if@enlp@abstractdone  \@enlp@abstractdonefalse
-
-%% ===============================================
-%% Title page creation
-%% ===============================================
 \def\@maketitle{%
   \clearpage
   \parindent\z@
@@ -321,7 +350,7 @@
     \let\footnote\thanks
     \vspace*{40pt}
     
-    {\fontsize{20pt}{25pt}\selectfont \@thesis \par}
+    {\fontsize{20pt}{25pt}\selectfont \enlp@thesis \par}
 
     \vspace{30pt}
     
@@ -336,7 +365,7 @@
     \parbox{\textwidth}{%
       \centering
       \fontsize{16pt}{24pt}\selectfont
-      \@institute \par
+      \enlp@institute \par
       \vspace{10pt}
       \@author \par
     }
@@ -349,7 +378,7 @@
       指導教員 \par
       \vspace{5pt}
       \begin{tabular}[t]{c}%
-        \@teacher
+        \enlp@teacher
       \end{tabular}%
     }
     
@@ -375,14 +404,7 @@
 %% ===============================================
 \providecommand{\phantomsection}{}
 \renewcommand{\tableofcontents}{%
-  \if@enlp@abstractdone
-  \else
-    \ClassError{\clsname}{%
-      \string\tableofcontents\space must be used after abstract environment%
-    }{%
-      The structure must be: \string\maketitle -> abstract -> \string\tableofcontents.%
-    }%
-  \fi
+  \enlp@checkabstract
   \phantomsection
   \csection*{\contentsname}%
   \@mkboth{\contentsname}{\contentsname}%
@@ -390,14 +412,7 @@
 }
 
 \renewenvironment{abstract}{%
-  \if@enlp@titleproduced
-  \else
-    \ClassError{\clsname}{%
-      abstract environment must be used after \string\maketitle%
-    }{%
-      The structure must be: \string\maketitle -> abstract -> \string\tableofcontents.%
-    }%
-  \fi
+  \enlp@checktitle
   \csection*{\absttitle}%
   \begin{center}%
     \begin{minipage}{0.9\textwidth}%
@@ -406,7 +421,7 @@
     \end{minipage}%
   \end{center}%
   \setcounter{page}{1}%
-  \global\@enlp@abstractdonetrue
+  \enlp@finishabstract
 }
 
 \setcounter{secnumdepth}{3}

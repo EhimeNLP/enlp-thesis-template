@@ -1,0 +1,37 @@
+%%
+%% This is file `biber.lvt',
+%% Biber regression test for the Ehime University NLP Lab thesis class
+%%
+%% Author: Eito Yoneyama
+%% Created: 2026/11/08
+%%
+\input regression-test.tex
+\documentclass[biblatex]{enlp}
+\addbibresource{test.bib}
+
+\newcommand{\entries}{}
+\newcommand{\surnames}{}
+\newcommand{\suffixes}{}
+\DeclareNameFormat{checkfamily}{%
+  \ifdefstring{\namepartfamily}{佐藤}
+    {\xappto\surnames{ correct}}
+    {\xappto\surnames{ incorrect}}}
+\AtEveryBibitem{%
+  \xappto\entries{ [\thefield{labelnumber}] \thefield{entrykey}/\thefield{entrytype}}%
+  \iffieldundef{extradate}{}{\xappto\suffixes{ \thefield{extradate}}}%
+  \iffieldequalstr{langid}{japanese}{\printnames[checkfamily]{author}}{}}
+
+\begin{document}
+\START
+\OMIT
+\cite{vaswani-2017,sato-2020,sato-2020-later}.
+\citeA[see][p.~2]{sato-2020,sato-2020-later}.
+\cite{example-web}.
+\printbibliography[heading=none]
+\clearpage
+\TIMO
+\TYPE{Citation order and entry types:\entries}
+\TYPE{Japanese surnames:\surnames}
+\TYPE{Same-year suffix numbers:\suffixes}
+\OMIT
+\end{document}

@@ -4,7 +4,7 @@ Don't change this file in any respect.
 TEST 1: Title Page and Abstract
 ============================================================
 LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 20.78003pt on input line ....
+(Font)              scaled to size 20.0pt on input line ....
 LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
 (Font)              scaled to size 20.78003pt on input line ....
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <20> not available
@@ -12,7 +12,7 @@ LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <20> not available
 LaTeX Font Info:    Font shape `JT2/mc/bx/n' in size <12> not available
 (Font)              Font shape `JT2/gt/m/n' tried instead on input line ....
 LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
-(Font)              scaled to size 12.46802pt on input line ....
+(Font)              scaled to size 12.0pt on input line ....
 LaTeX Font Info:    Font shape `JY2/mc/bx/n' in size <12> not available
 (Font)              Font shape `JY2/gt/m/n' tried instead on input line ....
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
@@ -20,7 +20,7 @@ LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
 LaTeX Font Info:    Font shape `JT2/mc/bx/n' in size <25> not available
 (Font)              Font shape `JT2/gt/m/n' tried instead on input line ....
 LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
-(Font)              scaled to size 25.97504pt on input line ....
+(Font)              scaled to size 25.0pt on input line ....
 LaTeX Font Info:    Font shape `JY2/mc/bx/n' in size <25> not available
 (Font)              Font shape `JY2/gt/m/n' tried instead on input line ....
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
@@ -32,7 +32,7 @@ LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
 LaTeX Font Info:    Trying to load font information for U+msa on input line ....
 LaTeX Font Info:    Trying to load font information for U+msb on input line ....
 LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 16.62402pt on input line ....
+(Font)              scaled to size 16.0pt on input line ....
 LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
 (Font)              scaled to size 16.62402pt on input line ....
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <16> not available
@@ -47,7 +47,7 @@ LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
 [1
 ]
 LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 18.70203pt on input line ....
+(Font)              scaled to size 18.0pt on input line ....
 LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
 (Font)              scaled to size 18.70203pt on input line ....
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <18> not available
@@ -55,7 +55,7 @@ LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <18> not available
 LaTeX Font Info:    Font shape `JT2/mc/bx/n' in size <18> not available
 (Font)              Font shape `JT2/gt/m/n' tried instead on input line ....
 LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
-(Font)              scaled to size 18.70203pt on input line ....
+(Font)              scaled to size 18.0pt on input line ....
 LaTeX Font Info:    Font shape `JY2/mc/bx/n' in size <18> not available
 (Font)              Font shape `JY2/gt/m/n' tried instead on input line ....
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
@@ -75,31 +75,104 @@ TEST 3: Main Body Structure
 ============================================================
 [2
 ]
-LaTeX Warning: Citation `araki-1995' on page 3 undefined on input line ....
-LaTeX Warning: Citation `tackstrom-etal-2013-token' on page 3 undefined on input line ....
-LaTeX Warning: Citation `vaswani-2017' on page 3 undefined on input line ....
-LaTeX Warning: Citation `devlin-2019' on page 3 undefined on input line ....
-LaTeX Warning: Citation `sato-2020' on page 3 undefined on input line ....
+Underfull \hbox (badness 4181) in paragraph at lines ...
+[]\JY2/mc/m/n/12 ニ ュ ーラルネ ットワ ークの進展により 、 \OT1/cmr/m/n/12 Trans-former([][]Vaswani et al. 2017[][]) \JY2/mc/m/n/12 や
+\hbox(10.56+3.0)x460.0, glue set 3.47392
+.\hbox(0.0+0.0)x12.0
+.\JY2/mc/m/n/12 ニ
+.\penalty 10000(for kinsoku)
+.\glue(\kanjiskip) 0.0 plus 0.4 minus 0.5
+.\JY2/mc/m/n/12 ュ
+.\penalty 10000(for kinsoku)
+.\glue(\kanjiskip) 0.0 plus 0.4 minus 0.5
+.\JY2/mc/m/n/12 ー
+.\JY2/mc/m/n/12 ラ
+.\JY2/mc/m/n/12 ル
+.\JY2/mc/m/n/12 ネ
+.\penalty 10000(for kinsoku)
+.\glue(\kanjiskip) 0.0 plus 0.4 minus 0.5
+.\JY2/mc/m/n/12 ッ
+.\JY2/mc/m/n/12 ト
+.\JY2/mc/m/n/12 ワ
+.\penalty 10000(for kinsoku)
+.\glue(\kanjiskip) 0.0 plus 0.4 minus 0.5
+.\JY2/mc/m/n/12 ー
+.\JY2/mc/m/n/12 ク
+.\JY2/mc/m/n/12 の
+.\JY2/mc/m/n/12 進
+.\JY2/mc/m/n/12 展
+.\JY2/mc/m/n/12 に
+.\JY2/mc/m/n/12 よ
+.\JY2/mc/m/n/12 り
+.\penalty 10000(for kinsoku)
+.\glue(refer from jfm) 0.0
+.\JY2/mc/m/n/12 、
+.\glue(refer from jfm) 6.0 minus 6.0
+.\OT1/cmr/m/n/12 T
+.\kern-0.97916
+.\OT1/cmr/m/n/12 r
+.\OT1/cmr/m/n/12 a
+.\OT1/cmr/m/n/12 n
+.\OT1/cmr/m/n/12 s
+.\discretionary
+..\OT1/cmr/m/n/12 -
+.\OT1/cmr/m/n/12 f
+.\OT1/cmr/m/n/12 o
+.\OT1/cmr/m/n/12 r
+.\OT1/cmr/m/n/12 m
+.\OT1/cmr/m/n/12 e
+.\OT1/cmr/m/n/12 r
+.\OT1/cmr/m/n/12 (
+.\special{pdf:bann<</Type/Annot/Subtype/Link/Border[0 0 0]/H/I/C[1 0 0]/A<</S/GoTo/D(cite.vaswani-2017)>>>>}
+.\special{color push gray 0}
+.\OT1/cmr/m/n/12 V
+.\kern-0.97916
+.\OT1/cmr/m/n/12 a
+.\OT1/cmr/m/n/12 s
+.\OT1/cmr/m/n/12 w
+.\kern-0.32639
+.\OT1/cmr/m/n/12 a
+.\OT1/cmr/m/n/12 n
+.\OT1/cmr/m/n/12 i
+.\glue 3.91663 plus 1.95831 minus 1.30554
+.\OT1/cmr/m/n/12 e
+.\OT1/cmr/m/n/12 t
+.\penalty 10000
+.\glue 3.91663 plus 1.95831 minus 1.30554
+.\OT1/cmr/m/n/12 a
+.\OT1/cmr/m/n/12 l
+.\OT1/cmr/m/n/12 .
+.\glue 3.91663 plus 1.95831 minus 1.30554
+.\OT1/cmr/m/n/12 2
+.\OT1/cmr/m/n/12 0
+.\OT1/cmr/m/n/12 1
+.\OT1/cmr/m/n/12 7
+.\special{color pop}
+.\special{pdf:eann}
+.\OT1/cmr/m/n/12 )
+.\glue(\xkanjiskip) 2.40555 plus 1.0 minus 1.0
+.\JY2/mc/m/n/12 や
+.\glue(\rightskip) 0.0
 LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 17.95393pt on input line ....
+(Font)              scaled to size 17.28pt on input line ....
 LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
 (Font)              scaled to size 17.95393pt on input line ....
 LaTeX Font Info:    Font shape `JT2/mc/bx/n' in size <17.28> not available
 (Font)              Font shape `JT2/gt/m/n' tried instead on input line ....
 LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
-(Font)              scaled to size 17.95393pt on input line ....
+(Font)              scaled to size 17.28pt on input line ....
 LaTeX Font Info:    Font shape `JY2/mc/bx/n' in size <17.28> not available
 (Font)              Font shape `JY2/gt/m/n' tried instead on input line ....
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
 (Font)              scaled to size 17.95393pt on input line ....
 LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 14.96161pt on input line ....
+(Font)              scaled to size 14.4pt on input line ....
 LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
 (Font)              scaled to size 14.96161pt on input line ....
 LaTeX Font Info:    Font shape `JT2/mc/bx/n' in size <14.4> not available
 (Font)              Font shape `JT2/gt/m/n' tried instead on input line ....
 LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
-(Font)              scaled to size 14.96161pt on input line ....
+(Font)              scaled to size 14.4pt on input line ....
 LaTeX Font Info:    Font shape `JY2/mc/bx/n' in size <14.4> not available
 (Font)              Font shape `JY2/gt/m/n' tried instead on input line ....
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
@@ -109,19 +182,17 @@ LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
 TEST 4: Back Matter (Ack, Bib, Pubs)
 ============================================================
 [3
+] [4
+] (test.bbl [5
 ]
-[4
-] (test.bbl
-[5
-]
-! LaTeX Error: Something's wrong--perhaps a missing \item.
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-l. ...\end{thebibliography}
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-)
-[6
+LaTeX Font Info:    Font shape `JT2/gt/m/it' in size <12> not available
+(Font)              Font shape `JT2/gt/m/n' tried instead on input line ....
+LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
+(Font)              scaled to size 12.0pt on input line ....
+LaTeX Font Info:    Font shape `JY2/gt/m/it' in size <12> not available
+(Font)              Font shape `JY2/gt/m/n' tried instead on input line ....
+LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
+(Font)              scaled to size 12.46802pt on input line ....
+) [6
 ]
 ============================================================

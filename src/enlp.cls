@@ -4,121 +4,109 @@
 %%
 %% Author: Eito Yoneyama
 %% Created: 2025/11/20
-%% Updated: 2026/02/24
-
+%% Updated: 2026/11/08
+%%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{enlp}[2026/02/24 v1.0.7 Academic thesis class for Ehime Univ. NLP Lab (based on JNLP style)]
+\ProvidesClass{enlp}[2026/11/08 v1.1.0 Academic thesis class for Ehime Univ. NLP Lab (based on jlreq)]
 
-%% ===============================================
-%% Engine detection and font settings
-%% ===============================================
+% Keep the thesis layout while inheriting the Japanese typesetting machinery
+% and standard LaTeX environments from jlreq.
 \RequirePackage{ifptex}
-\RequirePackage{ifluatex}
+\RequirePackage{iftex}
 
-\def\clsname{ENLP}
-
-\ifpTeX
-  \def\zw{zw}
-  \def\zh{zh}
-  \RequirePackage{plautopatch}
-\else\ifLuaTeX
-  \RequirePackage{luatexja}
-  \newif\iftdir\tdirfalse % Since this template does not use vertical writing, it should always be false.
-\else
-  \ClassError{\clsname}{This class supports only upLaTeX, pLaTeX, or LuaLaTeX}{Use upLaTeX, pLaTeX, or LuaLaTeX to compile this document.}
-\fi\fi
-
-%% ===============================================
-%% Required packages (Part 1)
-%% ===============================================
-\RequirePackage{enlplogo}
-\RequirePackage[absolute,overlay]{textpos}
-\RequirePackage{tikz}
-
-%% ===============================================
-%% Hyperref Support
-%% ===============================================
-\ifpTeX
-  % pLaTeX / upLaTeX specific settings
-  % setpagesize=false prevents conflict with bxpapersize
-  \RequirePackage[dvipdfmx,setpagesize=false,bookmarks=true,bookmarksnumbered=true,colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
-  \RequirePackage{pxjahyper} % Essential for Japanese bookmarks in pLaTeX
-\else
-  % LuaLaTeX specific settings
-  \RequirePackage[unicode,setpagesize=false,bookmarks=true,bookmarksnumbered=true,colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
-\fi
-
-%% ===============================================
-%% Required packages (Part 2)
-%% ===============================================
-\RequirePackage{enlpbbl}
-\RequirePackage{bibcheck}
-
-%% ===============================================
-%% Option settings
-%% ===============================================
-\newif\if@enablejfam\@enablejfamtrue
-\newif\if@ldebug\@ldebugfalse
-
-% Paper size settings
-\setlength\paperheight{297mm}
-\setlength\paperwidth{210mm}
-
-% Debug option
+\newif\if@ldebug
+\newcommand*{\enlp@loadbibliography}{\RequirePackage{enlp-bibtex}}
 \DeclareOption{ldebug}{\@ldebugtrue}
-
-\DeclareOption{leqno}{\input{leqno.clo}}
-\DeclareOption{fleqn}{\input{fleqn.clo}}
-\DeclareOption{disablejfam}{\@enablejfamfalse}
-\DeclareOption{draft}{\setlength\overfullrule{5pt}}
-\DeclareOption{final}{\setlength\overfullrule{0pt}}
+\DeclareOption{biblatex}{%
+  \renewcommand*{\enlp@loadbibliography}{\RequirePackage[backend=biber,style=enlp]{biblatex}}}
+\DeclareOption{leqno}{\PassOptionsToClass{leqno}{jlreq}}
+\DeclareOption{fleqn}{\PassOptionsToClass{fleqn}{jlreq}}
+\DeclareOption{disablejfam}{\PassOptionsToClass{disablejfam}{jlreq}}
+\DeclareOption{draft}{\PassOptionsToClass{draft}{jlreq}}
+\DeclareOption{final}{\PassOptionsToClass{final}{jlreq}}
 \DeclareOption*{}
-
-\ExecuteOptions{final}
 \ProcessOptions\relax
 
-\RequirePackage{bxpapersize}
+\PassOptionsToPackage{nomath}{lmodern}
+\ifpTeX
+  \RequirePackage{plautopatch}
+  % The pTeX patch must take precedence over the kernel's endtabular fix.
+  \DeclareHookRule{package/arydshln/after}{firstaid}{before}{plautopatch}
+  \edef\enlp@kanjiskip{\the\kanjiskip}
+  \edef\enlp@xkanjiskip{\the\xkanjiskip}
+\fi
+\let\enlp@tabular\tabular
+\let\enlp@endtabular\endtabular
+\LoadClass[article,paper=a4paper,twoside,fontsize=12pt,baselineskip=19pt,
+  open_bracket_pos=zenkakunibu_nibu]{jlreq}
 
-% Load lua-visual-debug if ldebug is enabled AND using LuaTeX
-\if@ldebug
-  \ifluatex
-    \RequirePackage{lua-visual-debug}
-  \fi
+% Retain normal table row spacing and the kernel interfaces patched by array
+% and arydshln in existing theses.
+\let\tabular\enlp@tabular
+\let\endtabular\enlp@endtabular
+\ifpTeX
+  \renewcommand{\rmdefault}{cmr}
+  \renewcommand{\sfdefault}{cmss}
+  \renewcommand{\ttdefault}{cmtt}
 \fi
 
-%% ===============================================
-%% Font definitions (JIS/UPJIS compatible)
-%% ===============================================
+% Use the previous Japanese font metrics and spacing within the jlreq class.
+% A different fullwidth advance would reflow both body text and tables.
 \ifLuaTeX
+  \DeclareFontShape{JY3}{mc}{m}{n}{<->s*[0.962216]\ltj@stdmcfont:-kern;jfm=ujis}{}
+  \DeclareFontShape{JY3}{gt}{m}{n}{<->s*[0.962216]\ltj@stdgtfont:-kern;jfm=ujis}{}
+  % jlreq has already selected its 12 pt Japanese font during class loading.
+  \expandafter\let\csname JY3/mc/m/n/12\endcsname\relax
+  \ltjenableadjust[lineend=false,priority=false]
+  \renewcommand{\jlreqkanjiskip}{0pt plus .4pt minus .5pt}
+  \renewcommand{\jlreqxkanjiskip}{2.40554pt plus 1pt minus 1pt}
 \else
-  \ifstrictplatex
-    \DeclareFontShape{JY1}{mc}{m}{n}{<->s*[1.039] jis}{}
-    \DeclareFontShape{JY1}{mc}{m}{it}{<->s*[1.039] jis}{}
-    \DeclareFontShape{JY1}{mc}{m}{sc}{<->s*[1.039] jis}{}
-    \DeclareFontShape{JY1}{gt}{m}{n}{<->s*[1.039] jisg}{}
-    \DeclareFontShape{JY1}{gt}{m}{it}{<->s*[1.039] jisg}{}
-    \DeclareFontShape{JY1}{gt}{m}{sc}{<->s*[1.039] jisg}{}
-    \DeclareFontShape{JT1}{mc}{m}{n}{<->s*[1.039] jis-v}{}
-    \DeclareFontShape{JT1}{mc}{m}{it}{<->s*[1.039] jis-v}{}
-    \DeclareFontShape{JT1}{mc}{m}{sc}{<->s*[1.039] jis-v}{}
-    \DeclareFontShape{JT1}{gt}{m}{n}{<->s*[1.039] jisg-v}{}
-    \DeclareFontShape{JT1}{gt}{m}{it}{<->s*[1.039] jisg-v}{}
-    \DeclareFontShape{JT1}{gt}{m}{sc}{<->s*[1.039] jisg-v}{}
+  \ifstrictuplatex
+    \DeclareFontShape{JY2}{mc}{m}{n}{<->s*[1.039] upjisr-h}{}
+    \DeclareFontShape{JY2}{gt}{m}{n}{<->s*[1.039] upjisg-h}{}
   \else
-    \ifstrictuplatex
-      \DeclareFontShape{JY2}{mc}{m}{n}{<->s*[1.039] upjisr-h}{}
-      \DeclareFontShape{JY2}{mc}{m}{it}{<->s*[1.039] upjisr-h}{}
-      \DeclareFontShape{JY2}{mc}{m}{sc}{<->s*[1.039] upjisr-h}{}
-      \DeclareFontShape{JY2}{gt}{m}{n}{<->s*[1.039] upjisg-h}{}
-      \DeclareFontShape{JY2}{gt}{m}{it}{<->s*[1.039] upjisg-h}{}
-      \DeclareFontShape{JY2}{gt}{m}{sc}{<->s*[1.039] upjisg-h}{}
-      \DeclareFontShape{JT2}{mc}{m}{n}{<->s*[1.039] upjisr-v}{}
-      \DeclareFontShape{JT2}{mc}{m}{it}{<->s*[1.039] upjisr-v}{}
-      \DeclareFontShape{JT2}{mc}{m}{sc}{<->s*[1.039] upjisr-v}{}
-      \DeclareFontShape{JT2}{gt}{m}{n}{<->s*[1.039] upjisg-v}{}
-      \DeclareFontShape{JT2}{gt}{m}{it}{<->s*[1.039] upjisg-v}{}
-      \DeclareFontShape{JT2}{gt}{m}{sc}{<->s*[1.039] upjisg-v}{}
-    \fi
+    \DeclareFontShape{JY1}{mc}{m}{n}{<->s*[1.039] jis}{}
+    \DeclareFontShape{JY1}{gt}{m}{n}{<->s*[1.039] jisg}{}
+  \fi
+  \renewcommand{\jlreqkanjiskip}{\enlp@kanjiskip}
+  \renewcommand{\jlreqxkanjiskip}{\enlp@xkanjiskip}
+\fi
+\normalfont
+
+\RequirePackage{enlp-logo}
+\RequirePackage[absolute,overlay]{textpos}
+\RequirePackage{tikz}
+\RequirePackage{bxpapersize}
+\ifpTeX
+  \PassOptionsToPackage{dvipdfmx}{hyperref}
+\fi
+\RequirePackage[setpagesize=false,bookmarksnumbered,colorlinks,
+  linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
+\ifpTeX
+  \RequirePackage{pxjahyper}
+\fi
+
+% Thesis layout shared by the BibTeX and biblatex bibliography lists.
+\let\enlp@bibliographytitle\refname
+\newlength{\bibleftmargin}
+\newlength{\bibitemindent}
+% Keep the bibliography indentation based on the previous 10 pt font.
+\setlength{\bibleftmargin}{19.24432pt}
+\setlength{\bibitemindent}{-4.81108pt}
+\newcommand*{\enlp@bibliographyheading}[1]{%
+  \csection*{#1}%
+  \addcontentsline{toc}{section}{#1}}
+\newcommand*{\enlp@bibliographylist}[1]{%
+  \settowidth{\labelwidth}{#1}%
+  \setlength{\leftmargin}{\bibleftmargin}%
+  \setlength{\itemindent}{\bibitemindent}}
+\newcommand*{\enlp@bibliographyparagraphs}{%
+  \sloppy\clubpenalty4000\widowpenalty4000\relax}
+
+\enlp@loadbibliography
+\if@ldebug
+  \ifLuaTeX
+    \RequirePackage{lua-visual-debug}
   \fi
 \fi
 
@@ -134,25 +122,15 @@
   \let\@listi\@listI
 }
 \normalsize
-
-\ifLuaTeX
-  \setbox0\hbox{　}
-\else
-  \ifstrictplatex
-    \setbox0\hbox{\char\euc"A1A1}
-  \else
-    \ifstrictuplatex
-      \setbox0\hbox{　}
-    \fi
-  \fi
-\fi
-\setlength\Cht{\ht0}
-\setlength\Cdp{\dp0}
-\setlength\Cwd{\wd0}
+\setbox\@tempboxa\hbox{　}
+\setlength\Cht{\ht\@tempboxa}
+\setlength\Cdp{\dp\@tempboxa}
+\setlength\Cwd{\wd\@tempboxa}
+\setlength\Chs{\Cwd}
 \setlength\Cvs{\baselineskip}
-\setlength\Chs{\wd0}
+\renewcommand{\jlreqparindent}{\Cwd}
 
-\newcommand{\small}{%
+\renewcommand{\small}{%
   \@setfontsize\small\@xipt{17}% 11pt / 17pt
   \abovedisplayskip 9\p@ \@plus3\p@ \@minus4\p@
   \abovedisplayshortskip \z@ \@plus2\p@
@@ -164,7 +142,7 @@
               \itemsep \parsep}%
 }
 
-\newcommand{\footnotesize}{%
+\renewcommand{\footnotesize}{%
   \@setfontsize\footnotesize\@xpt{15}% 10pt / 15pt
   \abovedisplayskip 6\p@ \@plus2\p@ \@minus2\p@
   \abovedisplayshortskip \z@ \@plus1\p@
@@ -176,37 +154,32 @@
               \itemsep \parsep}%
 }
 
-\newcommand{\tiny}{\@setfontsize\tiny\@vipt{7}} % 6pt / 7pt
-\newcommand{\scriptsize}{\@setfontsize\scriptsize\@viiipt{10}} % 8pt / 10pt
-\newcommand{\large}{\@setfontsize\large\@xivpt{25}} % 14pt / 25pt
-\newcommand{\Large}{\@setfontsize\Large\@xviipt{30}} % 17pt / 30pt
-\newcommand{\LARGE}{\@setfontsize\LARGE\@xxpt{35}} % 20pt / 35pt
-\newcommand{\huge}{\@setfontsize\huge\@xxvpt{40}} % 25pt / 40pt
-\newcommand{\Huge}{\@setfontsize\Huge{30}{45}} % 30pt / 45pt
+\renewcommand{\tiny}{\@setfontsize\tiny\@vipt{7}} % 6pt / 7pt
+\renewcommand{\scriptsize}{\@setfontsize\scriptsize\@viiipt{10}} % 8pt / 10pt
+\renewcommand{\large}{\@setfontsize\large\@xivpt{25}} % 14pt / 25pt
+\renewcommand{\Large}{\@setfontsize\Large\@xviipt{30}} % 17pt / 30pt
+\renewcommand{\LARGE}{\@setfontsize\LARGE\@xxpt{35}} % 20pt / 35pt
+\renewcommand{\huge}{\@setfontsize\huge\@xxvpt{40}} % 25pt / 40pt
+\renewcommand{\Huge}{\@setfontsize\Huge{30}{45}} % 30pt / 45pt
 
-% (A4 / 12pt)
-\setlength\headheight{12\p@}
-\setlength\headsep{25\p@}
-\setlength\topskip{1\Cht}
-\setlength\footskip{48\p@}
-
-\setlength\textheight{32\Cvs}\addtolength\textheight{\topskip}
-\@settopoint\textheight
+% jlreq rounds line_length to whole Japanese characters. Use the original
+% 460 pt measure, centered on the paper, for existing figures and paragraphs.
 \setlength\textwidth{460pt}
-\@settopoint\textwidth
-
-\setlength\topmargin{25mm}
-\addtolength\topmargin{-1in}
-\@settopoint\topmargin
-\setlength\marginparsep{\z@}
-\setlength\marginparpush{\z@}
-\setlength\marginparwidth{\z@}
-\@settopoint\marginparwidth
-\setlength\@tempdima{\paperwidth}\addtolength\@tempdima{-\textwidth}
-\setlength\oddsidemargin{.5\@tempdima}\addtolength\oddsidemargin{-1in}
-\evensidemargin\oddsidemargin
+\setlength\oddsidemargin{\dimexpr(\paperwidth-\textwidth)/2-1in\relax}
 \@settopoint\oddsidemargin
-\@settopoint\evensidemargin
+\setlength\evensidemargin{\oddsidemargin}
+\setlength\headheight{12pt}
+\setlength\headsep{25pt}
+\setlength\topmargin{\dimexpr25mm-1in\relax}
+\@settopoint\topmargin
+\setlength\topskip{\Cht}
+\setlength\textheight{\dimexpr32\Cvs+\topskip\relax}
+\@settopoint\textheight
+\setlength\footskip{48pt}
+\setlength\maxdepth{4pt}
+\setlength\marginparwidth{0pt}
+\setlength\marginparsep{0pt}
+\setlength\marginparpush{0pt}
 
 \setlength\footnotesep{7\p@}
 \setlength\@tempdima{1\Cvs}\addtolength\@tempdima{-1\Cht}\addtolength\@tempdima{7\p@}
@@ -277,22 +250,6 @@
 %% ===============================================
 %% Headers and Footers
 %% ===============================================
-\def\ps@plain{%
-  \let\@mkboth\@gobbletwo
-  \let\@oddhead\@empty
-  \def\@oddfoot{\reset@font\hfil\thepage\hfil}%
-  \let\@evenhead\@empty
-  \let\@evenfoot\@oddfoot
-}
-\def\ps@myheadings{%
-  \let\@oddfoot\@empty\let\@evenfoot\@empty
-  \def\@evenhead{\thepage\hfil\leftmark}%
-  \def\@oddhead{{\rightmark}\hfil\thepage}%
-  \let\@mkboth\@gobbletwo
-  \let\sectionmark\@gobble
-  \let\subsectionmark\@gobble
-}
-
 \def\ps@mainpage{%
   \let\@mkboth\markboth
   \def\@oddhead{}
@@ -320,22 +277,69 @@
   }%
 }
 
-% Additional metadata
-\def\thesis#1{\gdef\@thesis{#1}}        % Example: Graduation Thesis, Master's Thesis
-\def\teacher#1{\gdef\@teacher{#1}}      % Supervisor
-\def\institute#1{\gdef\@institute{#1}}  % Affiliation (Faculty/Department, etc.)
+% Thesis metadata and front matter order.
+\ExplSyntaxOn
+\bool_new:N \g__enlp_title_done_bool
+\bool_new:N \g__enlp_abstract_done_bool
+\tl_new:N \g__enlp_thesis_tl
+\tl_new:N \g__enlp_teacher_tl
+\tl_new:N \g__enlp_institute_tl
 
-% Warnings for undefined variables
-\def\@thesis{\GenericWarning{}{\clsname\space Warning: No \noexpand\thesis given}}
-\def\@teacher{\GenericWarning{}{\clsname\space Warning: No \noexpand\teacher given}}
-\def\@institute{\GenericWarning{}{\clsname\space Warning: No \noexpand\institute given}}
+\msg_new:nnn { enlp } { missing-metadata } { No~#1~given. }
+\msg_new:nnnn { enlp } { front-matter-order }
+  { #1~must~be~used~after~#2. }
+  { Use~\token_to_str:N \maketitle,~the~abstract~environment,~
+    and~\token_to_str:N \tableofcontents~in~that~order. }
 
-%% ===============================================
-%% Title page creation
-%% ===============================================
+\tl_gset:Nn \g__enlp_thesis_tl
+  { \msg_warning:nne { enlp } { missing-metadata } { \token_to_str:N \thesis } }
+\tl_gset:Nn \g__enlp_teacher_tl
+  { \msg_warning:nne { enlp } { missing-metadata } { \token_to_str:N \teacher } }
+\tl_gset:Nn \g__enlp_institute_tl
+  { \msg_warning:nne { enlp } { missing-metadata } { \token_to_str:N \institute } }
+
+\NewDocumentCommand \thesis { m } { \tl_gset:Nn \g__enlp_thesis_tl {#1} }
+\NewDocumentCommand \teacher { m } { \tl_gset:Nn \g__enlp_teacher_tl {#1} }
+\NewDocumentCommand \institute { m } { \tl_gset:Nn \g__enlp_institute_tl {#1} }
+
+\cs_new:Npn \enlp@thesis { \tl_use:N \g__enlp_thesis_tl }
+\cs_new:Npn \enlp@teacher { \tl_use:N \g__enlp_teacher_tl }
+\cs_new:Npn \enlp@institute { \tl_use:N \g__enlp_institute_tl }
+
+\RenewDocumentCommand \maketitle { }
+  {
+    \bool_if:NF \g__enlp_title_done_bool
+      {
+        \enlp@maketitlepage
+        \bool_gset_true:N \g__enlp_title_done_bool
+      }
+  }
+
+\cs_new_protected:Npn \enlp@checktitle
+  {
+    \bool_if:NF \g__enlp_title_done_bool
+      {
+        \msg_error:nnee { enlp } { front-matter-order }
+          { The~abstract~environment } { \token_to_str:N \maketitle }
+      }
+  }
+
+\cs_new_protected:Npn \enlp@checkabstract
+  {
+    \bool_if:NF \g__enlp_abstract_done_bool
+      {
+        \msg_error:nnee { enlp } { front-matter-order }
+          { \token_to_str:N \tableofcontents } { the~abstract~environment }
+      }
+  }
+
+\cs_new_protected:Npn \enlp@finishabstract
+  { \bool_gset_true:N \g__enlp_abstract_done_bool }
+\ExplSyntaxOff
+
 \newlength{\@FMwidth}\setlength{\@FMwidth}{14pt}
 
-\renewcommand{\maketitle}{%
+\def\enlp@maketitlepage{%
   \par
   \begingroup
   \def\thefootnote{\ifcase\c@footnote\or *\or ** \or *** \else **** \fi}
@@ -351,27 +355,10 @@
   \endgroup
   \setcounter{footnote}{0}%
   \global\let\thanks\relax
-  \global\@enlp@titleproducedtrue
-  \global\let\maketitle\relax
-  \global\let\thesis\relax
-  \global\let\teacher\relax
-  \global\let\institute\relax
   \global\let\@thanks\@empty
   \global\let\p@thanks\@empty
-  \global\let\@thesis\@empty
-  \global\let\@teacher\@empty
-  \global\let\@institute\@empty
 }
 
-%% ===============================================
-%% Order enforcement flags
-%% ===============================================
-\newif\if@enlp@titleproduced \@enlp@titleproducedfalse
-\newif\if@enlp@abstractdone  \@enlp@abstractdonefalse
-
-%% ===============================================
-%% Title page creation
-%% ===============================================
 \def\@maketitle{%
   \clearpage
   \parindent\z@
@@ -381,7 +368,7 @@
     \let\footnote\thanks
     \vspace*{40pt}
     
-    {\fontsize{20pt}{25pt}\selectfont \@thesis \par}
+    {\fontsize{20pt}{25pt}\selectfont \enlp@thesis \par}
 
     \vspace{30pt}
     
@@ -396,7 +383,7 @@
     \parbox{\textwidth}{%
       \centering
       \fontsize{16pt}{24pt}\selectfont
-      \@institute \par
+      \enlp@institute \par
       \vspace{10pt}
       \@author \par
     }
@@ -409,7 +396,7 @@
       指導教員 \par
       \vspace{5pt}
       \begin{tabular}[t]{c}%
-        \@teacher
+        \enlp@teacher
       \end{tabular}%
     }
     
@@ -425,6 +412,7 @@
   \clearpage
 }
 
+\renewcommand{\thefootnote}{\arabic{footnote}}
 \renewcommand{\@makefnmark}{%
   \kern0pt\raisebox{0.3ex}{\@textsuperscript{\normalfont\@thefnmark}}%
 }
@@ -433,30 +421,16 @@
 %% Table of Contents and Sections
 %% ===============================================
 \providecommand{\phantomsection}{}
-\newcommand{\tableofcontents}{%
-  \if@enlp@abstractdone
-  \else
-    \ClassError{\clsname}{%
-      \string\tableofcontents\space must be used after abstract environment%
-    }{%
-      The structure must be: \string\maketitle -> abstract -> \string\tableofcontents.%
-    }%
-  \fi
+\renewcommand{\tableofcontents}{%
+  \enlp@checkabstract
   \phantomsection
   \csection*{\contentsname}%
   \@mkboth{\contentsname}{\contentsname}%
   \@starttoc{toc}%
 }
 
-\newenvironment{abstract}{%
-  \if@enlp@titleproduced
-  \else
-    \ClassError{\clsname}{%
-      abstract environment must be used after \string\maketitle%
-    }{%
-      The structure must be: \string\maketitle -> abstract -> \string\tableofcontents.%
-    }%
-  \fi
+\renewenvironment{abstract}{%
+  \enlp@checktitle
   \csection*{\absttitle}%
   \begin{center}%
     \begin{minipage}{0.9\textwidth}%
@@ -465,22 +439,13 @@
     \end{minipage}%
   \end{center}%
   \setcounter{page}{1}%
-  \global\@enlp@abstractdonetrue
+  \enlp@finishabstract
 }
 
 \setcounter{secnumdepth}{3}
-\newcounter{section}
-\newcounter{subsection}[section]
-\newcounter{subsubsection}[subsection]
-\newcounter{paragraph}[subsubsection]
-\newcounter{subparagraph}[paragraph]
-\renewcommand{\thesection}{\@arabic\c@section}
-\renewcommand{\thesubsection}{\thesection.\@arabic\c@subsection}
-\renewcommand{\thesubsubsection}{\thesubsection.\@arabic\c@subsubsection}
-\renewcommand{\theparagraph}{\thesubsubsection.\@arabic\c@paragraph}
-\renewcommand{\thesubparagraph}{\theparagraph.\@arabic\c@subparagraph}
+\renewcommand*{\@seccntformat}[1]{\csname the#1\endcsname\quad}
 
-\newcommand{\section}{%
+\renewcommand{\section}{%
   \par\addvspace{1.3\Cvs}%
   \@afterindenttrue
   \secdef\@section\@ssection
@@ -555,28 +520,28 @@
   \vskip 14pt
   \nobreak\vskip0.7\Cvs\@afterheading
 }
-\newcommand{\subsection}{%
+\renewcommand{\subsection}{%
   \@startsection{subsection}{2}{\z@}%
     {.9\Cvs \@plus.4\Cvs \@minus.2\Cvs}%
     {.1\Cvs \@minus0.1\Cvs}%
     {\reset@font\Large\bfseries}%
 }
-\newcommand{\subsubsection}{%
+\renewcommand{\subsubsection}{%
   \@startsection{subsubsection}{3}{\z@}%
     {.9\Cvs \@plus.4\Cvs \@minus.2\Cvs}%
     {.1\Cvs \@minus0.1\Cvs}%
     {\reset@font\large\bfseries}%
 }
-\newcommand{\paragraph}{%
+\renewcommand{\paragraph}{%
   \@startsection{paragraph}{4}{\z@}%
     {\z@}{-10pt}{\reset@font\normalsize\bfseries}%
 }
-\newcommand{\subparagraph}{%
+\renewcommand{\subparagraph}{%
   \@startsection{subparagraph}{5}{\z@}%
     {\z@}{-10pt}{\reset@font\normalsize\bfseries}%
 }
 
-\newcommand{\appendix}{%
+\renewcommand{\appendix}{%
   \par
   \setcounter{section}{0}%
   \setcounter{subsection}{0}%
@@ -595,7 +560,7 @@
       \parindent\z@\raggedright
       \interlinepenalty\@M\reset@font
       \ifnum \c@secnumdepth >\z@
-        {\fontsize{18pt}{22pt}\selectfont \bfseries \thesection \hspace{1zw}\ignorespaces}
+        {\fontsize{18pt}{22pt}\selectfont \bfseries \thesection \hspace{1\zw}\ignorespaces}
       \fi
       \fontsize{18pt}{22pt}\selectfont\bfseries##2\par
     \endgroup
@@ -620,103 +585,20 @@
 \@beginparpenalty-\@lowpenalty
 \@endparpenalty-\@lowpenalty
 \@itempenalty-\@lowpenalty
-\renewcommand{\theenumi}{\@arabic\c@enumi}
-\renewcommand{\theenumii}{\@alph\c@enumii}
-\renewcommand{\theenumiii}{\@roman\c@enumiii}
-\renewcommand{\theenumiv}{\@Alph\c@enumiv}
-\newcommand{\labelenumi}{(\theenumi)}
-\newcommand{\labelenumii}{(\theenumii)}
-\newcommand{\labelenumiii}{(\theenumiii)}
-\newcommand{\labelenumiv}{(\theenumiv)}
-\renewcommand{\p@enumii}{\theenumi}
-\renewcommand{\p@enumiii}{\theenumi(\theenumii)}
-\renewcommand{\p@enumiv}{\p@enumiii\theenumiii}
+\renewcommand{\labelenumi}{(\theenumi)}
+\renewcommand{\labelenumii}{(\theenumii)}
+\renewcommand{\labelenumiii}{(\theenumiii)}
+\renewcommand{\labelenumiv}{(\theenumiv)}
+\renewcommand{\labelitemi}{\textbullet}
+\renewcommand{\labelitemii}{\normalfont\bfseries\textendash}
+\renewcommand{\labelitemiii}{\textasteriskcentered}
+\renewcommand{\labelitemiv}{\textperiodcentered}
 
-\renewenvironment{enumerate}{%
-  \ifnum \@enumdepth >\thr@@
-    \@toodeep
-  \else
-    \advance\@enumdepth\@ne
-    \edef\@enumctr{enum\romannumeral\the\@enumdepth}%
-    \list{\csname label\@enumctr\endcsname}{%
-    \iftdir
-      \ifnum \@listdepth=\@ne 
-        \topsep\z@
-      \else
-        \topsep\z@
-      \fi
-      \parskip\z@ \itemsep\z@ \parsep\z@
-      \labelwidth1\Cwd \labelsep.3\Cwd
-      \ifnum \@enumdepth=\@ne \leftmargin1\Cwd\relax
-      \else\leftmargin\leftskip\fi
-        \advance\leftmargin 1\Cwd
-      \fi
-      \usecounter{\@enumctr}%
-      \def\makelabel##1{\hss\llap{##1}}}%
-    \fi
-}{\endlist}
-
-\newcommand{\labelitemi}{\textbullet}
-\newcommand{\labelitemii}{\normalfont\bfseries\textendash}
-\newcommand{\labelitemiii}{\textasteriskcentered}
-\newcommand{\labelitemiv}{\textperiodcentered}
-
-\renewenvironment{itemize}{%
-  \ifnum \@itemdepth >\thr@@
-    \@toodeep
-  \else
-    \advance\@itemdepth\@ne
-    \edef\@itemitem{labelitem\romannumeral\the\@itemdepth}%
-    \expandafter
-    \list{\csname \@itemitem\endcsname}{%
-      \iftdir
-        \ifnum \@listdepth=\@ne
-          \topsep\z@
-        \else
-          \topsep\z@
-        \fi
-        \parskip\z@ \itemsep\z@ \parsep\z@
-        \labelwidth1\Cwd \labelsep.3\Cwd
-        \ifnum \@itemdepth =\@ne
-          \leftmargin1\Cwd\relax
-        \else
-          \leftmargin\leftskip
-        \fi
-        \advance\leftmargin 1\Cwd
-      \fi
-      \def\makelabel##1{\hss\llap{##1}}}%
-  \fi
-}{\endlist}
-
-\newenvironment{description}{%
-  \list{}{\labelwidth\z@ \itemindent-\leftmargin
-  \iftdir
-    \leftmargin\leftskip \advance\leftmargin3\Cwd
-    \rightmargin\rightskip
-    \labelsep=1\Cwd \itemsep\z@
-    \listparindent\z@ \topskip\z@ \parskip\z@ \partopsep\z@
-  \fi
-  \let\makelabel\descriptionlabel}%
-}{\endlist}
-\newcommand{\descriptionlabel}[1]{\hspace\labelsep\normalfont\bfseries #1}
-
-% Figure and Table environments
-\newcounter{figure}
-\renewcommand{\thefigure}{\@arabic\c@figure}
-\def\fps@figure{tbp}
-\def\ftype@figure{1}
-\def\ext@figure{lof}
+% Figure and table captions.
 \def\fnum@figure{\textbf{\figurename~\thefigure}}
-\newenvironment{figure}{\@float{figure}}{\end@float}
-\newcounter{table}
-\renewcommand{\thetable}{\@arabic\c@table}
-\def\fps@table{tbp}
-\def\ftype@table{2}
-\def\ext@table{lot}
 \def\fnum@table{\textbf{\tablename~\thetable}}
-\newenvironment{table}{\@float{table}}{\end@float}
-\newlength\abovecaptionskip
-\newlength\belowcaptionskip
+\def\fps@figure{tbp}
+\def\fps@table{tbp}
 \setlength\abovecaptionskip{8\p@}
 \setlength\belowcaptionskip{0\p@}
 \long\def\@makecaption#1#2{%
@@ -742,31 +624,6 @@
 \setlength\fboxsep{0.5\Cwd}
 \setlength\fboxrule{0.25\p@}
 
-\renewcommand{\theequation}{\@arabic\c@equation}
-
-%% ===============================================
-%% Math font settings
-%% ===============================================
-\if@enablejfam
-  \ifLuaTeX
-  \else
-    \ifstrictplatex
-      \DeclareSymbolFont{mincho}{JY1}{mc}{m}{n}
-      \DeclareSymbolFontAlphabet{\mathmc}{mincho}
-      \SetSymbolFont{mincho}{bold}{JY1}{gt}{m}{n}
-      \DeclareMathAlphabet{\mathgt}{JY1}{gt}{m}{n}
-      \jfam\symmincho
-    \else
-      \ifstrictuplatex
-        \DeclareSymbolFont{mincho}{JY2}{mc}{m}{n}
-        \DeclareSymbolFontAlphabet{\mathmc}{mincho}
-        \SetSymbolFont{mincho}{bold}{JY2}{gt}{m}{n}
-        \DeclareMathAlphabet{\mathgt}{JY2}{gt}{m}{n}
-        \jfam\symmincho
-      \fi
-    \fi
-  \fi
-\fi
 \DeclareOldFontCommand{\rm}{\normalfont\rmfamily}{\mathrm}
 \DeclareOldFontCommand{\sf}{\normalfont\sffamily}{\mathsf}
 \DeclareOldFontCommand{\tt}{\normalfont\ttfamily}{\mathtt}
@@ -781,19 +638,16 @@
 %% Table of Contents format
 %% ===============================================
 \setcounter{tocdepth}{3}
-\newcommand{\@pnumwidth}{2\Cwd}
-\newcommand{\@tocrmarg}{3\Cwd}
-\newcommand{\@dotsep}{4.5}
-\newdimen\toclineskip
-\setlength\toclineskip{\z@}
-\newdimen\@lnumwidth
-\def\numberline#1{\hbox to\@lnumwidth{#1\hfil}}
+\renewcommand{\@pnumwidth}{2\Cwd}
+\renewcommand{\@tocrmarg}{3\Cwd}
+\renewcommand{\@dotsep}{4.5}
+\setlength\toclineskip{0pt plus .2pt}
 \newlength{\tocsectionsep}
 \setlength{\tocsectionsep}{0.5\baselineskip}
 \def\@dottedtocline#1#2#3#4#5{%
   \ifnum #1>\c@tocdepth
   \else
-    \vskip\toclineskip \@plus.2\p@
+    \vskip\toclineskip
     \begingroup
     \leftskip #2\relax \rightskip \@tocrmarg \parfillskip -\rightskip
     \parindent #2\relax\@afterindenttrue
@@ -809,7 +663,7 @@
     \endgroup
   \fi
 }
-\newcommand*{\l@section}[2]{%
+\renewcommand*{\l@section}[2]{%
   \ifnum \c@tocdepth >\z@
     \addpenalty{\@secpenalty}%
     \addvspace{\tocsectionsep}%
@@ -828,20 +682,20 @@
     \endgroup
   \fi
 }
-\newcommand*{\l@subsection}{\@dottedtocline{2}{1\Cwd}{2\Cwd}}
-\newcommand*{\l@subsubsection}{\@dottedtocline{3}{3\Cwd}{3\Cwd}}
-\newcommand*{\l@paragraph}{\@dottedtocline{4}{6\Cwd}{4\Cwd}}
-\newcommand*{\l@subparagraph}{\@dottedtocline{5}{6\Cwd}{4\Cwd}}
-\newcommand{\listoffigures}{\section*{\listfigurename}\@starttoc{lof}}
-\newcommand*{\l@figure}{\@dottedtocline{1}{1.5em}{2.3em}}
-\newcommand{\listoftables}{\section*{\listtablename}\@starttoc{lot}}
+\renewcommand*{\l@subsection}{\@dottedtocline{2}{1\Cwd}{2\Cwd}}
+\renewcommand*{\l@subsubsection}{\@dottedtocline{3}{3\Cwd}{3\Cwd}}
+\renewcommand*{\l@paragraph}{\@dottedtocline{4}{6\Cwd}{4\Cwd}}
+\renewcommand*{\l@subparagraph}{\@dottedtocline{5}{6\Cwd}{4\Cwd}}
+\renewcommand{\listoffigures}{\section*{\listfigurename}\@starttoc{lof}}
+\renewcommand*{\l@figure}{\@dottedtocline{1}{1.5em}{2.3em}}
+\renewcommand{\listoftables}{\section*{\listtablename}\@starttoc{lot}}
 \let\l@table\l@figure
 
 %% ===============================================
 %% Other environments (Acknowledgments, Publications, etc.)
 %% ===============================================
 \renewcommand{\footnoterule}{\kern-3\p@\hrule width .4\columnwidth\kern 2.6\p@}
-\newcommand\@makefntext[1]{%
+\renewcommand\@makefntext[1]{%
   \samepage
   \advance\leftskip 14pt
   \parindent 1\Cwd
@@ -865,12 +719,6 @@
 %% Japanese name definitions
 %% ===============================================
 \newcommand{\absttitle}{概要}
-\newcommand{\contentsname}{目次}
-\newcommand{\listfigurename}{図目次}
-\newcommand{\listtablename}{表目次}
-\newcommand{\refname}{参考文献}
-\newcommand{\figurename}{図}
-\newcommand{\tablename}{表}
 \newcommand{\acknowledgtitle}{謝辞}
 \newcommand{\publicationtitle}{対外発表・論文・受賞等}
 
@@ -882,49 +730,5 @@
 \pagenumbering{arabic}
 \raggedbottom
 \onecolumn
-\@twosidetrue
-\@mparswitchtrue
 
-%% ===============================================
-%% BibTeX check patterns
-%% ===============================================
-% Last, F. / Last, F. M.
-\BibCheckAddPattern{
-  author \s* = \s*
-  (?:
-    \{ [^\{\}]* , \s* 
-    (?: [A-Z] \. \s* )+ 
-    (?: , | and | \} )
-    |
-    " [^"]* , \s* 
-    (?: [A-Z] \. \s* )+ 
-    (?: , | and | " )
-  )
-}
-
-% F. Last
-\BibCheckAddPattern{
-  author \s* = \s*
-  (?:
-    \{
-      (?:
-        \s* (?: [A-Z] \. \s* )+ [A-Z][a-z]+
-        |
-        [^\{\}]* \s+ and \s+ (?: [A-Z] \. \s* )+ [A-Z][a-z]+
-      )
-      [^\{\}]*
-    \}
-    |
-    "
-      (?:
-        \s* (?: [A-Z] \. \s* )+ [A-Z][a-z]+
-        |
-        [^"]* \s+ and \s+ (?: [A-Z] \. \s* )+ [A-Z][a-z]+
-      )
-      [^"]*
-    "
-  )
-}
-
-\BibCheckMode{error}
 \endinput

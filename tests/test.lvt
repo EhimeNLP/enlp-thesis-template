@@ -69,7 +69,7 @@
     謝辞はこちらに記述して下さい。
     \end{acknowledgment}
 
-    \bibliographystyle{enlpbbl}
+    \bibliographystyle{enlp}
     \bibliography{test}
 
     \begin{publication}

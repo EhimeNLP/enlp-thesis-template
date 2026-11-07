@@ -50,9 +50,9 @@
 \tableofcontents
 \clearpage
 \section{はじめに}
-これは, 言語処理学会論文誌の{\LaTeX}テンプレート (\pkg{jnlp\_3.8.cls}, \pkg{jnlpbbl\_2.2.sty}, \pkg{jnlpbbl\_1.7.bst}) を愛媛大学自然言語処理研究室の学位論文用に一部改変したものです.
+本テンプレートは, \pkg{jlreq} をベースとする愛媛大学自然言語処理研究室の学位論文LaTeXテンプレートです.
 \section{対応エンジン}
-本テンプレートは, 以下の{\LaTeX}エンジンに対応しています.
+本テンプレートは, 以下のLaTeXエンジンに対応しています.
 \begin{itemize}
     \item p\LaTeX
     \item up\LaTeX
@@ -62,6 +62,7 @@
 \begin{itemize}
     \item \texttt{draft}：草稿モードでコンパイル
     \item \texttt{final}：最終稿モードでコンパイル (\textit{default})
+    \item \texttt{biblatex}：参考文献の処理にBibLaTeXとBiberを使用
     \item \texttt{ldebug}：レイアウトデバッグ用の枠線を表示 (LuaLaTeXのみ)
 \end{itemize}
 \section{主要マクロ}
@@ -72,16 +73,13 @@
     \item \cs{date\{<submission date>\}}：提出日の指定
     \item \cs{maketitle}：タイトルページの生成
     \item \cs{tableofcontents}：目次の生成
-    \item \cs{bibliographystyle\{enlpbbl\}}：参考文献スタイルの指定
-    \item \cs{bibliography\{<bibtex file>\}}：参考文献リストの生成
-    \item \cs{cite\{<key>\}}：(Author, Year) 形式の参考文献の引用
+    \item \cs{bibliographystyle\{enlp\}}：参考文献スタイルの指定
+    \item \cs{bibliography\{<bibtex file>\}}：参考文献リストの生成（BibTeX方式）
+    \item \cs{addbibresource\{<file.bib>\}}：文献データの指定（Biber方式）
+    \item \cs{printbibliography}：参考文献リストの生成（Biber方式）
+    \item \cs{cite\{<key>\}}：(Author Year) 形式の参考文献の引用
     \item \cs{citeA\{<key>\}}：Author (Year) 形式の参考文献の引用
     \item \cs{allowdisplaybreaks}：数式のページ分割を許可
-    \item \cs{BibCheckMode\{<mode>\}}：参考文献の略称名チェック設定
-    \begin{itemize}
-        \item \texttt{warning}：略称名が見つかった場合, 警告を出力
-        \item \texttt{error}：略称名が見つかった場合, エラーを出力 (\textit{default})
-    \end{itemize}
 \end{itemize}
 \section{主要環境}
 \begin{itemize}
@@ -90,7 +88,8 @@
     \item \pkg{publication} (\textit{env.})：対外発表の記述
 \end{itemize}
 \section{参考文献スタイル}
-\subsection{BibTeXのエントリタイプとフィールド}
+% 本文では著者名と発行年を示します。参考文献一覧は引用順に並び、各項目に番号が付きます。
+% \subsection{文献データのエントリタイプとフィールド}
 \begin{itemize}
     \item \texttt{@article}：論文誌
     \begin{itemize}
@@ -175,15 +174,6 @@ title = {The impact of "AI" on society},
     \item \textbf{省略形の禁止} \\
     参考文献の著者は, 省略形 (例：\texttt{E. Yoneyama}) ではなく, \textbf{Full Name (例：\texttt{Eito Yoneyama})} で記述してください. 
 
-    \item \textbf{自動チェック機能} \\
-    コンパイル時に \texttt{.bib} ファイルを走査し, 省略形と思われる記述が含まれている場合, 警告またはエラーを出力します. 
-    この挙動は, \cs{BibCheckMode\{<mode>\}} で制御可能です. 
-    
-    \begin{itemize}
-        \item \texttt{warning}：省略形が見つかった場合, コンパイルを止めずに警告メッセージを出力します.
-        \item \texttt{error}：省略形が見つかった場合, コンパイルエラーとして停止させます. (\textit{default})
-    \end{itemize}
-    
 \begin{lstlisting}[language=TeX]
 % 悪い例
 author = {E. Yoneyama},
@@ -213,16 +203,20 @@ author = {Eito Yoneyama and Tomoyuki Kajiwara},
 \subsection{解決策1：\texttt{latexmkrc}で検索パスを拡張する (推奨)}
 この方法では, TeX/BibTeXの検索パス一覧が格納されている環境変数である\texttt{TEXINPUTS}と\texttt{BSTINPUTS}にテンプレートのパスを追加します~\footnote{BibTeXファイル (\texttt{.bib}) をプロジェクトのルートより深い場所に置き, かつコンパイルファイル (\texttt{.tex}) 内で読み込む際に検索パスに依存したファイル名指定のみで読み込みたい場合は, 適宜\texttt{BIBINPUTS}にもパスを追加してください.}. 
 プロジェクト構造として以下を想定します.
+\par\noindent\begin{minipage}{\linewidth}\small
+\setlength{\DTbaselineskip}{\baselineskip}
 \dirtree{%
 .1 /.
 .2 enlp-template.
 .3 enlp.cls.
-.3 enlplogo.sty.
-.3 enlpbbl.sty.
-.3 enlpbbl.bst.
-.3 bibcheck.sty.
+.3 enlp-logo.sty.
+.3 enlp-bibtex.sty.
+.3 enlp.bst.
+.3 enlp.bbx.
+.3 enlp.cbx.
 .2 main.tex.
 }
+\end{minipage}\par
 \noindent
 この構造下において, プロジェクトルートに\texttt{latexmkrc}を作成し, 以下を追記してください~\footnote{ここでは, Overleaf (UNIX-like OS) を対象としているため, 検索パスの区切り文字は '\texttt{:}'ですが, WindowsでTEXMFツリーに追加せずにローカル運用している場合は
 , 区切り文字を '\texttt{;}' とする必要があります.}.
@@ -232,45 +226,22 @@ $ENV{'BSTINPUTS'} = './enlp-template//:' . $ENV{'BSTINPUTS'};
 \end{lstlisting}
 ただし, \texttt{enlp-template}の部分は適宜置き換えてください.
 \subsection{解決策2：テンプレートをプロジェクトルートに展開する (非推奨)}
-テンプレートに含まれる全てのファイルをプロジェクトルートに展開してください. 
-ただし, この方法ではプロジェクトルートが汚染される点に注意してください.
-\dirtree{%
-.1 /.
-.2 enlp-template.
-.2 enlp.cls.
-.2 enlplogo.sty.
-.2 enlpbbl.sty.
-.2 enlpbbl.bst.
-.2 bibcheck.sty.
-.2 main.tex.
-}
+解決策1に示した \texttt{enlp-template} 内のファイルを, すべて \texttt{main.tex} と同じ階層に展開してください. 
 \subsection{解決策3：パスを直接書き換える (非推奨)}
-プロジェクト構造として以下を想定します.
-\dirtree{%
-.1 /.
-.2 enlp-template.
-.3 enlp.cls.
-.3 enlplogo.sty.
-.3 enlpbbl.sty.
-.3 enlpbbl.bst.
-.3 bibcheck.sty.
-.2 main.tex.
-}
-\noindent
-この構造下において, \texttt{enlp.cls}の該当部分を修正してください. 
+この方法はBibTeX方式で利用できます. Biber方式では解決策1または2を使ってください. 
+解決策1と同じフォルダ構成で, \texttt{enlp.cls} の該当部分を修正してください. 
 ただし, この方法では不適切なパス指定により意図しない動作が起こり得る点に注意してください. 
+\par\noindent\begin{minipage}{\linewidth}
 \begin{lstlisting}[style=diff]
-@@ -1,3 +1,3 @@
-- \RequirePackage{enlplogo}
-- \RequirePackage{enlpbbl}
-- \RequirePackage{bibcheck}
-+ \RequirePackage{enlp-template/enlplogo}
-+ \RequirePackage{enlp-template/enlpbbl}
-+ \RequirePackage{enlp-template/bibcheck}
+- \RequirePackage{enlp-logo}
+- \newcommand*{\enlp@loadbibliography}{\RequirePackage{enlp-bibtex}}
++ \RequirePackage{enlp-template/enlp-logo}
++ \newcommand*{\enlp@loadbibliography}{\RequirePackage{enlp-template/enlp-bibtex}}
 \end{lstlisting}
+\end{minipage}\par
 また, コンパイルファイル (\texttt{.tex}) 内でBibTeXスタイルファイルを読み込む際は以下のよう指定してください. 
 \begin{lstlisting}[language=TeX]
-\bibliographystyle{enlp-template/enlpbbl}
+\bibliographystyle{enlp-template/enlp}
 \end{lstlisting}
 ただし, \texttt{enlp-template}の部分は適宜置き換えてください.
 \section{使用例}
@@ -304,7 +275,7 @@ DVIドライバはパッケージオプションではなく, クラスオプシ
 \end{lstlisting}
 \begin{warning}
 本テンプレートでは, 内部で \pkg{hyperref} を読み込んでいるため, \texttt{.tex} ファイル内で \pkg{hyperref} を読み込まないでください. 
-このような設計にしているのは, マクロ定義の干渉を回避するために \pkg{enlpbbl} より先に \pkg{hyperref} を読み込む必要があるためです.
+このような設計にしているのは, マクロ定義の干渉を回避するために \pkg{enlp-bibtex} より先に \pkg{hyperref} を読み込む必要があるためです.
 \end{warning}
 \subsection{メタデータの設定}
 メタデータはプリアンブルで以下のように設定します.
@@ -341,15 +312,23 @@ DVIドライバはパッケージオプションではなく, クラスオプシ
 なお, 内部で \cs{maketitle} $\to$ \texttt{abstract} (\textit{env.}) $\to$ \cs{tableofcontents} の順序をチェックしているため, これらの順序が守られていない場合, コンパイルエラーとなります.
 \end{warning}
 \subsection{参考文献の設定と引用}
-参考文献スタイルの指定と参考文献リストの生成は以下のように行います.
+BibTeXを使う場合とBibLaTeX + Biberを使う場合で記述命令が異なります.
+\subsubsection{BibTeX}
+BibTeXを使用する場合は, 以下のようにして文献一覧を生成します. 
 \begin{lstlisting}[language=TeX]
-\bibliographystyle{enlpbbl}
+\bibliographystyle{enlp}
 \bibliography{references} % references.bib
 \end{lstlisting}
-参考文献の引用は以下のマクロで行います.
+本文で引用する際は \cs{cite\{key\}} を使えます. 
+\subsubsection{BibLaTeX + Biber}
+BibLaTeX + Biberを使用する場合は, プリアンブルに以下を記述してください. 
 \begin{lstlisting}[language=TeX]
-\cite{key} % (Author, Year)
+\documentclass[biblatex]{enlp}
+\addbibresource{references.bib}
 \end{lstlisting}
+文献一覧の生成は \cs{printbibliography} で行えます. 
+本文で引用する際は \cs{cite} と \cs{citeA} を使えます. 
+また, 前注と後注を付ける場合は \cs{cite[see][p.\textasciitilde3]\{key\}} のようにします. 
 \subsection{謝辞の記述}
 謝辞は以下の環境で記述します.
 \begin{lstlisting}[language=TeX]
@@ -433,6 +412,12 @@ DVIドライバはパッケージオプションではなく, クラスオプシ
     \begin{itemize}[nosep]
         \item LuaTeX-jaが \cs{iftdir} を提供しないため，\texttt{enumerate}・\texttt{itemize}・\texttt{description} 環境でエラーが発生する不具合を修正
         \item LuaLaTeX使用時は \cs{iftdir} を常に偽として定義することで対応
+    \end{itemize}\\
+    \textbf{v1.1.0}&2026-11-08&ベースクラスの変更：
+    \begin{itemize}[nosep]
+        \item \pkg{jnlp} ベースから \pkg{jlreq} ベースに移行
+        \item BibLaTeX + Biberに対応
+        \item \pkg{bibcheck} を廃止
     \end{itemize}\\
 \end{longtable}
 \end{document}

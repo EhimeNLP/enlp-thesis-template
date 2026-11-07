@@ -1,13 +1,6 @@
 # 学位論文LaTeXテンプレート
 
-本テンプレートは, 言語処理学会論文誌の公式 LaTeX テンプレートをベースとした, 愛媛大学自然言語処理研究室の学位論文テンプレートです. 
-原版の詳細は以下を参照してください.
-
-- 会誌「自然言語処理」原稿執筆案内：https://www.anlp.jp/guide/guideline.html
-- 原版
-  - クラスファイル：`jnlp_3.8.cls`
-  - スタイルファイル：`jnlpbbl_2.2.sty`
-  - BibTeX スタイルファイル：`jnlpbbl_1.7.bst`
+本テンプレートは[jlreq](https://github.com/abenori/jlreq)をベースとする, 愛媛大学自然言語処理研究室の学位論文テンプレートです.
 
 ## インストール
 
@@ -59,8 +52,6 @@ chmod +x install.sh
 ## 使用方法
 
 使用方法については, [ユーザ向けドキュメント](https://github.com/EhimeNLP/enlp-thesis-template/blob/main/docs/documentation.pdf)を参照してください.
-
-テンプレートの内部実装や保守方法については, `docs/documentation-dev.tex` を参照してください.
 
 ## Issues
 

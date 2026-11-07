@@ -4,10 +4,10 @@
 %%
 %% Author: Eito Yoneyama
 %% Created: 2025/11/20
-%% Updated: 2026/02/24
-
+%% Updated: 2026/11/08
+%%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{enlp}[2026/02/24 v1.0.7 Academic thesis class for Ehime Univ. NLP Lab (based on jlreq)]
+\ProvidesClass{enlp}[2026/11/08 v1.1.0 Academic thesis class for Ehime Univ. NLP Lab (based on jlreq)]
 
 % Keep the thesis layout while inheriting the Japanese typesetting machinery
 % and standard LaTeX environments from jlreq.

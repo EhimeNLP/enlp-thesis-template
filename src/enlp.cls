@@ -15,7 +15,7 @@
 \RequirePackage{iftex}
 
 \newif\if@ldebug
-\newcommand*{\enlp@loadbibliography}{\RequirePackage{enlpbbl}}
+\newcommand*{\enlp@loadbibliography}{\RequirePackage{enlp-bibtex}}
 \DeclareOption{ldebug}{\@ldebugtrue}
 \DeclareOption{leqno}{\PassOptionsToClass{leqno}{jlreq}}
 \DeclareOption{fleqn}{\PassOptionsToClass{fleqn}{jlreq}}
@@ -84,6 +84,22 @@
   \RequirePackage{pxjahyper}
 \fi
 
+% Thesis layout shared by the BibTeX and biblatex bibliography lists.
+\let\enlp@bibliographytitle\refname
+\newlength{\bibleftmargin}
+\newlength{\bibitemindent}
+% Keep the bibliography indentation based on the previous 10 pt font.
+\setlength{\bibleftmargin}{19.24432pt}
+\setlength{\bibitemindent}{-4.81108pt}
+\newcommand*{\enlp@bibliographyheading}[1]{%
+  \csection*{#1}%
+  \addcontentsline{toc}{section}{#1}}
+\newcommand*{\enlp@bibliographylist}[1]{%
+  \settowidth{\labelwidth}{#1}%
+  \setlength{\leftmargin}{\bibleftmargin}%
+  \setlength{\itemindent}{\bibitemindent}}
+\newcommand*{\enlp@bibliographyparagraphs}{%
+  \sloppy\clubpenalty4000\widowpenalty4000\relax}
 
 \enlp@loadbibliography
 \if@ldebug

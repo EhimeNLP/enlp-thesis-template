@@ -29,12 +29,20 @@ $texmf = $texmf[0]
 $workdir = Join-Path ([IO.Path]::GetTempPath()) ('enlp-' + [guid]::NewGuid())
 New-Item -ItemType Directory -Path $workdir | Out-Null
 try {
-    $archive = Join-Path $workdir 'source.zip'
-    curl.exe -fsSL https://github.com/EhimeNLP/enlp-thesis-template/archive/refs/heads/main.zip -o $archive
-    if ($LASTEXITCODE -ne 0) { throw 'Could not download the template.' }
+    $releases = 'https://github.com/EhimeNLP/enlp-thesis-template/releases'
+    $headers = Join-Path $workdir 'latest.headers'
+    $latestUrl = curl.exe -fsSIL -o $headers -w '%{url_effective}' "$releases/latest"
+    if ($LASTEXITCODE -ne 0) { throw 'Could not resolve the latest release.' }
+    $tagPattern = '\A' + [regex]::Escape("$releases/tag/") + '(v[A-Za-z0-9._-]+)\z'
+    if ($latestUrl -cnotmatch $tagPattern) { throw "Unexpected release URL: $latestUrl" }
+    $tag = $Matches[1]
+
+    $archive = Join-Path $workdir 'enlp-thesis-template.zip'
+    curl.exe -fsSL "$releases/download/$tag/enlp-thesis-template-$tag.zip" -o $archive
+    if ($LASTEXITCODE -ne 0) { throw "Could not download release $tag." }
     Expand-Archive -LiteralPath $archive -DestinationPath $workdir
 
-    $src = Join-Path $workdir 'enlp-thesis-template-main/src'
+    $src = Join-Path $workdir 'enlp-thesis-template'
     $files = Get-ChildItem -LiteralPath $src -File
     $latexExtensions = '.cls', '.sty', '.bbx', '.cbx'
     foreach ($ext in ($latexExtensions + '.bst')) {
@@ -53,7 +61,7 @@ try {
         & $refresh
         if ($LASTEXITCODE -ne 0) { throw 'Could not refresh the TeX file database.' }
     }
-    Write-Output "Installed enlp in $texmf"
+    Write-Output "Installed enlp $tag in $texmf"
 } finally {
     Remove-Item -LiteralPath $workdir -Recurse -Force
 }

@@ -48,10 +48,16 @@ install_enlp() {
     workdir=$(mktemp -d "${TMPDIR:-/tmp}/enlp.XXXXXX")
     trap 'rm -rf "$workdir"' 0
     trap 'exit 1' HUP INT TERM
-    curl -fsSL https://github.com/EhimeNLP/enlp-thesis-template/archive/refs/heads/main.tar.gz \
-        -o "$workdir/source.tar.gz"
-    tar -xzf "$workdir/source.tar.gz" -C "$workdir" --strip-components=1
-    src="$workdir/src"
+    releases=https://github.com/EhimeNLP/enlp-thesis-template/releases
+    latest_url=$(curl -fsSIL -o /dev/null -w '%{url_effective}' "$releases/latest")
+    tag=${latest_url#"$releases/tag/"}
+    case $tag in
+        ''|v|[!v]*|*[!A-Za-z0-9._-]*) fail "Unexpected release URL: $latest_url" ;;
+    esac
+    archive="$workdir/enlp-thesis-template.zip"
+    curl -fsSL "$releases/download/$tag/enlp-thesis-template-$tag.zip" -o "$archive"
+    unzip -q "$archive" -d "$workdir"
+    src="$workdir/enlp-thesis-template"
 
     for file in "$src"/*.cls "$src"/*.sty "$src"/*.bbx "$src"/*.cbx "$src"/*.bst; do
         [ -f "$file" ] || fail "Missing package file: $file"
@@ -68,7 +74,7 @@ install_enlp() {
     if [ "$#" -gt 0 ]; then
         ${admin:+sudo} "$@"
     fi
-    printf 'Installed enlp in %s\n' "$texmf"
+    printf 'Installed enlp %s in %s\n' "$tag" "$texmf"
 }
 
 install_enlp "$@"

@@ -4,46 +4,23 @@
 
 ## インストール
 
-### Local
+### macOS / Linux
 
-まず, 本リポジトリをローカル環境にクローンしてください.
-
-```bash
-git clone https://github.com/EhimeNLP/enlp-thesis-template.git
-cd enlp-thesis-template
+```sh
+curl -fsSL https://raw.githubusercontent.com/EhimeNLP/enlp-thesis-template/main/scripts/install.sh | sh
 ```
 
-#### Windows / macOS / Linux
+システム全体にインストールする場合は, 末尾を `| sh -s -- --texmflocal` に変えてください. 
 
-`l3build` を使用して, `TEXMFHOME` に追加してください.
+### Windows
 
-```bash
-l3build install
+PowerShellで以下を実行してください. 
+
+```powershell
+& ([scriptblock]::Create((curl.exe -fsSL https://raw.githubusercontent.com/EhimeNLP/enlp-thesis-template/main/scripts/install.ps1 | Out-String)))
 ```
 
-#### Windows
-
-バッチファイルを使用して, `TEXMFLOCAL` または `TEXMFHOME` に追加してください.
-
-```bash
-install [--texmflocal|--texmfhome]
-```
-
-- `--texmflocal`: `TEXMFLOCAL` に追加 (default)
-- `--texmfhome`: `TEXMFHOME` に追加
-
-#### macOS / Linux
-
-シェルスクリプトを使用して, `TEXMFLOCAL` または `TEXMFHOME` に追加してください.  
-ただし, 実行権限の付与が必要です. また, `TEXMFLOCAL` に追加する場合は, 管理者権限が必要です. 
-
-```bash
-chmod +x install.sh
-./install.sh [--texmflocal|--texmfhome]
-```
-
-- `--texmflocal`: `TEXMFLOCAL` に追加 (default)
-- `--texmfhome`: `TEXMFHOME` に追加
+システム全体にインストールする場合は, 管理者権限で起動したPowerShellでコマンド末尾に `-System` を付けてください. 
 
 ### Overleaf
 
